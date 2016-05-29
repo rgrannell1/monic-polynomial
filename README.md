@@ -17,7 +17,7 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 
 ## Usage
 
-``
+```
 make create-vm
 
 make environment
@@ -27,7 +27,7 @@ make solve-polynomials
 make draw-solutions
 
 make fetch-images
-``
+```
 
 Both `make solve-polynomials` and `make draw-solutions` run asyncronously, so Ansible will not wait for them to complete before exiting. These jobs are run as screen-sesssions; to re-attach them run:
 
@@ -44,6 +44,7 @@ screen -a <numeric-prefix>
 to open the process. Press
 
 <kbd>Ctrl + a</kbd>
+
 <kbd>d</kbd>
 
 To detach the screen session.
