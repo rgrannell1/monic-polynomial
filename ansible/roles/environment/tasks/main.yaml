@@ -31,6 +31,10 @@
 
 - name: create an output directory
   file: >
-    path={{ repo_path }}/output
+    path={{ item }}
     state=directory
     mode=0755
+  with_items:
+    - '{{ repo_path }}/output'
+    - '{{ repo_path }}/output/json'
+    - '{{ repo_path }}/output/images'

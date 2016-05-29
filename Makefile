@@ -9,3 +9,7 @@ solve-polynomials:
 
 draw-solutions:
 	ansible-playbook -i $(inventory_script_path) ansible/draw-solutions.yaml
+
+fetch:
+	src="{{ repo_path }}/output"
+	dest=

@@ -34,8 +34,8 @@ constants = {
 	'flush_threshold': 100000,
 
 	'paths': {
-		'input':  os.path.join(os.path.dirname(__file__), '../../output/polynomial-roots.csv'),
-		'output': os.path.join(os.path.dirname(__file__), '../../output/' + str( int(time.time( )) ) + '-image.png' )
+		'input':  os.path.join(os.path.dirname(__file__), '../../output/json/polynomial-roots.jsonl'),
+		'output': os.path.join(os.path.dirname(__file__), '../../output/images/' + str( int(time.time( )) ) + '-image.png' )
 	},
 	'colours': {
 		'background': 'black',
@@ -91,16 +91,16 @@ def find_extrema (ranges, conn):
 
 	extrema = {
 		'x': {
-			'min': +float("inf"),
-			'max': -float("inf")
+			'min': +float('inf'),
+			'max': -float('inf')
 		},
 		'y': {
-			'min': +float("inf"),
-			'max': -float("inf")
+			'min': +float('inf'),
+			'max': -float('inf')
 		},
 		'coefficient_product': {
-			'min': +float("inf"),
-			'max': -float("inf")
+			'min': +float('inf'),
+			'max': -float('inf')
 		}
 	}
 

@@ -38,7 +38,7 @@ constants = {
 	'flush_threshold': 10000,
 
 	'paths': {
-		'output': os.path.join(os.path.dirname(__file__), '../../output/polynomial-roots.csv'),
+		'output': os.path.join(os.path.dirname(__file__), '../../output/json/polynomial-roots.jsonl'),
 	},
 	'escapes': {
 		'line_up':     '\x1b[A',
