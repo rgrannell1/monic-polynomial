@@ -1,0 +1,3 @@
+---
+- name: solve equations
+  shell: 'yes | python3 {{ repo_path }}/src/python/solve-polynomials.py --order={{ args.solve.order }} --range={{ args.solve.range }}'

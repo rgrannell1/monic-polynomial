@@ -3,12 +3,13 @@
 solve-polynomials.py
 
 Usage:
-	solve-polynomials.py --order=<NUM> --range=<NUM>
+	solve-polynomials.py --order=<NUM> --range=<NUM> [--assume-yes]
 
 Options:
 	-h, --help       Display the documentation.
 	--order=<NUM>    The order of the polynomial to solve [default: 5].
 	--range=<NUM>    The maximum / minumum integer coefficient to use for each polynomial.
+	--assume-yes     Run this script without prompts.
 
 """
 
@@ -148,7 +149,7 @@ def solve_polynomial (point):
 		'roots':        [ [root.real, root.imag] for root in numpy.roots(point) ]
 	}
 
-def solve_polynomials (order, num_range):
+def solve_polynomials (order, num_range, assume_yes):
 
 
 	dimensions  = repeat_val(order, sequence(-num_range, num_range))
@@ -156,7 +157,8 @@ def solve_polynomials (order, num_range):
 
 	total_count = product(len(val) for val in dimensions)
 
-	prompt_start(order, num_range, total_count)
+	if not assume_yes:
+		prompt_start(order, num_range, total_count)
 
 	start       = time.time( )
 	root_count  = counter( )
@@ -182,5 +184,6 @@ if __name__ == '__main__':
 	arguments = docopt(__doc__, version = '0.1')
 
 	solve_polynomials(
-		order     = int(arguments['--order']),
-		num_range = int(arguments['--range']) )
+		order      = int(arguments['--order']),
+		num_range  = int(arguments['--range']),
+		assume_yes = arguments['--assume-yes'] )
