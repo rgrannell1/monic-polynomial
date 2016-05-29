@@ -3,9 +3,7 @@ import os
 import sys
 import math
 from docopt import docopt
-from OpenGL.GL import *
-
-from PIL import Image
+from PIL    import Image
 
 
 
