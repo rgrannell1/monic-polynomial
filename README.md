@@ -15,6 +15,10 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 - `security/digital-ocean-token`: Your digital-ocean access key.
 - `security/ssh-id`: The internal ID assigned to your SSH key (e.q 12345).
 
+## VM-Size
+
+The VM deployment script creates a 2GiB RAM (20$ / month).
+
 ## Usage
 
 ```bash
