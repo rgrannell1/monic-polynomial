@@ -17,7 +17,7 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 
 ## Usage
 
-```
+```bash
 make create-vm
 
 make environment
@@ -31,25 +31,37 @@ make fetch-images
 
 Both `make solve-polynomials` and `make draw-solutions` run asyncronously, so Ansible will not wait for them to complete before exiting. These jobs are run as screen-sesssions; to re-attach them run:
 
-```
+```bash
 screen -list
 ```
 
 to find the launched sessions, and 
 
-```
+```bash
 screen -a <numeric-prefix>
 ```
 
-to open the process. Press
+to open the process. 
+
+```
+attempting to solve 104,060,401 polynomials. Do you want to start? [y/N]  
+rates:
+    solved:                    70,000
+    solved / second:           8,421
+
+estimates:
+    seconds remaining:         12,349
+    estimated per hour:        30,315,600
+    estimated file size:       28.41GiB
+```
+
+Press
 
 <kbd>Ctrl + a</kbd>
 
 <kbd>d</kbd>
 
-To detach the screen session.
-
-
+to detach the screen session.
 
 ## License
 
