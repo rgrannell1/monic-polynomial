@@ -41,7 +41,7 @@ to find the launched sessions, and
 screen -a <numeric-prefix>
 ```
 
-to open the process. 
+to open the process. For the solution task you will see solution-rates and estimates of file-size / remaining time.
 
 ```
 attempting to solve 104,060,401 polynomials. Do you want to start? [y/N]  
