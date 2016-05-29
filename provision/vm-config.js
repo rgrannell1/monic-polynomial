@@ -20,7 +20,7 @@ const fileData = {
 
 
 const vm = {
-	"name":      "monic-runner",
+	"name":      "polynomial-runner-" + Date.now( ),
 	"region":    "lon1",
 	"size":      "2gb",
 	"image":     "ubuntu-14-04-x64",

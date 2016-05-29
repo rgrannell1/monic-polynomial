@@ -27,7 +27,7 @@
 - name: github package
   become: no
   git: >
-    repo="https://github.com/rgrannell1/monic-polynomial.git"
+    repo="https://github.com/rgrannell1/polynomial.git"
     dest={{ repo_path }}
 
 - name: create an output directory

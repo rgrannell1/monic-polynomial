@@ -109,7 +109,7 @@ def print_progress (iter, total_count, start):
 		per_second = round(iter / elapsed)
 
 		estimated_per_hour = per_second * 60 * 60
-		second_remaining   = round((total_count - iter) / per_second)
+		minutes_remaining   = round((total_count - iter) / 60 * per_second)
 
 		file_gib           = get_file_size(constants['paths']['output']) / constants['units']['bytes_per_gibibyte']
 		estimated_file_gib = (file_gib / iter) * total_count
@@ -120,7 +120,7 @@ def print_progress (iter, total_count, start):
 			'    solved / second:           ' + '{:,}'.format(per_second),
 			'',
 			'estimates:',
-			'    seconds remaining:         ' + '{:,}'.format(second_remaining),
+			'    minutes remaining:         ' + '{:,}'.format(minutes_remaining),
 			'    estimated per hour:        ' + '{:,}'.format(estimated_per_hour),
 			'    estimated file size:       ' + str(round(estimated_file_gib, 2)) + 'GiB'
 		]
