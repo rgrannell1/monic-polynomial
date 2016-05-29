@@ -15,6 +15,16 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 - `security/digital-ocean-token`: Your digital-ocean access key.
 - `security/ssh-id`: The internal ID assigned to your SSH key (e.q 12345).
 
+## Usage
+
+``
+make create-vm
+make environment
+make solve-polynomials
+make draw-solutions
+make fetch-images
+``
+
 ## License
 
 The MIT License
