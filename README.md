@@ -12,8 +12,6 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 
 - Ansible.
 - A DigitalOcean account, with an SSH key set up.
-
-## Required Credentials
-
 - `security/digital-ocean-token`: Your digital-ocean access key.
 - `security/ssh-id`: The internal ID assigned to your SSH key (e.q 12345).
+
