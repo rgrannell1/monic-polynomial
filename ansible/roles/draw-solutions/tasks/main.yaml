@@ -1,5 +1,3 @@
 ---
 - name:  draw equations (asyncronously)
-  async: 1
-  poll:  0
-  shell: '{{ repo_path }}/src/python/draw-solutions.py --width={{ args.draw.width }} --height={{ args.draw.height }} --xrange={{ args.draw.xrange }} --yrange={{ args.draw.yrange }}'
+  shell: "screen -S 'draw-solutions' -d -m {{ repo_path }}/src/python/draw-solutions.py --width={{ args.draw.width }} --height={{ args.draw.height }} --xrange={{ args.draw.xrange }} --yrange={{ args.draw.yrange }}"

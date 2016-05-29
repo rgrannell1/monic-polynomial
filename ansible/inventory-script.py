@@ -24,7 +24,7 @@ inventory = {
 					'yrange': 10
 				},
 				'solve': {
-					'range': 1000,
+					'range': 50,
 					'order': 5
 				}
 			}
