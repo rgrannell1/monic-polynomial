@@ -7,3 +7,13 @@ This repository includes code to solve and graph large numbers of polynomial roo
 ## Background
 
 This tool generates solutions to all polynomials of a fixed order, with coefficients in a certain integer range. After obtaining the complex solutions to these polynomials it plots their real / complex parts. The colour assigned to each root corresponds to the product of the polynomials coefficients.
+
+## Requirements 
+
+- Ansible.
+- A DigitalOcean account, with an SSH key set up.
+
+## Required Credentials
+
+- `security/digital-ocean-token`: Your digital-ocean access key.
+- `security/ssh-id`: The internal ID assigned to your SSH key (e.q 12345).
