@@ -1,9 +1,9 @@
 
 """
-solve.py
+solve-polynomials.py
 
 Usage:
-	solve.py --order=<NUM> --range=<NUM>
+	solve-polynomials.py --order=<NUM> --range=<NUM>
 
 Options:
 	-h, --help       Display the documentation.
@@ -33,7 +33,7 @@ from prompter import yesno
 constants = {
 	'print_frequency': 10000,
 
-	'flush_threshold': 100000,
+	'flush_threshold': 10000,
 
 	'paths': {
 		'output': os.path.join(os.path.dirname(__file__), '../../output/polynomial-roots.csv'),
@@ -41,8 +41,38 @@ constants = {
 	'escapes': {
 		'line_up':     '\x1b[A',
 		'line_delete': '\x1b[K'
+	},
+	'units': {
+		'bytes_per_gibibyte': 2 ** 30
 	}
 }
+
+
+
+
+
+
+def repeat_val (num, val):
+	return [val for _ in range(num - 1)]
+
+def product (nums):
+	return reduce(mul, nums, 1)
+
+def sequence (lower, upper):
+
+	seq = [ ]
+	current = lower
+
+	while current <= upper:
+		seq.append(current)
+		current += 1
+
+	return seq
+
+
+def get_file_size(filename):
+	return os.stat(filename).st_size
+
 
 
 
@@ -62,7 +92,7 @@ def prompt_start (order, num_range, total_count):
 	if not answer:
 		exit(0)
 
-def eraseLines (count):
+def erase_lines (count):
 
 	for _ in range(count):
 		sys.stderr.write(constants['escapes']['line_up'])
@@ -79,25 +109,33 @@ def print_progress (iter, total_count, start):
 		estimated_per_hour = per_second * 60 * 60
 		second_remaining   = round((total_count - iter) / per_second)
 
+		file_gib           = get_file_size(constants['paths']['output']) / constants['units']['bytes_per_gibibyte']
+		estimated_file_gib = (file_gib / iter) * total_count
+
 		messages           = [
-			'average solved per second: ' + str(per_second) + '\n',
-			'total solved:              ' + str(iter) + '\n',
-			'seconds remaining:         ' + str(second_remaining) + '\n',
-			'estimated per hour:        ' + str(estimated_per_hour) + '\n'
+			'rates:',
+			'    solved:                    ' + '{:,}'.format(iter),
+			'    solved / second:           ' + '{:,}'.format(per_second),
+			'',
+			'estimates:',
+			'    seconds remaining:         ' + '{:,}'.format(second_remaining),
+			'    estimated per hour:        ' + '{:,}'.format(estimated_per_hour),
+			'    estimated file size:       ' + str(round(estimated_file_gib, 2)) + 'GiB'
 		]
 
 		if iter >= 2 * constants["print_frequency"]:
-			eraseLines(len(messages))
+			erase_lines(len(messages))
 
 		for message in messages:
-			sys.stderr.write(message)
+			sys.stderr.write(message + '\n')
 
 def write_solutions(solution, solution_buffer, force = False):
 
 	if len(solution_buffer) == constants["flush_threshold"] or force:
 
 		with open(constants['paths']['output'], "a") as fpath:
-			fpath.write(json.dumps(solution) + '\n')
+			for old_solution in solution_buffer:
+				fpath.write(json.dumps(old_solution) + '\n')
 
 		del solution_buffer[:]
 
@@ -109,23 +147,6 @@ def solve_polynomial (point):
 		'coefficients': point,
 		'roots':        [ [root.real, root.imag] for root in numpy.roots(point) ]
 	}
-
-def repeat_val (num, val):
-	return [val for _ in range(num - 1)]
-
-def product (nums):
-	return reduce(mul, nums, 1)
-
-def sequence (lower, upper):
-
-	seq = [ ]
-	current = lower
-
-	while current <= upper:
-		seq.append(current)
-		current += 1
-
-	return seq
 
 def solve_polynomials (order, num_range):
 
@@ -140,6 +161,8 @@ def solve_polynomials (order, num_range):
 	start       = time.time( )
 	root_count  = counter( )
 	solution_buffer = [ ]
+
+	open(constants['paths']['output'], 'w').close()
 
 	for point in space:
 
@@ -156,8 +179,8 @@ def solve_polynomials (order, num_range):
 
 if __name__ == '__main__':
 
-    arguments = docopt(__doc__, version = '0.1')
+	arguments = docopt(__doc__, version = '0.1')
 
-    solve_polynomials(
-    	order     = int(arguments['--order']),
-    	num_range = int(arguments['--range']) )
+	solve_polynomials(
+		order     = int(arguments['--order']),
+		num_range = int(arguments['--range']) )
