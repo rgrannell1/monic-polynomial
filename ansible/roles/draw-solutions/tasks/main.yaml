@@ -1,9 +1,5 @@
 ---
-- name: draw equations
+- name:  draw equations (asyncronously)
+  async: 0
+  poll:  0
   shell: '{{ repo_path }}/src/python/draw-solutions.py --width={{ args.draw.width }} --height={{ args.draw.height }} --xrange={{ args.draw.xrange }} --yrange={{ args.draw.yrange }}'
-
-- name: download images
-  synchronize: >
-    src='{{ repo_path }}/output/images'
-    dest='/tmp/monic-images/'
-    mode=pull

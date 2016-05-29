@@ -1,3 +1,5 @@
 ---
-- name: solve equations
+- name: solve equations (asyncronously)
+  async: 0
+  poll:  0
   shell: '{{ repo_path }}/src/python/solve-polynomials.py --order={{ args.solve.order }} --range={{ args.solve.range }} --assume-yes'

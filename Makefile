@@ -1,4 +1,5 @@
 
+ip_address=`cat ./security/ip_address`
 inventory_script_path = ansible/inventory-script.py
 
 environment:
@@ -12,9 +13,8 @@ draw-solutions:
 
 fetch-images:
 
-	mkdir -p ~/monic-output/images
-	scp -r root@$(MONIC_TARGET_VM_IP):monic-polynomial/output/images ~/monic-output/images
+	mkdir -p ./monic-polynomial-output
+	scp -r root@$(ip_address):monic-polynomial/output/images ./monic-polynomial-output
 
 create-vm:
 	bash provision/provision-vm.sh
-
