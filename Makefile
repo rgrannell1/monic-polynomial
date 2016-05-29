@@ -10,6 +10,11 @@ solve-polynomials:
 draw-solutions:
 	ansible-playbook -i $(inventory_script_path) ansible/draw-solutions.yaml
 
-fetch:
-	src="{{ repo_path }}/output"
-	dest=
+fetch-images:
+
+	mkdir -p ~/monic-output/images
+	scp -r root@$(MONIC_TARGET_VM_IP):monic-polynomial/output/images ~/monic-output/images
+
+create-vm:
+	bash provision/provision-vm.sh
+

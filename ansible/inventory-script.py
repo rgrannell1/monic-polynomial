@@ -7,17 +7,15 @@ from prompter import prompt
 
 
 
-if not os.environ.get('MONIC_TARGET_VM_IP'):
-	sys.stderr.write('the environment variable "MONIC_TARGET_VM_IP" must be set.\n')
-	exit(1)
 
-
+with open('security/ip_address','r') as fconn:
+    ip_address = fconn.read( ).strip( )
 
 inventory = {
 	'target_vm': {
 		'hosts': ['target_vm'],
 		'vars': {
-			'ansible_host': os.environ.get('MONIC_TARGET_VM_IP'),
+			'ansible_host': ip_address,
 			'args': {
 				'draw': {
 					'width':  2000,

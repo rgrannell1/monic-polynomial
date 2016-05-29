@@ -1,6 +1,6 @@
 ---
-#- name: draw equations
-#  shell: '{{ repo_path }}/src/python/draw-solutions.py --width={{ args.draw.width }} --height={{ args.draw.height }} --xrange={{ args.draw.xrange }} --yrange={{ args.draw.yrange }}'
+- name: draw equations
+  shell: '{{ repo_path }}/src/python/draw-solutions.py --width={{ args.draw.width }} --height={{ args.draw.height }} --xrange={{ args.draw.xrange }} --yrange={{ args.draw.yrange }}'
 
 - name: download images
   synchronize: >
