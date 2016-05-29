@@ -91,16 +91,16 @@ def find_extrema (ranges, conn):
 
 	extrema = {
 		'x': {
-			'min': +math.inf,
-			'max': -math.inf
+			'min': +float("inf"),
+			'max': -float("inf")
 		},
 		'y': {
-			'min': +math.inf,
-			'max': -math.inf
+			'min': +float("inf"),
+			'max': -float("inf")
 		},
 		'coefficient_product': {
-			'min': +math.inf,
-			'max': -math.inf
+			'min': +float("inf"),
+			'max': -float("inf")
 		}
 	}
 
