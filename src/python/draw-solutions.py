@@ -80,10 +80,6 @@ if __name__ == '__main__':
 	arguments = docopt(__doc__, version = '0.1')
 
 	draw(
-		dimensions = {
-			'width':  int(arguments['--width']),
-			'height': int(arguments['--height'])
-		},
 		ranges = {
 			'x': int(arguments['--xrange']),
 			'y': int(arguments['--yrange'])
