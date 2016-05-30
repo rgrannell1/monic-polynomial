@@ -28,7 +28,7 @@
   become: no
   git: >
     repo="https://github.com/rgrannell1/polynomial.git"
-    dest="tasks/{{start_time}}"
+    dest="tasks/{{start_time}}/repo"
 
 - name: create an output directory
   file: >

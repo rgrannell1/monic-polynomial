@@ -179,7 +179,7 @@ if __name__ == '__main__':
 		ranges = {
 			'x': int(arguments['--xrange']),
 			'y': int(arguments['--yrange'])
-		}
+		},
 		input_path:  arguments['--input-path'],
 		output_path: arguments['--output-path']
 	)
