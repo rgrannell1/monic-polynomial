@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 readable_date=$(date +"%H:%M_%m-%d-%Y")
-folder_name="/home/root/tasks/{{ start_time }}"
+folder_name="/root/tasks/{{ start_time }}"
 
 mkdir -p "$folder_name"
 mkdir -p "$folder_name/logs"
@@ -9,7 +9,6 @@ mkdir -p "$folder_name/output"
 mkdir -p "$folder_name/output/json"
 mkdir -p "$folder_name/output/images"
 
-rm "/root/tasks/current"
 ln -s "$(readlink -f $folder_name)" "/root/tasks/current"
 
 out_path="$folder_name/output/json/solutions.jsonl"

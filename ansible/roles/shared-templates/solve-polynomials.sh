@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-mkdir -p /home/root/tasks/
+mkdir -p /root/tasks/
 
 readable_date=$(date +"%H:%M_%m-%d-%Y")
 
