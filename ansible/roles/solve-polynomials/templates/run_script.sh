@@ -20,6 +20,7 @@ echo "range: {{ argset['range'] }}" | tee "$folder_name/solve-polynomial.log"
 {{ repo_path }}/src/python/solve-polynomials.py \
 	--order={{ argset['order'] }}               \
 	--range={{ argset['range'] }}               \
+	--out-path="$folder_name/output/json/solutions.jsonl" \
 	--assume-yes 2>&1 | tee "$folder_name/logs/solve-polynomial.log"
 
 {% endfor %}

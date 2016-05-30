@@ -8,9 +8,9 @@ Usage:
 
 Options:
 	-h, --help            Display the documentation.
+	--out-path=<STRING>   The path to save the image to.
 	--order=<NUM>         The order of the polynomial to solve [default: 5].
 	--range=<NUM>         The maximum / minumum integer coefficient to use for each polynomial.
-	--out-path=<STRING>   The path to save the image to.
 	--assume-yes          Run this script without prompts.
 
 """
@@ -185,6 +185,6 @@ if __name__ == '__main__':
 	solve_polynomials(
 		order       = int(arguments['--order']),
 		num_range   = int(arguments['--range']),
-		output_path = arguments['--output-path'],
+		output_path = arguments['--out-path'],
 		assume_yes  = arguments['--assume-yes']
 	)
