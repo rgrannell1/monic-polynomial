@@ -1,28 +1,28 @@
 ---
-- name: system dependencies
-  become:        yes
-  become_method: sudo
-  apt: >
-    name={{ item }}
-    state=present
-    update_cache=yes
-  with_items:
-    - cowsay
-    - git
-    - python3-pip
-    - python3-pil
-    - screen
-
-- name: pip packages
-  become:        yes
-  become_method: sudo
-  pip: >
-    name={{ item }}
-    executable='/usr/bin/pip3'
-  with_items:
-    - numpy
-    - docopt
-    - prompter
+#- name: system dependencies
+#  become:        yes
+#  become_method: sudo
+#  apt: >
+#    name={{ item }}
+#    state=present
+#    update_cache=yes
+#  with_items:
+#    - cowsay
+#    - git
+#    - python3-pip
+#    - python3-pil
+#    - screen
+#
+#- name: pip packages
+#  become:        yes
+#  become_method: sudo
+#  pip: >
+#    name={{ item }}
+#    executable='/usr/bin/pip3'
+#  with_items:
+#    - numpy
+#    - docopt
+#    - prompter
 
 - name: github package
   become: no

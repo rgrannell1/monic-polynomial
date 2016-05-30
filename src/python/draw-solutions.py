@@ -180,6 +180,6 @@ if __name__ == '__main__':
 			'x': int(arguments['--xrange']),
 			'y': int(arguments['--yrange'])
 		},
-		input_path  = arguments['--input-path'],
-		output_path = arguments['--output-path']
+		input_path  = arguments['--in-path'],
+		output_path = arguments['--out-path']
 	)
