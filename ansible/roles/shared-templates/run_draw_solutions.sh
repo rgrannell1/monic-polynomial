@@ -14,11 +14,9 @@ mkdir -p "$folder_name/output/images"
 
 {% for argset in args['draw'] %}
 
-{{ repo_path }}/src/python/draw-solutions.py        \
-	--width={{ argset.width }}                      \
-	--height={{ argset.height }}                    \
-	--xrange={{ argset.xrange }}                    \
-	--yrange={{ argset.yrange }}                    \
+{{ repo_path }}/src/python/draw-solutions.py \
+	--xrange={{ argset.xrange }}             \
+	--yrange={{ argset.yrange }}             \
 	--in-path=$folder_name/json/pixels.jsonl \
 	--out-path=$folder_name/images/image.png 2>&1 | tee "$folder_name/logs/draw-solutions.log"
 

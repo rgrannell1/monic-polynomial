@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-mkdir ~/polynomial-builds/
+mkdir -p ~/polynomial-builds/
 
 readable_date=$(date +"%H:%M_%m-%d-%Y")
 
