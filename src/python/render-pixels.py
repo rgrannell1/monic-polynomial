@@ -150,7 +150,7 @@ def buffered_write (data, data_buffer, output_path, force = False):
 
 		del data_buffer[:]
 
-	data_buffer.append(solution)
+	data_buffer.append(data)
 
 def draw (dimensions, input_path, output_path):
 
