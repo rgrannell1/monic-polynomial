@@ -15,5 +15,5 @@
   with_items:
     - run_everything.sh
 
-- name:  draw equations (asyncronously)
+- name:  run all (asyncronously)
   shell: bash run_everything.sh
