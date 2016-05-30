@@ -1,0 +1,19 @@
+---
+- name: copy shared files
+  template: >
+    src=./roles/shared-templates/{{item}}
+    dest=~/{{item}}
+  with_items:
+    - run_solve_polynomials.sh
+    - run_draw_solutions.sh
+    - run_render_pixels.sh
+
+- name: copy role files
+  template: >
+    src={{item}}
+    dest=~/{{item}}
+  with_items:
+    - run_everything.sh
+
+- name:  draw equations (asyncronously)
+  shell: bash run_everything.sh

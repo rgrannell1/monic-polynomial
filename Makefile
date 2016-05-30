@@ -11,8 +11,14 @@ environment:
 solve-polynomials:
 	ansible-playbook -i $(inventory_script_path) ansible/solve-polynomials.yaml
 
+render-pixels:
+	ansible-playbook -i $(inventory_script_path) ansible/render-pixels.yaml
+
 draw-solutions:
 	ansible-playbook -i $(inventory_script_path) ansible/draw-solutions.yaml
+
+run:
+	ansible-playbook -i $(inventory_script_path) ansible/create-image.yaml
 
 fetch-images:
 
