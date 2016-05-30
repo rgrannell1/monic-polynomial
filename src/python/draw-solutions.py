@@ -4,13 +4,11 @@
 draw-solutions.py
 
 Usage:
-	draw-solutions.py (--width=<NUM>) (--height=<NUM>) (--xrange=<NUM>) (--yrange=<NUM>) (--in-path=<STRING>) (--out-path=<STRING>)
+	draw-solutions.py (--xrange=<NUM>) (--yrange=<NUM>) (--in-path=<STRING>) (--out-path=<STRING>)
 
 Options:
 	--in-path=<STRING>    The path to read points from.
 	--out-path=<STRING>   The path to save the image to.
-	--width=<NUM>         The image width .
-	--height=<NUM>        The image height.
 	--xrange=<NUM>        The maximum x value to include.
 	--yrange=<NUM>        The maximum y value to include.
 	-h, --help            Display the documentation.

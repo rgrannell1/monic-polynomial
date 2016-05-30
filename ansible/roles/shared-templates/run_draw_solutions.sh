@@ -19,7 +19,7 @@ mkdir -p "$folder_name/output/images"
 	--height={{ argset.height }}                    \
 	--xrange={{ argset.xrange }}                    \
 	--yrange={{ argset.yrange }}                    \
-	--in-path=$folder_name/json/{{ start_time }} \
-	--out-path=$folder_name/images/{{ start_time }} 2>&1 | tee "$folder_name/logs/draw-solutions.log"
+	--in-path=$folder_name/json/pixels.jsonl \
+	--out-path=$folder_name/images/image.png 2>&1 | tee "$folder_name/logs/draw-solutions.log"
 
 {% endfor %}
