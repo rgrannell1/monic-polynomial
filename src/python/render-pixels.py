@@ -177,6 +177,6 @@ if __name__ == '__main__':
 			'width':  int(arguments['--width']),
 			'height': int(arguments['--height'])
 		},
-		input_path  = arguments['--input-path'],
-		output_path = arguments['--output-path']
+		input_path  = arguments['--in-path'],
+		output_path = arguments['--out-path']
 	)
