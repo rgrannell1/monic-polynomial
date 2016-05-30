@@ -17,7 +17,7 @@ mkdir -p "$folder_name/output/images"
 {{ repo_path }}/src/python/draw-solutions.py \
 	--xrange={{ argset.xrange }}             \
 	--yrange={{ argset.yrange }}             \
-	--in-path=$folder_name/json/pixels.jsonl \
+	--in-path=$folder_name/output/json/pixels.jsonl \
 	--out-path=$folder_name/images/image.png 2>&1 | tee "$folder_name/logs/draw-solutions.log"
 
 {% endfor %}
