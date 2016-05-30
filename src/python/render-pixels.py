@@ -155,6 +155,7 @@ def buffered_write (data, data_buffer, output_path, force = False):
 def draw (dimensions, input_path, output_path):
 
 	with open(input_path) as fconn:
+		extrema = find_extrema(fconn)
 		save_pixels(fconn, extrema, dimensions, output_path)
 
 
