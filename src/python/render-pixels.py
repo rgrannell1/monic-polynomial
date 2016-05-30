@@ -126,28 +126,41 @@ def find_extrema (conn):
 
 	return extrema
 
-def save_pixels (conn, extrema, dimensions, img_pixels):
+def save_pixels (conn, extrema, dimensions, output_path):
 
 	for line in conn:
 
-		solution = json.loads(line)
+		data_buffer = [ ]
+		solution    = json.loads(line)
 
 		for point in solution['roots']:
 
 			x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
-			img_pixels[x, y] = colour
+			buffered_write((x, y, colour), data_buffer, output_path)
+
+		buffered_write((x, y, colour), data_buffer, output_path, force = True)
+
+def buffered_write (data, data_buffer, output_path, force = False):
+
+	if len(data_buffer) == constants["flush_threshold"] or force:
+
+		with open(output_path, "a") as fpath:
+			for old_datum in data_buffer:
+				fpath.write(json.dumps(old_datum) + '\n')
+
+		del data_buffer[:]
+
+	data_buffer.append(solution)
 
 def draw (dimensions, input_path, output_path):
 
 	with open(input_path) as fconn:
 
-		extrema    = find_extrema(fconn)
-		img        = Image.new('RGB', (dimensions["width"] + 1, dimensions["height"] + 1), constants['colours']['background'])
-		img_pixels = img.load( )
+		extrema = find_extrema(fconn)
 
 	with open(input_path) as fconn:
 
-		save_pixels(fconn, extrema, dimensions, img_pixels)
+		save_pixels(fconn, extrema, dimensions, output_path)
 
 		img.save(output_path)
 
@@ -164,6 +177,6 @@ if __name__ == '__main__':
 			'width':  int(arguments['--width']),
 			'height': int(arguments['--height'])
 		},
-		input_path:  arguments['--input-path'],
-		output_path: arguments['--output-path']
+		input_path  = arguments['--input-path'],
+		output_path = arguments['--output-path']
 	)
