@@ -4,7 +4,7 @@
 solve-polynomials.py
 
 Usage:
-	solve-polynomials.py (--order=<NUM>) (--range=<NUM>) (--out-path) [--assume-yes]
+	solve-polynomials.py (--order=<NUM>) (--range=<NUM>) (--out-path=<STRING>) [--assume-yes]
 
 Options:
 	-h, --help            Display the documentation.
