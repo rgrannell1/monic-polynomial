@@ -3,7 +3,6 @@
 folder_name="/root/tasks/{{ start_time }}"
 mkdir -p "$folder_name"
 
-rm "/root/tasks/current"
 ln -s "$(readlink -f $folder_name)" "/root/tasks/current"
 
 
