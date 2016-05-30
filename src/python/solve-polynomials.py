@@ -4,13 +4,14 @@
 solve-polynomials.py
 
 Usage:
-	solve-polynomials.py --order=<NUM> --range=<NUM> [--assume-yes]
+	solve-polynomials.py (--order=<NUM>) (--range=<NUM>) (--out-path) [--assume-yes]
 
 Options:
-	-h, --help       Display the documentation.
-	--order=<NUM>    The order of the polynomial to solve [default: 5].
-	--range=<NUM>    The maximum / minumum integer coefficient to use for each polynomial.
-	--assume-yes     Run this script without prompts.
+	-h, --help            Display the documentation.
+	--order=<NUM>         The order of the polynomial to solve [default: 5].
+	--range=<NUM>         The maximum / minumum integer coefficient to use for each polynomial.
+	--out-path=<STRING>   The path to save the image to.
+	--assume-yes          Run this script without prompts.
 
 """
 
@@ -37,9 +38,6 @@ constants = {
 
 	'flush_threshold': 10000,
 
-	'paths': {
-		'output': os.path.join(os.path.dirname(__file__), '../../output/json/polynomial-roots.jsonl'),
-	},
 	'escapes': {
 		'line_up':     '\x1b[A',
 		'line_delete': '\x1b[K'
@@ -100,7 +98,7 @@ def erase_lines (count):
 		sys.stderr.write(constants['escapes']['line_up'])
 		sys.stderr.write(constants['escapes']['line_delete'])
 
-def print_progress (iter, total_count, start):
+def print_progress (iter, total_count, output_path, start):
 
 	if iter % constants["print_frequency"] == 0:
 
@@ -111,7 +109,7 @@ def print_progress (iter, total_count, start):
 		estimated_per_hour = per_second * 60 * 60
 		minutes_remaining   = round((total_count - iter) / 60 * per_second)
 
-		file_gib           = get_file_size(constants['paths']['output']) / constants['units']['bytes_per_gibibyte']
+		file_gib           = get_file_size(output_path) / constants['units']['bytes_per_gibibyte']
 		estimated_file_gib = (file_gib / iter) * total_count
 
 		messages           = [
@@ -131,11 +129,11 @@ def print_progress (iter, total_count, start):
 		for message in messages:
 			sys.stderr.write(message + '\n')
 
-def write_solutions(solution, solution_buffer, force = False):
+def write_solutions(solution, solution_buffer, output_path, force = False):
 
 	if len(solution_buffer) == constants["flush_threshold"] or force:
 
-		with open(constants['paths']['output'], "a") as fpath:
+		with open(output_path, "a") as fpath:
 			for old_solution in solution_buffer:
 				fpath.write(json.dumps(old_solution) + '\n')
 
@@ -150,7 +148,7 @@ def solve_polynomial (point):
 		'roots':        [ [root.real, root.imag] for root in numpy.roots(point) ]
 	}
 
-def solve_polynomials (order, num_range, assume_yes):
+def solve_polynomials (order, num_range, output_path, assume_yes):
 
 
 	dimensions  = repeat_val(order, sequence(-num_range, num_range))
@@ -165,16 +163,16 @@ def solve_polynomials (order, num_range, assume_yes):
 	root_count  = counter( )
 	solution_buffer = [ ]
 
-	open(constants['paths']['output'], 'w').close()
+	open(output_path, 'w').close()
 
 	for point in space:
 
 		solution = solve_polynomial(point)
 
-		print_progress(next(root_count), total_count, start)
-		write_solutions(solution, solution_buffer)
+		print_progress(next(root_count), total_count, output_path, start)
+		write_solutions(solution, solution_buffer, output_path)
 
-	write_solutions(solution, solution_buffer, force = True)
+	write_solutions(solution, solution_buffer, output_path, force = True)
 
 
 
@@ -185,6 +183,8 @@ if __name__ == '__main__':
 	arguments = docopt(__doc__, version = '0.1')
 
 	solve_polynomials(
-		order      = int(arguments['--order']),
-		num_range  = int(arguments['--range']),
-		assume_yes = arguments['--assume-yes'] )
+		order       = int(arguments['--order']),
+		num_range   = int(arguments['--range']),
+		output_path = arguments['--output-path'],
+		assume_yes  = arguments['--assume-yes']
+	)

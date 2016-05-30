@@ -1,3 +1,11 @@
 ---
+- name: copy files
+  template: >
+    src={{item}}
+    dest=~/{{item}}
+  with_items:
+    - run_script.sh
+    - draw-solutions.sh
+
 - name:  draw equations (asyncronously)
-  shell: "screen -S 'draw-solutions' -d -m {{ repo_path }}/src/python/draw-solutions.py --width={{ args.draw.width }} --height={{ args.draw.height }} --xrange={{ args.draw.xrange }} --yrange={{ args.draw.yrange }}"
+  shell: bash draw-solutions.sh

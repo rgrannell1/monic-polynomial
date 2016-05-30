@@ -1,3 +1,11 @@
 ---
+- name: copy files
+  template: >
+    src={{item}}
+    dest=~/{{item}}
+  with_items:
+    -  run_script.sh
+    - solve-polynomials.sh
+
 - name: solve equations (asyncronously)
-  shell: "screen -S 'draw-solutions' -d -m {{ repo_path }}/src/python/solve-polynomials.py --order={{ args.solve.order }} --range={{ args.solve.range }} --assume-yes"
+  shell: bash solve-polynomials.sh

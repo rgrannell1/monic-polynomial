@@ -4,14 +4,16 @@
 draw-solutions.py
 
 Usage:
-	draw-solutions.py (--width=<NUM>) (--height=<NUM>) (--xrange=<NUM>) (--yrange=<NUM>)
+	draw-solutions.py (--width=<NUM>) (--height=<NUM>) (--xrange=<NUM>) (--yrange=<NUM>) (--in-path=<STRING>) (--out-path=<STRING>)
 
 Options:
-	--width=<NUM>      The image width .
-	--height=<NUM>     The image height.
-	--xrange=<NUM>     The maximum x value to include.
-	--yrange=<NUM>     The maximum y value to include.
-	-h, --help         Display the documentation.
+	--in-path=<STRING>    The path to read points from.
+	--out-path=<STRING>   The path to save the image to.
+	--width=<NUM>         The image width .
+	--height=<NUM>        The image height.
+	--xrange=<NUM>        The maximum x value to include.
+	--yrange=<NUM>        The maximum y value to include.
+	-h, --help            Display the documentation.
 """
 
 import os
@@ -33,10 +35,8 @@ constants = {
 	'print_frequency': 10000,
 	'flush_threshold': 100000,
 
-	'paths': {
-		'input':  os.path.join(os.path.dirname(__file__), '../../output/json/polynomial-roots.jsonl'),
-		'output': os.path.join(os.path.dirname(__file__), '../../output/images/' + str( int(time.time( )) ) + '-image.png' )
-	},
+	'project_root': os.path.realpath(os.path.join(os.path.dirname(__file__), '../../')),
+
 	'colours': {
 		'background': 'black',
 		# lazy. fix this.
@@ -82,10 +82,6 @@ def pixelise (coefficients, point, extrema, dimensions):
 		math.floor(percentage[1] * dimensions['height']),
 		constants['colours']['points'][index]
 	]
-
-
-
-
 
 def find_extrema (ranges, conn):
 
@@ -137,7 +133,7 @@ def find_extrema (ranges, conn):
 
 	return extrema
 
-def draw_pixels (conn, extrema, dimensions, ranges, img_pixels):
+def draw_saved_solutions (conn, extrema, dimensions, ranges, img_pixels):
 
 	for line in conn:
 
@@ -153,23 +149,19 @@ def draw_pixels (conn, extrema, dimensions, ranges, img_pixels):
 				x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
 				img_pixels[x, y] = colour
 
+def draw (dimensions, ranges, input_path, output_path):
 
-
-
-
-def draw_solutions (dimensions, ranges):
-
-	with open(constants['paths']['input']) as fconn:
+	with open(input_path) as fconn:
 
 		extrema    = find_extrema(ranges, fconn)
 		img        = Image.new('RGB', (dimensions["width"] + 1, dimensions["height"] + 1), constants['colours']['background'])
 		img_pixels = img.load( )
 
-	with open(constants['paths']['input']) as fconn:
+	with open(input_path) as fconn:
 
-		draw_pixels(fconn, extrema, dimensions, ranges, img_pixels)
+		draw_saved_solutions(fconn, extrema, dimensions, ranges, img_pixels)
 
-		img.save(constants['paths']['output'])
+		img.save(output_path)
 
 
 
@@ -179,7 +171,7 @@ if __name__ == '__main__':
 
 	arguments = docopt(__doc__, version = '0.1')
 
-	draw_solutions(
+	draw(
 		dimensions = {
 			'width':  int(arguments['--width']),
 			'height': int(arguments['--height'])
@@ -188,4 +180,6 @@ if __name__ == '__main__':
 			'x': int(arguments['--xrange']),
 			'y': int(arguments['--yrange'])
 		}
+		input_path:  arguments['--input-path'],
+		output_path: arguments['--output-path']
 	)
