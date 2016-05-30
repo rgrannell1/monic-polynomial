@@ -31,7 +31,7 @@ from PIL    import Image
 
 constants = {
 	'print_frequency': 10000,
-	'flush_threshold': 100000,
+	'flush_threshold': 100,
 
 	'project_root': os.path.realpath(os.path.join(os.path.dirname(__file__), '../../')),
 
