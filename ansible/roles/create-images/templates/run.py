@@ -11,7 +11,9 @@ from sh import rm
 
 
 
-task_folder = '/root/tasks/{{start_time}}'
+
+task_folder   = '/root/tasks/{{start_time}}'
+argument_path = os.path.join(task_folder, 'jobs', '{{argument_script}}')
 
 constants = {
 	'here': os.path.dirname(os.path.abspath(__file__)),
