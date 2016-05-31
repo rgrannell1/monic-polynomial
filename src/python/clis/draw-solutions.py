@@ -94,7 +94,7 @@ def draw (ranges, dimensions, input_path, output_path):
 
 	with open(input_path) as fconn:
 
-		draw_saved_solutions(fconn, ranges, image_sizem img_pixels)
+		draw_saved_solutions(fconn, ranges, image_size, img_pixels)
 
 		img.save(output_path)
 
