@@ -79,11 +79,11 @@ def draw (ranges, dimensions, input_path, output_path):
 
 			x, y, colour = json.loads(line)
 
-		if x > image_size['x']:
-			image_size['x'] = x
+			if x > image_size['x']:
+				image_size['x'] = x
 
-		if y > image_size['y']:
-			image_size['y'] = y
+			if y > image_size['y']:
+				image_size['y'] = y
 
 	with open(input_path) as fconn:
 
@@ -95,6 +95,7 @@ def draw (ranges, dimensions, input_path, output_path):
 	with open(input_path) as fconn:
 
 		draw_saved_solutions(fconn, ranges, image_size, img_pixels)
+
 		img.save(output_path)
 
 
