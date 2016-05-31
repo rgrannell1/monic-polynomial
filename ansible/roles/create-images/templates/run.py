@@ -2,6 +2,7 @@
 
 import os
 from sh import solve_polynomials
+from sh import render_pixels
 from sh import mkdir
 from sh import ln
 from sh import rm
