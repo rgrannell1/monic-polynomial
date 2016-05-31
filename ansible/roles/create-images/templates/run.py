@@ -57,7 +57,7 @@ for path in constants['required_folders']:
 
 
 
-argument_output = exec(argument_path).read( )
+argument_output = exec(open(argument_path).read( ))
 
 print( argument_output )
 
