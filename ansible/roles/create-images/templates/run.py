@@ -99,8 +99,7 @@ for argument_set in arguments_json:
 		xrange     = argument_set['render_pixels']['xrange'],
 		yrange     = argument_set['render_pixels']['yrange'],
 		width      = argument_set['render_pixels']['width'],
-#		out_path   = constants['paths']['image']
-		out_path   = 'test-image'
+		out_path   = constants['paths']['image']
 	)
 
 cp(

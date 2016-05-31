@@ -61,6 +61,9 @@ def draw_saved_solutions (conn, ranges, image_size, img_pixels):
 		y_in_range = x > 0 and y < image_size['y']
 
 		if x_in_range and y_in_range:
+
+			print([x, y, colour])
+
 			img_pixels[x, y] = (colour[0], colour[1], colour[2])
 
 
