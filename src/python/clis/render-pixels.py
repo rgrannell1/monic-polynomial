@@ -146,6 +146,8 @@ def buffered_write (data, data_buffer, force = False):
 			print(json.dumps(old_datum))
 		del data_buffer[:]
 
+	data_buffer.append(data)
+
 def draw (dimensions, input_path):
 
 	with open(input_path) as fconn:
