@@ -27,13 +27,13 @@ constants = {
 
 }
 
-constants['paths']['current_link'] = os.path.join(constants['here'], '/root/tasks/current'),
+constants['paths']['current_link'] = os.path.join(constants['here'], '/root/tasks/current')
 
 constants['paths']['solution'] = os.path.join(
-	constants['paths']['current_link'], 'output/json/solutions.jsonl'),
+	constants['paths']['current_link'], 'output/json/solutions.jsonl')
 
 constants['paths']['pixels']   = os.path.join(
-	constants['paths']['current_link'], 'output/json/pixels.jsonl'),
+	constants['paths']['current_link'], 'output/json/pixels.jsonl')
 
 constants['paths']['image']    = os.path.join(
 	constants['paths']['current_link'], 'output/images/images.png')
