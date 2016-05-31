@@ -4,6 +4,7 @@ import os
 from sh import solve_polynomials
 from sh import render_pixels
 from sh import draw_solutions
+from sh import python3
 from sh import mkdir
 from sh import ln
 from sh import rm
@@ -57,26 +58,33 @@ for path in constants['required_folders']:
 
 
 
+argument_output = python3(argument_path)
 
-solve_polynomials(
-	order      = 5,
-	range      = 5,
-	assume_yes = True,
-	_out       = constants['paths']['solution']
-)
 
-render_pixels(
-	in_path    = constants['paths']['solution'],
-	height     = 2000,
-	width      = 2000,
-	_out       = constants['paths']['pixels'],
-)
 
-draw_solutions(
-	in_path    = constants['paths']['pixels'],
-	xrange     = 2000,
-	yrange     = 2000,
-	height     = 2000,
-	width      = 2000,
-	out_path   = constants['paths']['image']
-)
+
+
+for argument_set in arguments:
+
+	solve_polynomials(
+		order      = argument_set['solve_polynomial']['order'],
+		range      = argument_set['solve_polynomial']['range'],
+		assume_yes = True,
+		_out       = constants['paths']['solution']
+	)
+
+	render_pixels(
+		in_path    = constants['paths']['solution'],
+		height     = argument_set['render_pixels']['height'],
+		width      = argument_set['render_pixels']['width'],
+		_out       = constants['paths']['pixels'],
+	)
+
+	draw_solutions(
+		in_path    = constants['paths']['pixels'],
+		xrange     = argument_set['render_pixels']['xrange'],
+		yrange     = argument_set['render_pixels']['yrange'],
+		height     = argument_set['render_pixels']['height'],
+		width      = argument_set['render_pixels']['width'],
+		out_path   = constants['paths']['image']
+	)
