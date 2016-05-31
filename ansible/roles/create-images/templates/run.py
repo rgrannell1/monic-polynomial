@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
 import os
+import json
+
+import subprocess
 from sh import solve_polynomials
 from sh import render_pixels
 from sh import draw_solutions
@@ -13,7 +16,7 @@ from sh import rm
 
 
 task_folder   = '/root/tasks/{{start_time}}'
-argument_path = os.path.join(task_folder, 'jobs', '{{argument_script}}')
+argument_path = os.path.join(task_folder, 'repo', 'arguments', '{{argument_script}}')
 
 constants = {
 	'here': os.path.dirname(os.path.abspath(__file__)),
@@ -57,14 +60,18 @@ for path in constants['required_folders']:
 
 
 
-argument_output = exec(open(argument_path).read( ))
+argument_output = subprocess.check_output([argument_path])
 
-print( argument_output )
+try:
+	arguments_json = json.loads(argument_output)
+except Exception as err:
+	print(err)
 
 
 
 
-for argument_set in arguments:
+
+for argument_set in arguments_json:
 
 	solve_polynomials(
 		order      = argument_set['solve_polynomial']['order'],
