@@ -127,7 +127,7 @@ def write_solutions(solution, solution_buffer, force = False):
 
 	if len(solution_buffer) == constants["flush_threshold"] or force:
 		for old_solution in solution_buffer:
-			fpath.write(json.dumps(old_solution))
+			print(json.dumps(old_solution))
 
 		del solution_buffer[:]
 
