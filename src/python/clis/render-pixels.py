@@ -141,12 +141,14 @@ def save_pixels (conn, extrema, dimensions):
 
 def buffered_write (data, data_buffer, force = False):
 
-	if len(data_buffer) == constants["flush_threshold"] or force:
-		for old_datum in data_buffer:
-			print(json.dumps(old_datum))
-		del data_buffer[:]
+	print(json.dumps(data))
 
-	data_buffer.append(data)
+#	if len(data_buffer) == constants["flush_threshold"] or force:
+#		for old_datum in data_buffer:
+#			print(json.dumps(old_datum))
+#		del data_buffer[:]
+#
+#	data_buffer.append(data)
 
 def draw (dimensions, input_path):
 
