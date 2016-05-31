@@ -22,5 +22,5 @@ run:
 
 fetch-images:
 
-	mkdir -p ./polynomial-output
-	scp -r root@$(ip_address):tasks/current/output/images ./polynomial-output
+	mkdir -p ~/polynomial-output
+	scp -r root@$(ip_address):tasks/current/output/images ~/polynomial-output

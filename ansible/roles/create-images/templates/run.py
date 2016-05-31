@@ -37,6 +37,11 @@ os.symlink(task_folder, symlink_path)
 for path in constants['required_folders']:
 	mkdir(path, '--parent')
 
+
+
+
+
+
 solve_polynomials(
 	order      = 5,
 	range      = 5,

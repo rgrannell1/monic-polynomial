@@ -29,7 +29,7 @@ inventory = {
 				],
 				'solve': [
 					{
-						'range': 7,
+						'range': 12,
 						'order': 5
 					}
 				]
