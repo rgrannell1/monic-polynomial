@@ -1,5 +1,5 @@
 ---
-- name: system dependencies
+- name: install system dependencies.
   become:        yes
   become_method: sudo
   apt: >
@@ -12,7 +12,7 @@
     - python3-pil
     - screen
 
-- name: pip packages
+- name: download pip packages.
   become:        yes
   become_method: sudo
   pip: >
@@ -24,13 +24,13 @@
     - docopt
     - prompter
 
-- name: download github package
+- name: download polynomial from github package.
   become: no
   git: >
     repo="https://github.com/rgrannell1/polynomial.git"
     dest="tasks/{{start_time}}/repo"
 
-- name: copy python files to /bin
+- name: copy python files to /bin.
   command: >
     cp tasks/{{start_time}}/repo/src/python/clis/{{ item }}.py /bin/{{item}}
   with_items:
@@ -38,7 +38,7 @@
     - draw-solutions
     - solve-polynomials
 
-- name: create an output directory
+- name: create build directories.
   file: >
     path={{ item }}
     state=directory
@@ -49,9 +49,9 @@
     - '{{ repo_path }}/output/json'
     - '{{ repo_path }}/output/images'
 
-- name: copy arguments
+- name: copy argument specifying which roots to generate / draw.
   template: >
     src=jobs/{{item}}
-    dest='{{ repo_path }}/arguments'
+    dest='{{ repo_path }}/jobs'
   with_items:
     - arguments.py

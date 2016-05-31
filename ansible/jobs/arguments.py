@@ -15,18 +15,19 @@ arguments = [
 	{
 		'solve_polynomial': {
 			'order':      5,
-			'range':      15,
-			'assume_yes': True
+			'range':      15
 		},
 		'render_pixels': {
-			'height': 2000,
-			'width':  2000
+			'xrange': 5,
+			'yrange': 5,
+			'height': 10000,
+			'width':  10000
 		},
 		'draw_solutions': {
-			'xrange': 2000,
-			'yrange': 2000,
-			'height': 2000,
-			'width':  2000
+			'xrange': 5,
+			'yrange': 5,
+			'height': 10000,
+			'width':  10000
 		}
 	}
 

@@ -16,7 +16,7 @@ from sh import rm
 
 
 task_folder   = '/root/tasks/{{start_time}}'
-argument_path = os.path.join(task_folder, 'repo', 'arguments', '{{argument_script}}')
+argument_path = os.path.join(task_folder, 'repo', 'jobs', '{{argument_script}}')
 
 constants = {
 	'here': os.path.dirname(os.path.abspath(__file__)),
@@ -41,7 +41,7 @@ constants['paths']['pixels']   = os.path.join(
 	constants['paths']['current_link'], 'output/json/pixels.jsonl')
 
 constants['paths']['image']    = os.path.join(
-	constants['paths']['current_link'], 'output/images/images.png')
+	constants['paths']['current_link'], 'output/images/{{start_time}}.png')
 
 
 
