@@ -15,7 +15,7 @@ arguments = [
 	{
 		'solve_polynomial': {
 			'order':      5,
-			'range':      10
+			'range':      5
 		},
 		'render_pixels': {
 			'xrange': 2,
