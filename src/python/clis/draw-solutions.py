@@ -71,7 +71,7 @@ def draw (ranges, dimensions, input_path, output_path):
 
 	with open(input_path) as fconn:
 
-		for line in conn:
+		for line in fconn:
 
 			x, y, colour = json.loads(line)
 
