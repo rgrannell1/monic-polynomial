@@ -38,7 +38,7 @@ for path in constants['required_folders']:
 
 solve_polynomials(
 	order      = 5,
-	range      = 10,
+	range      = 4,
 	assume_yes = True,
 	_out       = os.path.join(symlink_path, 'output/json/solutions.jsonl')
 )
