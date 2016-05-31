@@ -160,7 +160,8 @@ def solve_polynomials (order, num_range, assume_yes):
 		solution = solve_polynomial(point)
 
 		print_progress(next(root_count), total_count, start)
-		write_solutions(solution, solution_buffer,
+		write_solutions(solution, solution_buffer)
+
 	write_solutions(solution, solution_buffer, force = True)
 
 
