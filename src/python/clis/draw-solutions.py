@@ -50,7 +50,7 @@ constants = {
 
 
 
-def draw_saved_solutions (conn, ranges, img_pixels):
+def draw_saved_solutions (conn, ranges, image_size, img_pixels):
 
 	for line in conn:
 
@@ -59,8 +59,22 @@ def draw_saved_solutions (conn, ranges, img_pixels):
 		x_in_range = x >= -ranges['x'] and x <= ranges['x']
 		y_in_range = y >= -ranges['y'] and y <= ranges['y']
 
-		if x_in_range and y_in_range:
-			img_pixels[x, y] = tuple(colour)
+		try:
+
+			if x_in_range and y_in_range:
+				img_pixels[x, y] = tuple(colour)
+
+		except Exception as err:
+
+			print( json.dumps({
+				'x': x,
+				'y': y,
+				'image_size': image_size
+			}) )
+
+
+
+
 
 def draw (ranges, dimensions, input_path, output_path):
 
@@ -83,12 +97,14 @@ def draw (ranges, dimensions, input_path, output_path):
 
 	with open(input_path) as fconn:
 
-		img        = Image.new('RGB', (image_size['x'] + 10, image_size['y'] + 10), constants['colours']['background'])
+		image_dimensions = (image_size['x'], image_size['y'])
+
+		img        = Image.new('RGB', (image_dimensions, constants['colours']['background'])
 		img_pixels = img.load( )
 
 	with open(input_path) as fconn:
 
-		draw_saved_solutions(fconn, ranges, img_pixels)
+		draw_saved_solutions(fconn, ranges, image_sizem img_pixels)
 
 		img.save(output_path)
 
