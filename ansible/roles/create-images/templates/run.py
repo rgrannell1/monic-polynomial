@@ -60,10 +60,10 @@ for path in constants['required_folders']:
 
 
 
-argument_output = subprocess.check_output([argument_path])
+argument_output = subprocess.check_output(['python3', argument_path])
 
 try:
-	arguments_json = json.loads(argument_output)
+	arguments_json = json.loads(argument_output.decode("utf-8"))
 except Exception as err:
 	print(err)
 
