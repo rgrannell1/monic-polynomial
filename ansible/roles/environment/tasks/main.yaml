@@ -51,7 +51,7 @@
 
 - name: copy arguments
   template: >
-    src={{item}}
+    src=jobs/{{item}}
     dest='{{ repo_path }}/arguments'
   with_items:
     - arguments.py
