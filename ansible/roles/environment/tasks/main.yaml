@@ -45,5 +45,13 @@
     mode=0755
   with_items:
     - '{{ repo_path }}/output'
+    - '{{ repo_path }}/arguments'
     - '{{ repo_path }}/output/json'
     - '{{ repo_path }}/output/images'
+
+- name: copy arguments
+  template: >
+    src={{item}}
+    dest='{{ repo_path }}/arguments'
+  with_items:
+    - arguments.py

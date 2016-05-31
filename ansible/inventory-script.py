@@ -16,24 +16,9 @@ inventory = {
 	'target_vm': {
 		'hosts': ['target_vm'],
 		'vars': {
-			'start_time':   int(time.time( )),
-			'ansible_host': ip_address,
-			'args': {
-				'draw': [
-					{
-						'width':  2000,
-						'height': 2000,
-						'xrange': 10,
-						'yrange': 10
-					}
-				],
-				'solve': [
-					{
-						'range': 12,
-						'order': 5
-					}
-				]
-			}
+			'start_time':      int(time.time( )),
+			'ansible_host':    ip_address,
+			'argument_script': 'arguments.py'
 		}
 	}
 }

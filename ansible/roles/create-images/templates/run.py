@@ -20,19 +20,33 @@ constants = {
 		task_folder + '/logs',
 		task_folder + '/output/json',
 		task_folder + '/output/images'
-	]
+	],
+	'paths': {
+
+	}
+
 }
 
+constants['paths']['current_link'] = os.path.join(constants['here'], '/root/tasks/current'),
+
+constants['paths']['solution'] = os.path.join(
+	constants['paths']['current_link'], 'output/json/solutions.jsonl'),
+
+constants['paths']['pixels']   = os.path.join(
+	constants['paths']['current_link'], 'output/json/pixels.jsonl'),
+
+constants['paths']['image']    = os.path.join(
+	constants['paths']['current_link'], 'output/images/images.png')
 
 
 
 
-symlink_path = os.path.join(constants['here'], '/root/tasks/current')
 
-if os.path.islink(symlink_path):
-	rm(symlink_path)
 
-os.symlink(task_folder, symlink_path)
+if os.path.islink(constants['paths']['current_link']):
+	rm(constants['paths']['current_link'])
+
+os.symlink(task_folder, constants['paths']['current_link'])
 
 for path in constants['required_folders']:
 	mkdir(path, '--parent')
@@ -46,21 +60,21 @@ solve_polynomials(
 	order      = 5,
 	range      = 5,
 	assume_yes = True,
-	_out       = os.path.join(symlink_path, 'output/json/solutions.jsonl')
+	_out       = constants['paths']['solution_path']
 )
 
 render_pixels(
-	in_path    = os.path.join(symlink_path, 'output/json/solutions.jsonl'),
+	in_path    = constants['paths']['solution_path'],
 	height     = 2000,
 	width      = 2000,
-	_out       = os.path.join(symlink_path, 'output/json/pixels.jsonl'),
+	_out       = constants['paths']['pixels_path'],
 )
 
 draw_solutions(
-	in_path    = os.path.join(symlink_path, 'output/json/pixels.jsonl'),
+	in_path    = constants['paths']['pixels_path'],
 	xrange     = 2000,
 	yrange     = 2000,
 	height     = 2000,
 	width      = 2000,
-	out_path   = os.path.join(symlink_path, 'output/images/images.png')
+	out_path   = constants['paths']['image_path']
 )
