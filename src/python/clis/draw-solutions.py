@@ -58,7 +58,7 @@ def draw_saved_solutions (conn, ranges, img_pixels):
 		x, y, colour = json.loads(line)
 		img_pixels[x, y] = colour
 
-def draw (ranges, input_path, output_path):
+def draw (ranges, dimensions, input_path, output_path):
 
 	with open(input_path) as fconn:
 
