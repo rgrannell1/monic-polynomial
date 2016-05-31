@@ -38,14 +38,21 @@ for path in constants['required_folders']:
 
 solve_polynomials(
 	order      = 5,
-	range      = 4,
+	range      = ,
 	assume_yes = True,
 	_out       = os.path.join(symlink_path, 'output/json/solutions.jsonl')
 )
 
 render_pixels(
 	in_path    = os.path.join(symlink_path, 'output/json/solutions.jsonl'),
-	_out       = os.path.join(symlink_path, 'output/json/pixels.jsonl'),
 	height     = 2000,
 	width      = 2000,
+	_out       = os.path.join(symlink_path, 'output/json/pixels.jsonl'),
+)
+
+draw_pixels(
+	in_path    = os.path.join(symlink_path, 'output/json/solutions.jsonl'),
+	xrange     = 2000,
+	yrange     = 2000,
+	_out       = os.path.join(symlink_path, 'output/json/pixels.jsonl')
 )
