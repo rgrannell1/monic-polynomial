@@ -56,22 +56,12 @@ def draw_saved_solutions (conn, ranges, image_size, img_pixels):
 
 		x, y, colour = json.loads(line)
 
-		x_in_range = x >= -ranges['x'] and x <= ranges['x']
-		y_in_range = y >= -ranges['y'] and y <= ranges['y']
+		# remove.
+		x_in_range = x < image_size['x']
+		y_in_range = y < image_size['y']
 
-		try:
-
-			if x_in_range and y_in_range:
-				img_pixels[x, y] = tuple(colour)
-
-		except Exception as err:
-
-			print( json.dumps({
-				'x': x,
-				'y': y,
-				'image_size': image_size
-			}) )
-
+		if x_in_range and y_in_range:
+			img_pixels[x, y] = tuple(colour)
 
 
 
