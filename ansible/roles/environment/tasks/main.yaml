@@ -32,7 +32,7 @@
 
 - name: copy python files to /bin
   command: >
-    cp tasks/{{start_time}}/repo/src/python/cli/{{ item }}.py /bin/{{item}}
+    cp tasks/{{start_time}}/repo/src/python/clis/{{ item }}.py /bin/{{item}}
   with_items:
     - render-pixels
     - draw-solutions

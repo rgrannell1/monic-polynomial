@@ -36,15 +36,15 @@ for path in constants['required_folders']:
 	mkdir(path, '--parent')
 
 solve_polynomials(
-	out_path   = os.path.join(task_folder, 'output/json/solutions.jsonl'),
+	out_path   = os.path.join(symlink_path, 'output/json/solutions.jsonl'),
 	order      = 5,
 	range      = 10,
 	assume_yes = True
 )
 
 render_pixels(
-	in_path    = os.path.join(task_folder, 'output/json/solutions.jsonl'),
-	out_path   = os.path.join(task_folder, 'output/json/pixels.jsonl'),
+	in_path    = os.path.join(symlink_path, 'output/json/solutions.jsonl'),
+	out_path   = os.path.join(symlink_path, 'output/json/pixels.jsonl'),
 	height     = 2000,
 	width      = 2000,
 )
