@@ -55,5 +55,5 @@ draw_solutions(
 	in_path    = os.path.join(symlink_path, 'output/json/pixels.jsonl'),
 	xrange     = 2000,
 	yrange     = 2000,
-	_out       = os.path.join(symlink_path, 'output/images/images.png')
+	out_path   = os.path.join(symlink_path, 'output/images/images.png')
 )
