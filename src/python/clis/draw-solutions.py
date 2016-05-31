@@ -4,13 +4,15 @@
 draw-solutions.py
 
 Usage:
-	draw-solutions.py (--xrange=<NUM>) (--yrange=<NUM>) (--in-path=<STRING>) (--out-path=<STRING>)
+	draw-solutions.py (--xrange=<NUM>) (--yrange=<NUM>) (--width=<NUM>) (--height=<NUM>) (--in-path=<STRING>) (--out-path=<STRING>)
 
 Options:
 	--in-path=<STRING>    The path to read points from.
 	--out-path=<STRING>   The path to save the image to.
 	--xrange=<NUM>        The maximum x value to include.
 	--yrange=<NUM>        The maximum y value to include.
+	--width=<NUM>         The width.
+	--height=<NUM>        The height.
 	-h, --help            Display the documentation.
 """
 
@@ -49,7 +51,7 @@ constants = {
 
 
 
-def draw_saved_solutions (conn, img_pixels):
+def draw_saved_solutions (conn, ranges, img_pixels):
 
 	for line in conn:
 
@@ -81,6 +83,10 @@ if __name__ == '__main__':
 		ranges = {
 			'x': int(arguments['--xrange']),
 			'y': int(arguments['--yrange'])
+		},
+		dimensions = {
+			'width':  int(arguments['--width']),
+			'height': int(arguments['--height'])
 		},
 		input_path  = arguments['--in-path'],
 		output_path = arguments['--out-path']
