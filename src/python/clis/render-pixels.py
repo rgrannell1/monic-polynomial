@@ -125,36 +125,37 @@ def find_extrema (conn):
 
 	return extrema
 
-def save_pixels (conn, extrema, dimensions):
+def save_pixels (input_path, extrema, dimensions):
 
-	for line in conn:
+	with open(input_path) as fconn:
 
-		data_buffer = [ ]
-		solution    = json.loads(line)
+		for line in fconn:
 
-		for point in solution['roots']:
+			data_buffer = [ ]
+			solution    = json.loads(line)
 
-			x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
-			buffered_write((x, y, colour), data_buffer)
+			for point in solution['roots']:
 
-		buffered_write((x, y, colour), data_buffer, force = True)
+				x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
+				buffered_write((x, y, colour), data_buffer)
+
+			buffered_write((x, y, colour), data_buffer, force = True)
 
 def buffered_write (data, data_buffer, force = False):
 
-	print(json.dumps(data))
+	if len(data_buffer) == constants["flush_threshold"] or force:
+		for old_datum in data_buffer:
+			print(json.dumps(old_datum))
+		del data_buffer[:]
 
-#	if len(data_buffer) == constants["flush_threshold"] or force:
-#		for old_datum in data_buffer:
-#			print(json.dumps(old_datum))
-#		del data_buffer[:]
-#
-#	data_buffer.append(data)
+	data_buffer.append(data)
 
 def draw (dimensions, input_path):
 
 	with open(input_path) as fconn:
 		extrema = find_extrema(fconn)
-		save_pixels(fconn, extrema, dimensions)
+
+	save_pixels(input_path, extrema, dimensions)
 
 
 
