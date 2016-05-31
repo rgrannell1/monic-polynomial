@@ -4,7 +4,6 @@ import os
 from sh import solve_polynomials
 from sh import render_pixels
 from sh import draw_solutions
-from sh import python3
 from sh import mkdir
 from sh import ln
 from sh import rm
@@ -58,8 +57,9 @@ for path in constants['required_folders']:
 
 
 
-argument_output = python3(argument_path)
+argument_output = exec(argument_path).read( )
 
+print( argument_output )
 
 
 
