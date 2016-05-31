@@ -136,7 +136,7 @@ def find_extrema (conn, ranges):
 
 	return extrema
 
-def save_pixels (input_path, extrema, dimensions):
+def save_pixels (input_path, extrema, ranges, dimensions):
 
 	with open(input_path) as fconn:
 
@@ -172,7 +172,7 @@ def draw (dimensions, ranges, input_path):
 	with open(input_path) as fconn:
 		extrema = find_extrema(fconn, ranges)
 
-	save_pixels(input_path, extrema, dimensions)
+	save_pixels(input_path, extrema, ranges, dimensions)
 
 
 

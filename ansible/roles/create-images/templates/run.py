@@ -88,6 +88,8 @@ for argument_set in arguments_json:
 
 	render_pixels(
 		in_path    = constants['paths']['solution'],
+		xrange     = argument_set['render_pixels']['xrange'],
+		yrange     = argument_set['render_pixels']['yrange'],
 		width      = argument_set['render_pixels']['width'],
 		_out       = constants['paths']['pixels'],
 	)
