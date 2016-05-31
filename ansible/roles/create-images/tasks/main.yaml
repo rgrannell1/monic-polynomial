@@ -11,9 +11,6 @@
 - name: copy role files
   template: >
     src={{item}}
-    dest=~/{{item}}
+    dest=/root/{{item}}
   with_items:
-    - run_everything.sh
-
-#- name:  run all (asyncronously)
-#  shell: bash run_everything.sh
+    - run.py

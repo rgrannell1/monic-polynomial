@@ -7,7 +7,6 @@
 #    state=present
 #    update_cache=yes
 #  with_items:
-#    - cowsay
 #    - git
 #    - python3-pip
 #    - python3-pil
@@ -21,14 +20,23 @@
 #    executable='/usr/bin/pip3'
 #  with_items:
 #    - numpy
+#    - sh
 #    - docopt
 #    - prompter
 
-- name: github package
+- name: download github package
   become: no
   git: >
     repo="https://github.com/rgrannell1/polynomial.git"
     dest="tasks/{{start_time}}/repo"
+
+- name: copy python files to /bin
+  command: >
+    cp tasks/{{start_time}}/repo/src/python/cli/{{ item }}.py /bin/{{item}}
+  with_items:
+    - render-pixels
+    - draw-solutions
+    - solve-polynomials
 
 - name: create an output directory
   file: >
