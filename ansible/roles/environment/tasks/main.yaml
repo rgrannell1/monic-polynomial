@@ -45,13 +45,19 @@
     mode=0755
   with_items:
     - '{{ repo_path }}/output'
-    - '{{ repo_path }}/arguments'
+    - '{{ task_path }}/jobs'
     - '{{ repo_path }}/output/json'
     - '{{ repo_path }}/output/images'
 
 - name: copy argument specifying which roots to generate / draw.
   template: >
     src=jobs/{{item}}
-    dest='{{ repo_path }}/jobs'
+    dest='{{ task_path }}/jobs'
   with_items:
     - arguments.py
+
+- name: symlink
+  file: >
+    src={{task_path}}
+    dest=/root/tasks/current
+    state=link

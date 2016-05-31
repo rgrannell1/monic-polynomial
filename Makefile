@@ -3,7 +3,7 @@ ip_address=`cat ./security/ip_address`
 inventory_script_path = ansible/inventory-script.py
 
 create-vm:
-	bash provision/provision-vm.sh
+	bash provision/new-vm.sh
 
 environment:
 	ansible-playbook -i $(inventory_script_path) ansible/setup-environment.yaml

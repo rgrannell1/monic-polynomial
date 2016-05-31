@@ -4,12 +4,13 @@
 render-pixels.py
 
 Usage:
-	render-pixels.py (--width=<NUM>) (--height=<NUM>) (--in-path=<STRING>)
+	render-pixels.py (--width=<NUM>) (--xrange=<NUM>) (--yrange=<NUM>) (--in-path=<STRING>)
 
 Options:
 	--in-path=<STRING>    The path to read points from.
 	--width=<NUM>         The image width .
-	--height=<NUM>        The image height.
+	--xrange=<NUM>        The image width .
+	--yrange=<NUM>        The image height.
 	-h, --help            Display the documentation.
 """
 
@@ -74,13 +75,18 @@ def pixelise (coefficients, point, extrema, dimensions):
 		math.floor(percentage[2] * len(constants['colours']['points'])),
 		len(constants['colours']['points']) - 1)
 
+	x_diff = extrema['x']['max'] - extrema['x']['min']
+	y_diff = extrema['y']['max'] - extrema['y']['min']
+
+	height = (y_diff / x_diff) * dimensions['width']
+
 	return [
 		math.floor(percentage[0] * dimensions['width']),
-		math.floor(percentage[1] * dimensions['height']),
+		math.floor(percentage[1] * height),
 		constants['colours']['points'][index]
 	]
 
-def find_extrema (conn):
+def find_extrema (conn, ranges):
 
 	extrema = {
 		'x': {
@@ -103,25 +109,30 @@ def find_extrema (conn):
 
 		for x, y in solution['roots']:
 
-			coefficient_product = product(solution['coefficients'])
+			x_in_range = x >= -ranges['x'] and x <= ranges['x']
+			y_in_range = y >= -ranges['y'] and y <= ranges['y']
 
-			if x > extrema['x']['max']:
-				extrema['x']['max'] = x
+			if x_in_range and y_in_range:
 
-			if x < extrema['x']['min']:
-				extrema['x']['min'] = x
+				coefficient_product = product(solution['coefficients'])
 
-			if y > extrema['y']['max']:
-				extrema['y']['max'] = y
+				if x > extrema['x']['max']:
+					extrema['x']['max'] = x
 
-			if y < extrema['y']['min']:
-				extrema['y']['min'] = y
+				if x < extrema['x']['min']:
+					extrema['x']['min'] = x
 
-			if coefficient_product > extrema['coefficient_product']['max']:
-				extrema['coefficient_product']['max'] = coefficient_product
+				if y > extrema['y']['max']:
+					extrema['y']['max'] = y
 
-			if coefficient_product < extrema['coefficient_product']['min']:
-				extrema['coefficient_product']['min'] = coefficient_product
+				if y < extrema['y']['min']:
+					extrema['y']['min'] = y
+
+				if coefficient_product > extrema['coefficient_product']['max']:
+					extrema['coefficient_product']['max'] = coefficient_product
+
+				if coefficient_product < extrema['coefficient_product']['min']:
+					extrema['coefficient_product']['min'] = coefficient_product
 
 	return extrema
 
@@ -137,7 +148,13 @@ def save_pixels (input_path, extrema, dimensions):
 			for point in solution['roots']:
 
 				x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
-				buffered_write((x, y, colour), data_buffer)
+
+				x_in_range = x >= -ranges['x'] and x <= ranges['x']
+				y_in_range = y >= -ranges['y'] and y <= ranges['y']
+
+				if x_in_range and y_in_range:
+
+					buffered_write((x, y, colour), data_buffer)
 
 			buffered_write((x, y, colour), data_buffer, force = True)
 
@@ -150,10 +167,10 @@ def buffered_write (data, data_buffer, force = False):
 
 	data_buffer.append(data)
 
-def draw (dimensions, input_path):
+def draw (dimensions, ranges, input_path):
 
 	with open(input_path) as fconn:
-		extrema = find_extrema(fconn)
+		extrema = find_extrema(fconn, ranges)
 
 	save_pixels(input_path, extrema, dimensions)
 
@@ -167,8 +184,11 @@ if __name__ == '__main__':
 
 	draw(
 		dimensions = {
-			'width':  int(arguments['--width']),
-			'height': int(arguments['--height'])
+			'width':  int(arguments['--width'])
+		},
+		ranges = {
+			'x': int(arguments['--xrange']),
+			'y': int(arguments['--yrange'])
 		},
 		input_path  = arguments['--in-path']
 	)

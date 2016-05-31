@@ -56,13 +56,35 @@ def draw_saved_solutions (conn, ranges, img_pixels):
 	for line in conn:
 
 		x, y, colour = json.loads(line)
-		img_pixels[x, y] = tuple(colour)
+
+		x_in_range = x >= -ranges['x'] and x <= ranges['x']
+		y_in_range = y >= -ranges['y'] and y <= ranges['y']
+
+		if x_in_range and y_in_range:
+			img_pixels[x, y] = tuple(colour)
 
 def draw (ranges, dimensions, input_path, output_path):
 
+	image_size = {
+		'x': 0,
+		'y': 0
+	}
+
 	with open(input_path) as fconn:
 
-		img        = Image.new('RGB', (dimensions["width"] + 1, dimensions["height"] + 1), constants['colours']['background'])
+		for line in conn:
+
+			x, y, colour = json.loads(line)
+
+		if x > image_size['x']:
+			image_size['x'] = x
+
+		if y > image_size['y']:
+			image_size['y'] = y
+
+	with open(input_path) as fconn:
+
+		img        = Image.new('RGB', image_size['x'] + 1, image_size['y'] + 1, constants['colours']['background'])
 		img_pixels = img.load( )
 
 	with open(input_path) as fconn:

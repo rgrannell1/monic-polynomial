@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import json
@@ -10,13 +10,14 @@ from sh import draw_solutions
 from sh import mkdir
 from sh import ln
 from sh import rm
+from sh import cp
 
 
 
 
 
 task_folder   = '/root/tasks/{{start_time}}'
-argument_path = os.path.join(task_folder, 'repo', 'jobs', '{{argument_script}}')
+argument_path = os.path.join(task_folder, 'jobs', '{{argument_script}}')
 
 constants = {
 	'here': os.path.dirname(os.path.abspath(__file__)),
@@ -24,10 +25,11 @@ constants = {
 		task_folder,
 		task_folder + '/logs',
 		task_folder + '/output/json',
-		task_folder + '/output/images'
+		task_folder + '/output/images',
+		'/root/archives'
 	],
 	'paths': {
-
+		'archives': '/root/archives'
 	}
 
 }
@@ -42,6 +44,9 @@ constants['paths']['pixels']   = os.path.join(
 
 constants['paths']['image']    = os.path.join(
 	constants['paths']['current_link'], 'output/images/{{start_time}}.png')
+
+constants['paths']['archive_image'] = os.path.join(
+	constants['paths']['archives'], '{{start_time}}.png')
 
 
 
@@ -71,6 +76,7 @@ except Exception as err:
 
 
 
+
 for argument_set in arguments_json:
 
 	solve_polynomials(
@@ -82,7 +88,6 @@ for argument_set in arguments_json:
 
 	render_pixels(
 		in_path    = constants['paths']['solution'],
-		height     = argument_set['render_pixels']['height'],
 		width      = argument_set['render_pixels']['width'],
 		_out       = constants['paths']['pixels'],
 	)
@@ -91,7 +96,11 @@ for argument_set in arguments_json:
 		in_path    = constants['paths']['pixels'],
 		xrange     = argument_set['render_pixels']['xrange'],
 		yrange     = argument_set['render_pixels']['yrange'],
-		height     = argument_set['render_pixels']['height'],
 		width      = argument_set['render_pixels']['width'],
 		out_path   = constants['paths']['image']
 	)
+
+cp(
+	constants['paths']['image'],
+	constants['paths']['archive_image']
+)

@@ -15,18 +15,17 @@ arguments = [
 	{
 		'solve_polynomial': {
 			'order':      5,
-			'range':      15
+			'range':      10
 		},
 		'render_pixels': {
-			'xrange': 5,
-			'yrange': 5,
-			'height': 10000,
+			'xrange': 2,
+			'yrange': 2,
 			'width':  10000
 		},
 		'draw_solutions': {
-			'xrange': 5,
-			'yrange': 5,
-			'height': 10000,
+			'xrange': 2,
+			'yrange': 2,
+			'height': 3000,
 			'width':  10000
 		}
 	}

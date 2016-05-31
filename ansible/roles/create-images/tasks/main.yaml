@@ -2,6 +2,7 @@
 - name: copy role files
   template: >
     src={{item}}
-    dest=/root/{{item}}
+    dest={{task_path}}/{{item}}
   with_items:
     - run.py
+    - run-screen.py
