@@ -56,6 +56,9 @@ def draw_saved_solutions (conn, ranges, img_pixels):
 	for line in conn:
 
 		x, y, colour = json.loads(line)
+
+		print(x, y, colour)
+
 		img_pixels[x, y] = colour
 
 def draw (ranges, dimensions, input_path, output_path):
