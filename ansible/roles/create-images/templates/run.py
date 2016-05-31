@@ -51,7 +51,7 @@ render_pixels(
 	_out       = os.path.join(symlink_path, 'output/json/pixels.jsonl'),
 )
 
-draw_pixels(
+render_pixels(
 	in_path    = os.path.join(symlink_path, 'output/json/pixels.jsonl'),
 	xrange     = 2000,
 	yrange     = 2000,
