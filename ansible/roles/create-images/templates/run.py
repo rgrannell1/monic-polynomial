@@ -60,21 +60,21 @@ solve_polynomials(
 	order      = 5,
 	range      = 5,
 	assume_yes = True,
-	_out       = constants['paths']['solution_path']
+	_out       = constants['paths']['solution']
 )
 
 render_pixels(
-	in_path    = constants['paths']['solution_path'],
+	in_path    = constants['paths']['solution'],
 	height     = 2000,
 	width      = 2000,
-	_out       = constants['paths']['pixels_path'],
+	_out       = constants['paths']['pixels'],
 )
 
 draw_solutions(
-	in_path    = constants['paths']['pixels_path'],
+	in_path    = constants['paths']['pixels'],
 	xrange     = 2000,
 	yrange     = 2000,
 	height     = 2000,
 	width      = 2000,
-	out_path   = constants['paths']['image_path']
+	out_path   = constants['paths']['image']
 )
