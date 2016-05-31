@@ -89,7 +89,7 @@ def draw (ranges, dimensions, input_path, output_path):
 
 		image_dimensions = (image_size['x'], image_size['y'])
 
-		img        = Image.new('RGB', (image_dimensions, constants['colours']['background'])
+		img        = Image.new('RGB', image_dimensions, constants['colours']['background'])
 		img_pixels = img.load( )
 
 	with open(input_path) as fconn:
