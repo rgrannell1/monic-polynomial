@@ -57,11 +57,11 @@ def draw_saved_solutions (conn, ranges, image_size, img_pixels):
 		x, y, colour = json.loads(line)
 
 		# remove.
-		x_in_range = x < image_size['x']
-		y_in_range = y < image_size['y']
+		x_in_range = x > 0 and x < image_size['x']
+		y_in_range = x > 0 and y < image_size['y']
 
 		if x_in_range and y_in_range:
-			img_pixels[x, y] = tuple(colour)
+			img_pixels[x, y] = (colour[0], colour[1], colour[2])
 
 
 
@@ -95,7 +95,6 @@ def draw (ranges, dimensions, input_path, output_path):
 	with open(input_path) as fconn:
 
 		draw_saved_solutions(fconn, ranges, image_size, img_pixels)
-
 		img.save(output_path)
 
 
