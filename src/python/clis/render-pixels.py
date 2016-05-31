@@ -4,11 +4,10 @@
 render-pixels.py
 
 Usage:
-	render-pixels.py (--width=<NUM>) (--height=<NUM>) (--in-path=<STRING>) (--out-path=<STRING>)
+	render-pixels.py (--width=<NUM>) (--height=<NUM>) (--in-path=<STRING>)
 
 Options:
 	--in-path=<STRING>    The path to read points from.
-	--out-path=<STRING>   The path to save the image to.
 	--width=<NUM>         The image width .
 	--height=<NUM>        The image height.
 	-h, --help            Display the documentation.
@@ -126,7 +125,7 @@ def find_extrema (conn):
 
 	return extrema
 
-def save_pixels (conn, extrema, dimensions, output_path):
+def save_pixels (conn, extrema, dimensions):
 
 	for line in conn:
 
@@ -136,24 +135,22 @@ def save_pixels (conn, extrema, dimensions, output_path):
 		for point in solution['roots']:
 
 			x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
-			buffered_write((x, y, colour), data_buffer, output_path)
+			buffered_write((x, y, colour), data_buffer)
 
-		buffered_write((x, y, colour), data_buffer, output_path, force = True)
+		buffered_write((x, y, colour), data_buffer, force = True)
 
-def buffered_write (data, data_buffer, output_path, force = False):
+def buffered_write (data, data_buffer, force = False):
 
 	if len(data_buffer) == constants["flush_threshold"] or force:
-		with open(output_path, "a") as fpath:
-			for old_datum in data_buffer:
-				# fpath.write(json.dumps(old_datum) + '\n')
+		for old_datum in data_buffer:
+			print(json.dumps(old_datum))
 		del data_buffer[:]
 
-
-def draw (dimensions, input_path, output_path):
+def draw (dimensions, input_path):
 
 	with open(input_path) as fconn:
 		extrema = find_extrema(fconn)
-		save_pixels(fconn, extrema, dimensions, output_path)
+		save_pixels(fconn, extrema, dimensions)
 
 
 
@@ -168,6 +165,5 @@ if __name__ == '__main__':
 			'width':  int(arguments['--width']),
 			'height': int(arguments['--height'])
 		},
-		input_path  = arguments['--in-path'],
-		output_path = arguments['--out-path']
+		input_path  = arguments['--in-path']
 	)
