@@ -1,8 +1,0 @@
----
-- include: setup-environment.yaml
-- name:         solve equations
-  gather_facts: yes
-  hosts:        target_vm
-  remote_user:  root
-  roles:
-    - solve-polynomials

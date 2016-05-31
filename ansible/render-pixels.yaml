@@ -1,9 +1,0 @@
----
-- include:      setup-environment.yaml
-- include:      solve-polynomials.yaml
-- name:         render pixels
-  gather_facts: yes
-  hosts:        target_vm
-  remote_user:  root
-  roles:
-    - render-pixels
