@@ -106,7 +106,7 @@ for argument_set in arguments_json:
 			xrange     = argument_set['draw_solutions']['xrange'],
 			yrange     = argument_set['draw_solutions']['yrange'],
 			width      = argument_set['draw_solutions']['width'],
-			out_path   = constants['paths']['image'] + '-' + count,
+			out_path   = constants['paths']['image'] + '-' + str(count),
 			_err       = print)
 
 	count += 1
