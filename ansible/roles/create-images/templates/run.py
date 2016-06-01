@@ -79,30 +79,32 @@ except Exception as err:
 
 for argument_set in arguments_json:
 
-	solve_polynomials(
-		order      = argument_set['solve_polynomial']['order'],
-		range      = argument_set['solve_polynomial']['range'],
-		assume_yes = True,
-		_out       = constants['paths']['solution']
-	)
+	if argument_set['solve_polynomial']:
 
-	render_pixels(
-		in_path    = constants['paths']['solution'],
-		xrange     = argument_set['render_pixels']['xrange'],
-		yrange     = argument_set['render_pixels']['yrange'],
-		width      = argument_set['render_pixels']['width'],
-		_out       = constants['paths']['pixels'],
-	)
+		solve_polynomials(
+			order      = argument_set['solve_polynomial']['order'],
+			range      = argument_set['solve_polynomial']['range'],
+			assume_yes = True,
+			_out       = constants['paths']['solution'])
 
-	draw_solutions(
-		in_path    = constants['paths']['pixels'],
-		xrange     = argument_set['render_pixels']['xrange'],
-		yrange     = argument_set['render_pixels']['yrange'],
-		width      = argument_set['render_pixels']['width'],
-		out_path   = constants['paths']['image']
-	)
+	if argument_set['render_pixels']:
+
+		render_pixels(
+			in_path    = constants['paths']['solution'],
+			xrange     = argument_set['render_pixels']['xrange'],
+			yrange     = argument_set['render_pixels']['yrange'],
+			width      = argument_set['render_pixels']['width'],
+			_out       = constants['paths']['pixels'],)
+
+	if argument_set['render_pixels']:
+
+		draw_solutions(
+			in_path    = constants['paths']['pixels'],
+			xrange     = argument_set['draw_solutions']['xrange'],
+			yrange     = argument_set['draw_solutions']['yrange'],
+			width      = argument_set['draw_solutions']['width'],
+			out_path   = constants['paths']['image'])
 
 cp(
 	constants['paths']['image'],
-	constants['paths']['archive_image']
-)
+	constants['paths']['archive_image'])

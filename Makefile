@@ -28,3 +28,6 @@ fetch-images:
 
 	mkdir -p ~/polynomial-output
 	scp -r root@$(ip_address):tasks/current/output/images ~/polynomial-output
+
+rerun:
+	ansible-playbook -i $(inventory_script_path) ansible/create-image.yaml
