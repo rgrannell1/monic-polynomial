@@ -155,7 +155,7 @@ def save_pixels (input_path, extrema, ranges, dimensions):
 					pixel = pixelise(solution['coefficients'], (x, y), extrema, dimensions)
 					buffered_write(pixel, data_buffer)
 
-			buffered_write((x, y, colour), data_buffer, force = True)
+			buffered_write(pixel, data_buffer, force = True)
 
 def buffered_write (data, data_buffer, force = False):
 
