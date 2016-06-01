@@ -114,9 +114,6 @@ def find_extrema (conn, ranges):
 
 			if x_in_range and y_in_range:
 
-				print(x)
-				print(y)
-
 				coefficient_product = product(solution['coefficients'])
 
 				if x > extrema['x']['max']:
@@ -148,15 +145,14 @@ def save_pixels (input_path, extrema, ranges, dimensions):
 			data_buffer = [ ]
 			solution    = json.loads(line)
 
-			for point in solution['roots']:
-
-				x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
+			for x, y in solution['roots']:
 
 				x_in_range = x >= -ranges['x'] and x <= ranges['x']
 				y_in_range = y >= -ranges['y'] and y <= ranges['y']
 
 				if x_in_range and y_in_range:
 
+					x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
 					buffered_write((x, y, colour), data_buffer)
 
 			buffered_write((x, y, colour), data_buffer, force = True)
