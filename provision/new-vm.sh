@@ -34,14 +34,15 @@ get_response=$(curl -sS -X GET -H "Content-Type: application/json" \
 
 # save the created IP address as an environmental variable.
 
-MONIC_TARGET_VM_IP="$(echo "$get_response" | jq .droplet.networks.v4[0].ip_address --raw-output)"
+target_ip_address="$(echo "$get_response" | jq .droplet.networks.v4[0].ip_address --raw-output)"
 
-if [ -z "$MONIC_TARGET_VM_IP" ]
+if [ -z "$target_ip_address" ]
 then
 	>&2 echo "failed to find IP address for droplet $droplet_id"
 	exit 1
 else
-	echo "VM ip address: $MONIC_TARGET_VM_IP"
+	echo "VM ip address: $target_ip_address"
 fi
 
-printf $MONIC_TARGET_VM_IP > security/ip_address
+printf $target_ip_address > security/ip_address
+printf $droplet_id        > security/droplet_id
