@@ -80,8 +80,7 @@ def reporter (line):
 	print(line)
 
 
-
-
+count = 0
 
 for argument_set in arguments_json:
 
@@ -111,8 +110,10 @@ for argument_set in arguments_json:
 			xrange     = argument_set['draw_solutions']['xrange'],
 			yrange     = argument_set['draw_solutions']['yrange'],
 			width      = argument_set['draw_solutions']['width'],
-			out_path   = constants['paths']['image'],
+			out_path   = constants['paths']['image'] + '-' + count,
 			_err       = reporter)
+
+	count += 1
 
 cp(
 	constants['paths']['image'],
