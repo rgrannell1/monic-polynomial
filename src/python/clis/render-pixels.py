@@ -114,6 +114,9 @@ def find_extrema (conn, ranges):
 
 			if x_in_range and y_in_range:
 
+				print(x)
+				print(y)
+
 				coefficient_product = product(solution['coefficients'])
 
 				if x > extrema['x']['max']:
