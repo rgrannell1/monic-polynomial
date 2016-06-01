@@ -90,7 +90,7 @@ for argument_set in arguments_json:
 			order      = argument_set['solve_polynomial']['order'],
 			range      = argument_set['solve_polynomial']['range'],
 			assume_yes = True,
-			_out       = constants['paths']['solution']
+			_out       = constants['paths']['solution'],
 			_err       = reporter)
 
 	if argument_set['render_pixels']:
