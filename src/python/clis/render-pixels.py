@@ -152,8 +152,8 @@ def save_pixels (input_path, extrema, ranges, dimensions):
 
 				if x_in_range and y_in_range:
 
-					x, y, colour = pixelise(solution['coefficients'], point, extrema, dimensions)
-					buffered_write((x, y, colour), data_buffer)
+					pixel = pixelise(solution['coefficients'], (x, y), extrema, dimensions)
+					buffered_write(pixel, data_buffer)
 
 			buffered_write((x, y, colour), data_buffer, force = True)
 
