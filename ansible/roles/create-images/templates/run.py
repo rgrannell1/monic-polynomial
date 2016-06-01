@@ -76,10 +76,6 @@ except Exception as err:
 
 
 
-def reporter (line):
-	print(line)
-
-
 count = 0
 
 for argument_set in arguments_json:
@@ -91,7 +87,7 @@ for argument_set in arguments_json:
 			range      = argument_set['solve_polynomial']['range'],
 			assume_yes = True,
 			_out       = constants['paths']['solution'],
-			_err       = reporter)
+			_err       = print)
 
 	if argument_set['render_pixels']:
 
@@ -101,7 +97,7 @@ for argument_set in arguments_json:
 			yrange     = argument_set['render_pixels']['yrange'],
 			width      = argument_set['render_pixels']['width'],
 			_out       = constants['paths']['pixels'],
-			_err       = reporter)
+			_err       = print)
 
 	if argument_set['render_pixels']:
 
@@ -111,7 +107,7 @@ for argument_set in arguments_json:
 			yrange     = argument_set['draw_solutions']['yrange'],
 			width      = argument_set['draw_solutions']['width'],
 			out_path   = constants['paths']['image'] + '-' + count,
-			_err       = reporter)
+			_err       = print)
 
 	count += 1
 
