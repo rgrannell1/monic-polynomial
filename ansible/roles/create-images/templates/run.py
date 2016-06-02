@@ -90,7 +90,7 @@ for argument_set in arguments_json:
 
 		solve_polynomials(
 			order      = argument_set['solve_polynomial']['order'],
-			range      = argument_set['solve_polynomial']['range'],
+			num_range  = argument_set['solve_polynomial']['range'],
 			assume_yes = True,
 			out_path       = constants['paths']['solution']
 		)
