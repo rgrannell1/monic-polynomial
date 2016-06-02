@@ -22,11 +22,25 @@ constants = {
 
 	'colours': {
 		'background': 'black',
-		# lazy. fix this.
-		'points':     list(itertools.product(range(255), range(255), range(255)))
+		'point_range': 255 ** 3
 	}
 
 }
+
+
+
+
+def get_point (initial):
+
+	digits = [ ]
+
+	while initial > 0:
+
+		ith = initial / 255
+		digits.append(ith)
+		initial = initial / 255
+
+	return digits
 
 
 
@@ -57,8 +71,8 @@ def pixelise (coefficients, point, extrema, dimensions):
 	]
 
 	index = min(
-		math.floor(percentage[2] * len(constants['colours']['points'])),
-		len(constants['colours']['points']) - 1)
+		math.floor(percentage[2] * constants['colours']['point_range']),
+		constants['colours']['point_range'] - 1)
 
 	x_diff = extrema['x']['max'] - extrema['x']['min']
 	y_diff = extrema['y']['max'] - extrema['y']['min']
@@ -68,7 +82,7 @@ def pixelise (coefficients, point, extrema, dimensions):
 	return [
 		math.floor(percentage[0] * dimensions['width']),
 		math.floor(percentage[1] * height),
-		constants['colours']['points'][index]
+		get_point(index)
 	]
 
 def find_extrema (conn, ranges):
