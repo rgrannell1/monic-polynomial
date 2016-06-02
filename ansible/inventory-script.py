@@ -27,5 +27,4 @@ inventory = {
 
 
 
-
 print(json.dumps(inventory))
