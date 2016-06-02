@@ -14,18 +14,9 @@ from PIL    import Image
 
 
 
-constants = {
-	'print_frequency': 10000,
-	'flush_threshold': 100,
+exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/commons/constants.py')).read( ))
+exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/commons/utils.py')).read( ))
 
-	'project_root': os.path.realpath(os.path.join(os.path.dirname(__file__), '../../')),
-
-	'colours': {
-		'background': 'black',
-		'point_range': 255 ** 3
-	}
-
-}
 
 
 

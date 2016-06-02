@@ -15,21 +15,8 @@ from prompter import yesno
 
 
 
-
-constants = {
-	'print_frequency': 10000,
-
-	'flush_threshold': 10000,
-
-	'escapes': {
-		'line_up':     '\x1b[A',
-		'line_delete': '\x1b[K'
-	},
-	'units': {
-		'bytes_per_gibibyte': 2 ** 30
-	}
-}
-
+exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/commons/constants.py')).read( ))
+exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/commons/utils.py')).read( ))
 
 
 
