@@ -86,14 +86,14 @@ count = 0
 
 for argument_set in arguments_json:
 
-#	if argument_set['solve_polynomial']:
+	if argument_set['solve_polynomial']:
 
-#		solve_polynomials(
-#			order      = argument_set['solve_polynomial']['order'],
-#			range      = argument_set['solve_polynomial']['range'],
-#			assume_yes = True,
-#			_out       = constants['paths']['solution'],
-#			_err       = print)
+		solve_polynomials(
+			order      = argument_set['solve_polynomial']['order'],
+			range      = argument_set['solve_polynomial']['range'],
+			assume_yes = True,
+			out_path       = constants['paths']['solution']
+		)
 
 #	if argument_set['render_pixels']:
 

@@ -107,11 +107,13 @@ def print_progress (iter, total_count, start):
 		for message in messages:
 			sys.stderr.write(message + '\n')
 
-def write_solutions(solution, solution_buffer, force = False):
+def write_solutions(solution, solution_buffer, out_path, force = False):
 
 	if len(solution_buffer) == constants["flush_threshold"] or force:
-		for old_solution in solution_buffer:
-			print(json.dumps(old_solution))
+
+		with open(out_path, "a") as fconn:
+			for old_solution in solution_buffer:
+				fconn.write(json.dumps(old_solution) + '\n')
 
 		del solution_buffer[:]
 
@@ -124,7 +126,7 @@ def solve_polynomial (point):
 		'roots':        [ [root.real, root.imag] for root in numpy.roots(point) ]
 	}
 
-def solve_polynomials (order, num_range, assume_yes):
+def solve_polynomials (order, num_range, assume_yes, out_path):
 
 
 	dimensions  = repeat_val(order, sequence(-num_range, num_range))
@@ -144,6 +146,6 @@ def solve_polynomials (order, num_range, assume_yes):
 		solution = solve_polynomial(point)
 
 		print_progress(next(root_count), total_count, start)
-		write_solutions(solution, solution_buffer)
+		write_solutions(solution, solution_buffer, out_path)
 
-	write_solutions(solution, solution_buffer, force = True)
+	write_solutions(solution, solution_buffer, out_path, force = True)
