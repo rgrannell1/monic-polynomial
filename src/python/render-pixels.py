@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
 
-"""
-render-pixels.py
-
-Usage:
-	render-pixels.py (--width=<NUM>) (--xrange=<NUM>) (--yrange=<NUM>) (--in-path=<STRING>)
-
-Options:
-	--in-path=<STRING>    The path to read points from.
-	--width=<NUM>         The image width .
-	--xrange=<NUM>        The image width .
-	--yrange=<NUM>        The image height.
-	-h, --help            Display the documentation.
-"""
-
 import os
 import sys
 import json
@@ -22,7 +8,6 @@ import math
 import itertools
 from functools import reduce
 from operator  import mul
-from docopt import docopt
 from PIL    import Image
 
 
@@ -166,28 +151,9 @@ def buffered_write (data, data_buffer, force = False):
 
 	data_buffer.append(data)
 
-def draw (dimensions, ranges, input_path):
+def render_pixels (dimensions, ranges, input_path):
 
 	with open(input_path) as fconn:
 		extrema = find_extrema(fconn, ranges)
 
 	save_pixels(input_path, extrema, ranges, dimensions)
-
-
-
-
-
-if __name__ == '__main__':
-
-	arguments = docopt(__doc__, version = '0.1')
-
-	draw(
-		dimensions = {
-			'width':  int(arguments['--width'])
-		},
-		ranges = {
-			'x': int(arguments['--xrange']),
-			'y': int(arguments['--yrange'])
-		},
-		input_path  = arguments['--in-path']
-	)

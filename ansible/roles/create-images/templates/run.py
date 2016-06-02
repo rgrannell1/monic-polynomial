@@ -15,6 +15,12 @@ from sh import cp
 
 
 
+exec(open('./repo/src/python/solve-polynomials.py').read( ))
+exec(open('./repo/src/python/draw-solutions.py').read( ))
+exec(open('./repo/src/python/render-pixels.py').read( ))
+
+
+
 
 task_folder   = '/root/tasks/{{start_time}}'
 argument_path = os.path.join(task_folder, 'jobs', '{{argument_script}}')

@@ -1,30 +1,14 @@
 #!/usr/bin/env python3
 
-"""
-solve-polynomials.py
-
-Usage:
-	solve-polynomials.py (--order=<NUM>) (--range=<NUM>) [--assume-yes]
-
-Options:
-	-h, --help            Display the documentation.
-	--order=<NUM>         The order of the polynomial to solve [default: 5].
-	--range=<NUM>         The maximum / minumum integer coefficient to use for each polynomial.
-	--assume-yes          Run this script without prompts.
-
-"""
-
 import os
 import sys
+import time
 import json
 import cmath
 import numpy
 import itertools
 from functools import reduce
 from operator  import mul
-import time
-
-from docopt   import docopt
 from prompter import yesno
 
 
