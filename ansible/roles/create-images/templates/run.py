@@ -15,12 +15,6 @@ from sh import cp
 
 
 
-exec(open('./repo/src/python/solve-polynomials.py').read( ))
-exec(open('./repo/src/python/draw-solutions.py').read( ))
-exec(open('./repo/src/python/render-pixels.py').read( ))
-
-
-
 
 task_folder   = '/root/tasks/{{start_time}}'
 argument_path = os.path.join(task_folder, 'jobs', '{{argument_script}}')
@@ -53,6 +47,14 @@ constants['paths']['image']    = os.path.join(
 
 constants['paths']['archive_image'] = os.path.join(
 	constants['paths']['archives'], '{{start_time}}.png')
+
+
+
+
+
+exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/solve-polynomials.py')).read( ))
+exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/draw-solutions.py')).read( ))
+exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/render-pixels.py')).read( ))
 
 
 

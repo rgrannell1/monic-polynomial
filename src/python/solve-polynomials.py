@@ -147,17 +147,3 @@ def solve_polynomials (order, num_range, assume_yes):
 		write_solutions(solution, solution_buffer)
 
 	write_solutions(solution, solution_buffer, force = True)
-
-
-
-
-
-if __name__ == '__main__':
-
-	arguments = docopt(__doc__, version = '0.1')
-
-	solve_polynomials(
-		order       = int(arguments['--order']),
-		num_range   = int(arguments['--range']),
-		assume_yes  = arguments['--assume-yes']
-	)
