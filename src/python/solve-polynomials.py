@@ -22,26 +22,7 @@ exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/commons/utils
 
 
 
-def repeat_val (num, val):
-	return [val for _ in range(num - 1)]
 
-def product (nums):
-	return reduce(mul, nums, 1)
-
-def sequence (lower, upper):
-
-	seq = [ ]
-	current = lower
-
-	while current <= upper:
-		seq.append(current)
-		current += 1
-
-	return seq
-
-
-def get_file_size(filename):
-	return os.stat(filename).st_size
 
 
 
@@ -94,7 +75,7 @@ def print_progress (iter, total_count, start):
 		for message in messages:
 			sys.stderr.write(message + '\n')
 
-def write_solutions(solution, solution_buffer, out_path, force = False):
+def write_solutions (solution, solution_buffer, out_path, force = False):
 
 	if len(solution_buffer) == constants["flush_threshold"] or force:
 
@@ -114,7 +95,8 @@ def solve_polynomial (point):
 	}
 
 def solve_polynomials (order, num_range, assume_yes, out_path):
-
+	"""
+	"""
 
 	dimensions  = repeat_val(order, sequence(-num_range, num_range))
 	space       = itertools.product(*dimensions)

@@ -26,7 +26,7 @@ else
 	echo "created VM id = $droplet_id"
 fi
 
-sleep 30
+sleep 5
 
 get_response=$(curl -sS -X GET -H "Content-Type: application/json" \
 	 -H "Authorization: Bearer $digitalOceanToken" \

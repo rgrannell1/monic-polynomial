@@ -12,7 +12,12 @@ from prompter import prompt
 with open('security/ip_address','r') as fconn:
     ip_address = fconn.read( ).strip( )
 
+
+
 inventory = {
+	'all': {
+		'hosts': [ip_address]
+	},
 	'target_vm': {
 		'hosts': ['target_vm'],
 		'vars': {

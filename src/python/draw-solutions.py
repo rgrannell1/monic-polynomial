@@ -14,8 +14,8 @@ from PIL    import Image
 
 
 
-exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/commons/constants.py')).read( ))
-exec(open(os.path.join(os.path.dirname(__file__), 'repo/src/python/commons/utils.py')).read( ))
+sys.path.append( os.path.join(os.path.dirname(__file__), 'commons/utils.py') )
+sys.path.append( os.path.join(os.path.dirname(__file__), 'commons/constants.py') )
 
 
 
