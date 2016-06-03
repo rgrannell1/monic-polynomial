@@ -6,3 +6,6 @@
   with_items:
     - run.py
     - run-screen.py
+
+- name: run
+  shell: "python3 {{task_path}}/run.py"

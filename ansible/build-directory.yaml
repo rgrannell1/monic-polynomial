@@ -1,8 +1,8 @@
 ---
 - include: setup-environment.yaml
-- name:         draw solutions
+- name:         create a new build
   gather_facts: yes
   hosts:        target_vm
   remote_user:  root
   roles:
-    - create-images
+    - build-directory

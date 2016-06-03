@@ -1,5 +1,4 @@
 ---
-- include: setup-environment.yaml
 - include: build-directory.yaml
 - name:         draw solutions
   gather_facts: yes

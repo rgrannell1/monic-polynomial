@@ -105,15 +105,14 @@ def create_images (argument_sets):
 				out_path   = constants['paths']['solution']
 			)
 
-#		if argument_set['render_pixels']:
-#
-#			render_pixels(
-#				in_path    = constants['paths']['solution'],
-#				xrange     = argument_set['render_pixels']['xrange'],
-#				yrange     = argument_set['render_pixels']['yrange'],
-#				width      = argument_set['render_pixels']['width'],
-#				_out       = constants['paths']['pixels'],
-#				_err       = print)
+		if 'render_pixels' in argument_set:
+
+			render_pixels(
+				in_path    = constants['paths']['solution'],
+				xrange     = argument_set['render_pixels']['xrange'],
+				yrange     = argument_set['render_pixels']['yrange'],
+				width      = argument_set['render_pixels']['width'],
+				out_path   = constants['paths']['pixels'])
 #
 #		if argument_set['render_pixels']:
 #
