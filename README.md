@@ -2,13 +2,13 @@
 
 This repository includes code to solve and graph large numbers of polynomial roots. It also includes code to deploy a DigitalOcean VM to run this code, since this task can raise a laptop's temperature to lightly knee-scortching.
 
-![alt text](example.png "Monic Polynomial Graph")
+![alt text](examples/example-1.png "Monic Polynomial Graph")
 
 ## Background
 
 This tool generates solutions to all polynomials of a fixed order, with coefficients in a certain integer range. After obtaining the complex solutions to these polynomials it plots their real / complex parts. The colour assigned to each root corresponds to the product of the polynomials coefficients.
 
-## Requirements 
+## Requirements
 
 - Ansible.
 - A DigitalOcean account, with an SSH key set up.
@@ -39,7 +39,7 @@ Both `make solve-polynomials` and `make draw-solutions` run asyncronously, so An
 screen -list
 ```
 
-to find the launched sessions, and 
+to find the launched sessions, and
 
 ```bash
 screen -a <numeric-prefix>
@@ -48,7 +48,7 @@ screen -a <numeric-prefix>
 to open the process. For the solution task you will see solution-rates and estimates of file-size / remaining time.
 
 ```
-attempting to solve 104,060,401 polynomials. Do you want to start? [y/N]  
+attempting to solve 104,060,401 polynomials. Do you want to start? [y/N]
 rates:
     solved:                    70,000
     solved / second:           8,421

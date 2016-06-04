@@ -1,6 +1,6 @@
 ---
-- name: run
-  shell: "python3 {{task_path}}/run.py"
+- name: create the images
+  shell: "screen -S 'create-images-{{start_time}}' -d -m python3 {{task_path}}/run.py"
 
 - name: copy images to a shared directory
   shell: "python3 {{task_path}}/copy-images.py"

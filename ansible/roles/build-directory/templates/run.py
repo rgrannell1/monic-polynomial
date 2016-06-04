@@ -96,25 +96,29 @@ def create_images (argument_sets):
 
 		if 'solve_polynomial' in argument_set:
 
-			solve_polynomials(
-				order      = argument_set['solve_polynomial']['order'],
-				num_range  = argument_set['solve_polynomial']['range'],
-				assume_yes = True,
-				out_path   = constants['paths']['solution']
-			)
+			if not os.path.isfile(constants['paths']['solution']):
+
+				solve_polynomials(
+					order      = argument_set['solve_polynomial']['order'],
+					num_range  = argument_set['solve_polynomial']['range'],
+					assume_yes = True,
+					out_path   = constants['paths']['solution']
+				)
 
 		if 'render_pixels' in argument_set:
 
-			render_pixels(
-				paths = {
-					'input':  constants['paths']['solution'],
-					'output': constants['paths']['pixels']
-				},
-				ranges = {
-					'x': argument_set['render_pixels']['ranges']['x'],
-					'y': argument_set['render_pixels']['ranges']['y']
-				},
-				width = argument_set['render_pixels']['width'])
+			if not os.path.isfile(constants['paths']['pixels']):
+
+				render_pixels(
+					paths = {
+						'input':  constants['paths']['solution'],
+						'output': constants['paths']['pixels']
+					},
+					ranges = {
+						'x': argument_set['render_pixels']['ranges']['x'],
+						'y': argument_set['render_pixels']['ranges']['y']
+					},
+					width = argument_set['render_pixels']['width'])
 
 		if 'render_pixels' in argument_set:
 

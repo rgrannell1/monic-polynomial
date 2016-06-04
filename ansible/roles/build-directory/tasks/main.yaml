@@ -46,5 +46,5 @@
     - copy-images.py
     - symlink-matching-data.py
 
-- name: symlink data files, when allowed.
-  shell: "python3 {{task_path}}/symlink-matching-data.py"
+#- name: symlink data files, when allowed.
+#  shell: "python3 {{task_path}}/symlink-matching-data.py"
