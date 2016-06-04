@@ -82,10 +82,7 @@ def list_task_arguments (current_task_folder):
 
 def find_existing_result_symlinks (current_arguments, current_task_folder):
 
-	old_task_paths = {
-
-	}
-
+	old_task_paths  = { }
 	other_arguments = list(list_task_arguments(current_task_folder))
 
 	for other_argument_sets in other_arguments:
@@ -93,21 +90,19 @@ def find_existing_result_symlinks (current_arguments, current_task_folder):
 		other_directory = other_argument_sets['directory']
 		other_arguments = other_argument_sets['arguments']
 
-		print(other_directory)
-		print(other_arguments)
-		print('++ ++ ++ ++ ++')
+		for other_argument_set in other_arguments:
 
-		for current_argument_set in current_arguments:
+			for current_argument_set in current_arguments:
 
-			if 'solve_polynomial' in other_arguments:
+				if 'solve_polynomial' in current_argument_set:
 
-				if deep_equal(current_argument_set['solve_polynomial'], other_arguments['solve_polynomial']):
-					old_task_paths['solutions'] = other_directory
+					if deep_equal(current_argument_set['solve_polynomial'], current_argument_set['solve_polynomial']):
+						old_task_paths['solutions'] = other_directory
 
-			if 'render_pixels' in other_arguments:
+				if 'render_pixels' in current_argument_set:
 
-				if deep_equal(current_argument_set['render_pixels'], other_arguments['render_pixels']):
-					old_task_paths['pixels'] = other_directory
+					if deep_equal(current_argument_set['render_pixels'], current_argument_set['render_pixels']):
+						old_task_paths['pixels'] = other_directory
 
 	return old_task_paths
 
