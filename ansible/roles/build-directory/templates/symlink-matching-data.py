@@ -106,21 +106,36 @@ def find_existing_result_symlinks (current_arguments, current_task_folder):
 
 	return old_task_paths
 
+def copy_task_files (task_folder, current_link):
+
+	if os.path.isfile(task_folder['solutions']):
+
+		src  = os.path.join(task_folder['solutions'], 'output', 'json', 'solutions.jsonl')
+		dest = os.path.join(current_link,             'output', 'json', 'solutions.jsonl')
+
+		os.link(src, dest)
+		print('linking ' + src + ' -> ' + ' ' + dest)
+
+	if os.path.isfile(task_folder['pixels']):
+
+		src  = os.path.join(task_folder['pixels'], 'output', 'json', 'pixels.jsonl')
+		dest = os.path.join(current_link,          'output', 'json', 'pixels.jsonl')
+
+		os.link(src, dest)
+		print('linking ' + src + ' -> ' + ' ' + dest)
 
 
 
 
-def symlink_existing_results (task_folder):
+def symlink_existing_results (task_folder, current_link):
 
 	# get the current argument list.
 	current_arguments = read_arguments(os.path.join(task_folder, 'arguments.py'))
-
-	# get path links
 	result_links      = find_existing_result_symlinks(current_arguments, task_folder)
 
-	print( result_links )
+	copy_task_files(result_links, current_link)
 
 
 
 
-symlink_existing_results(task_folder)
+symlink_existing_results(task_folder, current_link)
