@@ -28,17 +28,13 @@ current_link  = os.path.join(here, '/root/tasks/current')
 
 constants = {
 	'print_frequency': 10000,
-	'flush_threshold': 10000,
+	'flush_threshold': 500000,
 
 	'project_root': os.path.realpath(os.path.join(os.path.dirname(__file__), '../../')),
 
 	'colours': {
 		'background': 'black'
 	},
-	'print_frequency': 10000,
-
-	'flush_threshold': 10000,
-
 	'escapes': {
 		'line_up':     '\x1b[A',
 		'line_delete': '\x1b[K'
@@ -210,7 +206,7 @@ def prompt_start (order, total_count):
 	if not answer:
 		exit(0)
 
-def print_progress (iteration, total_count, start):
+def print_solution_progress (iteration, total_count, start):
 	"""
 	estimate the current solution rate.
 	"""
@@ -219,28 +215,27 @@ def print_progress (iteration, total_count, start):
 
 		end        = time.time( )
 		elapsed    = end - start
-		per_second = round(iteration / elapsed)
 
-		estimated_per_hour = per_second * 60 * 60
-
+		per_second         = round(iteration / elapsed)
 		seconds_remaining  = round((total_count - iteration) / per_second)
 		minutes_remaining  = round(seconds_remaining / 60)
 
-		summary = {
-			'rates': {
-				'solved':    '{:,}'.format(iteration),
-				'perSecond': '{:,}'.format(per_second)
-			},
-			'estimates': {
+		sys.stderr.write(json.dumps({
+			'level': 'info',
+			'data': {
+				'solved':     '{:,}'.format(iteration),
+				'remaining:': '{:,}'.format(total_count - iteration),
 				'time_remaining': {
 					'seconds': '{:,}'.format(seconds_remaining),
 					'minutes': '{:,}'.format(minutes_remaining)
 				},
-				'perHour': '{:,}'.format(estimated_per_hour)
+				'solution_rate': {
+					'seconds': '{:,}'.format(per_second),
+					'minutes': '{:,}'.format(per_second * 60),
+					'hours':   '{:,}'.format(per_second * 60 * 60)
+				}
 			}
-		}
-
-		sys.stderr.write(json.dumps(summary) + '\n')
+		}) + '\n')
 
 def write_solutions (solution, solution_buffer, out_path, force = False):
 	"""
@@ -293,7 +288,7 @@ def solve_polynomials (order, num_range, assume_yes, out_path):
 
 		root_count += 1
 
-		print_progress(root_count, total_count, start)
+		print_solution_progress(root_count, total_count, start)
 		write_solutions(solution, solution_buffer, out_path)
 
 	write_solutions(solution, solution_buffer, out_path, force = True)
@@ -326,6 +321,7 @@ def get_point_colour (index):
 	if len(digits) != 3:
 
 		sys.stderr.write( json.dumps({
+			'level':  'error',
 			'message': 'incorrect generated colour-length',
 			'data': {
 				'index':  initial,
@@ -375,6 +371,7 @@ def convert_root_to_pixel (coefficients, point, extrema, width):
 		if percent < 0 or percent > 1:
 
 			sys.stderr.write( json.dumps({
+				'level':  'error',
 				'message': 'invalid percentage value',
 				'data': {
 					'percentage': percentage
@@ -447,7 +444,16 @@ def buffered_write_pixels (fpath, data, data_buffer, force = False):
 
 	if len(data_buffer) == constants["flush_threshold"] or force:
 
-		with open(fpath, 'w+') as fconn:
+		sys.stderr.write( json.dumps({
+			'level':  'info',
+			'message': 'writing pixels to file',
+			'data': {
+				'count':      len(data_buffer),
+				'threshhold': constants["flush_threshold"]
+			}
+		}) + '\n')
+
+		with open(fpath, 'a') as fconn:
 			for old_datum in data_buffer:
 				fconn.write(json.dumps(old_datum) + '\n')
 
@@ -543,6 +549,7 @@ def draw_solutions (paths):
 			except Exception as err:
 
 				sys.stderr.write( json.dumps({
+					'level':  'error',
 					'message': 'failed to write pixel to image',
 					'data': {
 						'x':      x,
