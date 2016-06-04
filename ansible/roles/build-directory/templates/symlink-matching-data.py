@@ -14,7 +14,7 @@ import subprocess
 
 
 
-
+task_folder  = '/root/tasks/{{start_time}}'
 here         = os.path.dirname(os.path.abspath(__file__))
 current_link = os.path.join(here, '/root/tasks/current')
 
@@ -33,6 +33,9 @@ constants = {
 
 
 def read_arguments (argument_path):
+	"""
+	read arguments from a file.
+	"""
 
 	argument_output = subprocess.check_output(['python3', argument_path])
 
@@ -41,71 +44,88 @@ def read_arguments (argument_path):
 	except Exception as err:
 		print(err)
 
+def deep_equal (dict0, dict1):
+	"""
+	check that two dictionaries are identical.
+	"""
 
-
-
-current_arguments = read_arguments(os.path.join(constants['paths']['current'], 'arguments.py'))
-
-last_argument = {
-	'solve_polynomial': {
-		'path':      None,
-		'arguments': None
-	},
-	'render_pixels':    {
-		'path':      None,
-		'arguments': None
-	}
-}
-
-for
-
-	if 'solve_polynomial' in last_argument:
-		last_argument['solve_polynomial'] = last_argument['solve_polynomial']
-
-	if 'render_pixels' in last_argument:
-		last_argument['render_pixels'] = last_argument['render_pixels']
+	return json.dumps(dict0) == json.dumps(dict1)
 
 
 
 
-for dir_name in os.listdir(constants['paths']['tasks']):
 
-	if dir_name == 'current':
-		next
 
-	directory      = os.path.join(constants['paths']['tasks'], dir_name)
-	arguments_file = os.path.join(directory, 'arguments.py')
+def list_task_arguments (current_task_folder):
+	"""
+	list and parse all argument files.
+	"""
 
-	last_argument = {
-		'solve_polynomial': {
-			'path':      None,
-			'arguments': None
-		},
-		'render_pixels':    {
-			'path':      None,
-			'arguments': None
-		}
+	for dir_name in os.listdir(constants['paths']['tasks']):
+
+		if dir_name == 'current':
+			next
+
+		task_directory = os.path.join(constants['paths']['tasks'], dir_name)
+
+		if task_directory == current_task_folder:
+			next
+
+		arguments_file = os.path.join(task_directory, 'arguments.py')
+
+		if os.path.exists(arguments_file):
+
+			yield {
+				'directory': task_directory,
+				'arguments': read_arguments(arguments_file)
+			}
+
+def find_existing_result_symlinks (current_arguments, current_task_folder):
+
+	old_task_paths = {
+
 	}
 
-	if os.path.exists(arguments_file):
+	other_arguments = list(list_task_arguments(current_task_folder))
 
-		candidate_arguments = read_arguments(arguments_file)
+	for other_argument_sets in other_arguments:
 
-		if 'solve_polynomial' in last_argument:
-			last_argument['solve_polynomial'] = last_argument['solve_polynomial']
+		other_directory = other_argument_sets['directory']
+		other_arguments = other_argument_sets['arguments']
 
-		if 'render_pixels' in last_argument:
-			last_argument['render_pixels'] = last_argument['render_pixels']
+		print(other_directory)
+		print(other_arguments)
+		print('++ ++ ++ ++ ++')
 
-		# fetch the last render pixels and solve polynomial arguments
+		for current_argument_set in current_arguments:
 
-	solve_polynomials_equal = json.dumps(current_arguments['solve_polynomial']) == json.dumps(last_argument['solve_polynomial'])
-	render_pixels_equal     = json.dumps(current_arguments['render_pixels'])    == json.dumps(last_argument['render_pixels'])
+			if 'solve_polynomial' in other_arguments:
 
-	if solve_polynomials_equal:
+				if deep_equal(current_argument_set['solve_polynomial'], other_arguments['solve_polynomial']):
+					old_task_paths['solutions'] = other_directory
 
-		shutil.copyfile(last_argument['solve_polynomial']['path'], constants['paths']['solutions'])
+			if 'render_pixels' in other_arguments:
 
-	if render_pixels_equal:
+				if deep_equal(current_argument_set['render_pixels'], other_arguments['render_pixels']):
+					old_task_paths['pixels'] = other_directory
 
-		shutil.copyfile(last_argument['render_pixels']['path'], constants['paths']['pixels'])
+	return old_task_paths
+
+
+
+
+
+def symlink_existing_results (task_folder):
+
+	# get the current argument list.
+	current_arguments = read_arguments(os.path.join(task_folder, 'arguments.py'))
+
+	# get path links
+	result_links      = find_existing_result_symlinks(current_arguments, task_folder)
+
+	print( result_links )
+
+
+
+
+symlink_existing_results(task_folder)

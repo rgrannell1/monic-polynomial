@@ -19,7 +19,7 @@ from PIL import Image
 
 
 task_folder   = '/root/tasks/{{start_time}}'
-argument_path = os.path.join(task_folder, 'jobs', '{{argument_script}}')
+argument_path = os.path.join(task_folder, '{{argument_script}}')
 here          = os.path.dirname(os.path.abspath(__file__))
 current_link  = os.path.join(here, '/root/tasks/current')
 
