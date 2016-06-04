@@ -26,10 +26,8 @@
 
 - name: copy argument specifying which roots to generate / draw.
   template: >
-    src=jobs/{{item}}
-    dest='{{ task_path }}/jobs'
-  with_items:
-    - arguments.py
+    src=jobs/arguments.py
+    dest='{{ task_path }}/arguments.py'
 
 - name: symlink the task to the alias 'current'
   file: >
