@@ -71,6 +71,9 @@ to detach the screen session.
 
 ![alt text](examples/example-1.png "Monic Polynomial Graph")
 ![alt text](examples/example-2.png "Monic Polynomial Graph")
+![alt text](examples/example-3.png "Monic Polynomial Graph")
+![alt text](examples/example-4.png "Monic Polynomial Graph")
+![alt text](examples/example-5.png "Monic Polynomial Graph")
 
 ## License
 
