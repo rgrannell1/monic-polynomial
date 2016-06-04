@@ -28,7 +28,7 @@ current_link  = os.path.join(here, '/root/tasks/current')
 
 constants = {
 	'print_frequency': 10000,
-	'flush_threshold': 500000,
+	'flush_threshold': 10000,
 
 	'project_root': os.path.realpath(os.path.join(os.path.dirname(__file__), '../../')),
 
@@ -42,7 +42,7 @@ constants = {
 	'units': {
 		'bytes_per_gibibyte': 2 ** 30
 	},
-	'point_range': 255 ** 3,
+	'point_range': 255 * 255 * 255,
 
 	'required_folders': [
 		task_folder,
@@ -307,32 +307,11 @@ def get_point_colour (index):
 	get the ith sequence in [0, 0, 0] ... [255, 255, 255]
 	"""
 
-	return [255, 255, 255]
+	blue  = (index) & 255
+	green = (index >> 8) & 255
+	red   = (index >> 16) & 255
 
-	digits  = [ ]
-	initial = index
-
-	while initial > 0:
-
-		ith = initial / 255
-		digits.append(ith)
-		initial = initial / 255
-
-	if len(digits) != 3:
-
-		sys.stderr.write( json.dumps({
-			'level':  'error',
-			'message': 'incorrect generated colour-length',
-			'data': {
-				'index':  initial,
-				'colour': digits
-			}
-		}) + '\n')
-
-		exit(1)
-
-	return digits
-
+	return [red, green, blue]
 
 def convert_root_to_pixel (coefficients, point, extrema, width):
 	"""
@@ -437,34 +416,6 @@ def find_pixel_extrema (fconn, ranges):
 
 	return extrema
 
-def buffered_write_pixels (fpath, data, data_buffer, force = False):
-	"""
-
-	"""
-
-	if len(data_buffer) == constants["flush_threshold"] or force:
-
-		sys.stderr.write( json.dumps({
-			'level':  'info',
-			'message': 'writing pixels to file',
-			'data': {
-				'count':      len(data_buffer),
-				'threshhold': constants["flush_threshold"]
-			}
-		}) + '\n')
-
-		with open(fpath, 'a') as fconn:
-			for old_datum in data_buffer:
-				fconn.write(json.dumps(old_datum) + '\n')
-
-		del data_buffer[:]
-
-	data_buffer.append(data)
-
-
-
-
-
 def render_pixels (width, ranges, paths):
 	"""
 	input solutions from a jsonl file, and write to an output file.
@@ -475,22 +426,22 @@ def render_pixels (width, ranges, paths):
 
 	with open(paths['input']) as fconn:
 
-		for line in fconn:
+		with open(paths['output'], 'a') as out_fconn:
 
-			data_buffer = [ ]
-			solution    = json.loads(line)
+			for line in fconn:
 
-			for x, y in solution['roots']:
+				data_buffer = [ ]
+				solution    = json.loads(line)
 
-				x_in_range = x >= ranges['x'][0] and x <= ranges['x'][1]
-				y_in_range = y >= ranges['y'][0] and y <= ranges['y'][1]
+				for x, y in solution['roots']:
 
-				if x_in_range and y_in_range:
+					x_in_range = x >= ranges['x'][0] and x <= ranges['x'][1]
+					y_in_range = y >= ranges['y'][0] and y <= ranges['y'][1]
 
-					pixel = convert_root_to_pixel(solution['coefficients'], (x, y), extrema, width)
-					buffered_write_pixels(paths['output'], pixel, data_buffer)
+					if x_in_range and y_in_range:
 
-			buffered_write_pixels(paths['output'], pixel, data_buffer, force = True)
+						pixel = convert_root_to_pixel(solution['coefficients'], (x, y), extrema, width)
+						out_fconn.write(json.dumps(pixel) + '\n')
 
 
 

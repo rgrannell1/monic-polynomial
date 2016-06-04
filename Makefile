@@ -40,7 +40,5 @@ create-images:
 
 fetch-images:
 
-	# find tasks/*/output -name *.png
-
 	mkdir -p ~/polynomial-output
-	scp -r root@$(ip_address):tasks/current/output/images ~/polynomial-output
+	scp -r root@$(ip_address):archives ~/polynomial-output

@@ -1,11 +1,6 @@
 ---
-- name: copy role files
-  template: >
-    src={{item}}
-    dest={{task_path}}/{{item}}
-  with_items:
-    - run.py
-    - run-screen.py
-
 - name: run
   shell: "python3 {{task_path}}/run.py"
+
+- name: copy images to a shared directory
+  shell: "python3 {{task_path}}/copy-images.py"

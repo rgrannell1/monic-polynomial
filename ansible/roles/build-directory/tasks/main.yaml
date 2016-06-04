@@ -31,7 +31,7 @@
   with_items:
     - arguments.py
 
-- name: symlink
+- name: symlink the task to the alias 'current'
   file: >
     src={{task_path}}
     dest=/root/tasks/current
@@ -43,4 +43,8 @@
     dest={{task_path}}/{{item}}
   with_items:
     - run.py
-    - run-screen.py
+    - copy-images.py
+    - symlink-matching-data.py
+
+- name: symlink data files, when allowed.
+  shell: "python3 {{task_path}}/symlink-matching-data.py"
