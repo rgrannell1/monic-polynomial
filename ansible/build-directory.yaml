@@ -1,5 +1,4 @@
 ---
-- include: setup-environment.yaml
 - name:         create a new build
   gather_facts: yes
   hosts:        target_vm

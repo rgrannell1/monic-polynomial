@@ -3,6 +3,7 @@
 import os
 import sys
 import json
+import math
 import time
 import numpy
 import functools
@@ -10,6 +11,8 @@ import subprocess
 import itertools
 import operator
 import errno
+
+from PIL import Image
 
 
 
@@ -25,7 +28,7 @@ current_link  = os.path.join(here, '/root/tasks/current')
 
 constants = {
 	'print_frequency': 10000,
-	'flush_threshold': 100000,
+	'flush_threshold': 10000,
 
 	'project_root': os.path.realpath(os.path.join(os.path.dirname(__file__), '../../')),
 
@@ -56,8 +59,7 @@ constants = {
 		'archives':      '/root/archives',
 		'current_link':  current_link,
 		'solution':      os.path.join(current_link, 'output/json/solutions.jsonl'),
-		'pixels':        os.path.join(current_link, 'output/json/pixels.jsonl'),
-		'image':         os.path.join(current_link, 'output/images/{{start_time}}.png')
+		'pixels':        os.path.join(current_link, 'output/json/pixels.jsonl')
 	}
 }
 
@@ -108,21 +110,24 @@ def create_images (argument_sets):
 		if 'render_pixels' in argument_set:
 
 			render_pixels(
-				in_path    = constants['paths']['solution'],
-				xrange     = argument_set['render_pixels']['xrange'],
-				yrange     = argument_set['render_pixels']['yrange'],
-				width      = argument_set['render_pixels']['width'],
-				out_path   = constants['paths']['pixels'])
-#
-#		if argument_set['render_pixels']:
-#
-#			draw_solutions(
-#				in_path    = constants['paths']['pixels'],
-#				xrange     = argument_set['draw_solutions']['xrange'],
-#				yrange     = argument_set['draw_solutions']['yrange'],
-#				width      = argument_set['draw_solutions']['width'],
-#				out_path   = constants['paths']['image'] + '-' + str(count),
-#				_err       = print)
+				paths = {
+					'input':  constants['paths']['solution'],
+					'output': constants['paths']['pixels']
+				},
+				ranges = {
+					'x': argument_set['render_pixels']['ranges']['x'],
+					'y': argument_set['render_pixels']['ranges']['y']
+				},
+				width = argument_set['render_pixels']['width'])
+
+		if 'render_pixels' in argument_set:
+
+			draw_solutions(
+				paths = {
+					'input':  constants['paths']['pixels'],
+					'output': os.path.join(current_link, 'output/images/{{start_time}}-' + str(count) + '.png')
+				}
+			)
 
 		count += 1
 
@@ -205,28 +210,33 @@ def prompt_start (order, total_count):
 	if not answer:
 		exit(0)
 
-def print_progress (iter, total_count, start):
+def print_progress (iteration, total_count, start):
 	"""
 	estimate the current solution rate.
 	"""
 
-	if iter % constants["print_frequency"] == 0:
+	if iteration % constants["print_frequency"] == 0:
 
 		end        = time.time( )
 		elapsed    = end - start
-		per_second = round(iter / elapsed)
+		per_second = round(iteration / elapsed)
 
 		estimated_per_hour = per_second * 60 * 60
-		minutes_remaining  = round((total_count - iter) / 60 * per_second)
+
+		seconds_remaining  = round((total_count - iteration) / per_second)
+		minutes_remaining  = round(seconds_remaining / 60)
 
 		summary = {
 			'rates': {
-				'solved':    '{:,}'.format(iter),
+				'solved':    '{:,}'.format(iteration),
 				'perSecond': '{:,}'.format(per_second)
 			},
 			'estimates': {
-				'perHour':      '{:,}'.format(estimated_per_hour),
-				'minRemaining': '{:,}'.format(minutes_remaining)
+				'time_remaining': {
+					'seconds': '{:,}'.format(seconds_remaining),
+					'minutes': '{:,}'.format(minutes_remaining)
+				},
+				'perHour': '{:,}'.format(estimated_per_hour)
 			}
 		}
 
@@ -297,12 +307,15 @@ def solve_polynomials (order, num_range, assume_yes, out_path):
 # render equations
 # ++ ++ ++ ++ ++ ++ ++
 
-def get_point_colour (initial):
+def get_point_colour (index):
 	"""
 	get the ith sequence in [0, 0, 0] ... [255, 255, 255]
 	"""
 
-	digits = [ ]
+	return [255, 255, 255]
+
+	digits  = [ ]
+	initial = index
 
 	while initial > 0:
 
@@ -310,10 +323,22 @@ def get_point_colour (initial):
 		digits.append(ith)
 		initial = initial / 255
 
+	if len(digits) != 3:
+
+		sys.stderr.write( json.dumps({
+			'message': 'incorrect generated colour-length',
+			'data': {
+				'index':  initial,
+				'colour': digits
+			}
+		}) + '\n')
+
+		exit(1)
+
 	return digits
 
 
-def pixelise (coefficients, point, extrema, dimensions):
+def convert_root_to_pixel (coefficients, point, extrema, width):
 	"""
 
 	"""
@@ -337,18 +362,29 @@ def pixelise (coefficients, point, extrema, dimensions):
 	]
 
 	index = min(
-		math.floor(percentage[2] * constants['colours']['point_range']),
-		constants['colours']['point_range'] - 1)
+		math.floor(percentage[2] * constants['point_range']),
+		constants['point_range'] - 1)
 
 	x_diff = extrema['x']['max'] - extrema['x']['min']
 	y_diff = extrema['y']['max'] - extrema['y']['min']
 
-	height = (y_diff / x_diff) * dimensions['width']
+	height = (y_diff / x_diff) * width
+
+	for percent in percentage:
+
+		if percent < 0 or percent > 1:
+
+			sys.stderr.write( json.dumps({
+				'message': 'invalid percentage value',
+				'data': {
+					'percentage': percentage
+				}
+			}) + '\n')
 
 	return [
-		math.floor(percentage[0] * dimensions['width']),
+		math.floor(percentage[0] * width),
 		math.floor(percentage[1] * height),
-		get_point(index)
+		get_point_colour(index)
 	]
 
 def find_pixel_extrema (fconn, ranges):
@@ -404,19 +440,26 @@ def find_pixel_extrema (fconn, ranges):
 
 	return extrema
 
-def buffered_write_pixels (data, data_buffer, force = False):
+def buffered_write_pixels (fpath, data, data_buffer, force = False):
 	"""
 
 	"""
 
 	if len(data_buffer) == constants["flush_threshold"] or force:
-		for old_datum in data_buffer:
-			print(json.dumps(old_datum))
+
+		with open(fpath, 'w+') as fconn:
+			for old_datum in data_buffer:
+				fconn.write(json.dumps(old_datum) + '\n')
+
 		del data_buffer[:]
 
 	data_buffer.append(data)
 
-def render_pixels (dimensions, ranges, paths):
+
+
+
+
+def render_pixels (width, ranges, paths):
 	"""
 	input solutions from a jsonl file, and write to an output file.
 	"""
@@ -438,10 +481,10 @@ def render_pixels (dimensions, ranges, paths):
 
 				if x_in_range and y_in_range:
 
-					pixel = pixelise(solution['coefficients'], (x, y), extrema, dimensions)
-					buffered_write_pixels(pixel, data_buffer)
+					pixel = convert_root_to_pixel(solution['coefficients'], (x, y), extrema, width)
+					buffered_write_pixels(paths['output'], pixel, data_buffer)
 
-			buffered_write_pixels(pixel, data_buffer, force = True)
+			buffered_write_pixels(paths['output'], pixel, data_buffer, force = True)
 
 
 
@@ -491,8 +534,24 @@ def draw_solutions (paths):
 			x_in_range = x > 0 and x < image_size['x']
 			y_in_range = x > 0 and y < image_size['y']
 
-			if x_in_range and y_in_range:
-				img_pixels[x, y] = (colour[0], colour[1], colour[2])
+			try:
+
+				if x_in_range and y_in_range:
+
+					img_pixels[x, y] = (colour[0], colour[1], colour[2])
+
+			except Exception as err:
+
+				sys.stderr.write( json.dumps({
+					'message': 'failed to write pixel to image',
+					'data': {
+						'x':      x,
+						'y':      y,
+						'colour': colour
+					}
+				}) + '\n')
+
+				exit(1)
 
 		img.save(paths['output'])
 

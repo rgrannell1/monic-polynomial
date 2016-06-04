@@ -18,34 +18,13 @@ arguments = [
 			'range':  10
 		},
 		'render_pixels': {
-			'xrange': [-5, +5],
-			'yrange': [-5, +5],
-			'width':  50000
+			'ranges': {
+				'x': [-3, +3],
+				'y': [-3, +3]
+			},
+			'width':  10000
 		},
-		'draw_solutions': {
-			'xrange': [-5, +5],
-			'yrange': [-5, +5],
-			'height': 3000,
-			'width':  10000
-		}
-	},
-
-	{
-		'draw_solutions': {
-			'xrange': [-3, +3],
-			'yrange': [-3, +3],
-			'height': 3000,
-			'width':  10000
-		}
-	},
-
-	{
-		'draw_solutions': {
-			'xrange': [-1, +1],
-			'yrange': [-1, +1],
-			'height': 3000,
-			'width':  10000
-		}
+		'draw_solutions': { }
 	}
 
 ]

@@ -36,3 +36,11 @@
     src={{task_path}}
     dest=/root/tasks/current
     state=link
+
+- name: copy role files
+  template: >
+    src={{item}}
+    dest={{task_path}}/{{item}}
+  with_items:
+    - run.py
+    - run-screen.py
