@@ -67,6 +67,8 @@ Press
 
 to detach the screen session.
 
+## Example Images
+
 ## License
 
 The MIT License
