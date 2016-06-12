@@ -2,7 +2,7 @@
 
 This repository includes code to solve and graph large numbers of polynomial roots. It also includes code to deploy a DigitalOcean VM to run this code, since this task can raise a laptop's temperature to lightly knee-scortching.
 
-![alt text](examples/example-1.png "Monic Polynomial Graph")
+![alt text](examples/example-6.png "Monic Polynomial Graph")
 
 ## Background
 
@@ -69,7 +69,7 @@ to detach the screen session.
 
 ## Example Images
 
-![alt text](examples/example-1.png "Monic Polynomial Graph")
+![alt text](examples/example-6.png "Monic Polynomial Graph")
 ![alt text](examples/example-2.png "Monic Polynomial Graph")
 ![alt text](examples/example-3.png "Monic Polynomial Graph")
 ![alt text](examples/example-4.png "Monic Polynomial Graph")
