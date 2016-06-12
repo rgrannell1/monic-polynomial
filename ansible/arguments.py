@@ -15,14 +15,14 @@ arguments = [
 	{
 		'solve_polynomial': {
 			'order':  5,
-			'range':  40
+			'range':  15
 		},
 		'render_pixels': {
 			'ranges': {
-				'x': [-2, +2],
-				'y': [-2, +2]
+				'x': [-1, +1],
+				'y': [+2, +3]
 			},
-			'width':  10000
+			'width':  2 * 1000
 		},
 		'draw_solutions': { }
 	}

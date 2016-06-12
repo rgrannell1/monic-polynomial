@@ -63,26 +63,29 @@ def list_task_arguments (current_task_folder):
 
 	for dir_name in os.listdir(constants['paths']['tasks']):
 
-		if dir_name == 'current':
-			next
+		candidate_task_directory = os.path.join(constants['paths']['tasks'], dir_name)
 
-		task_directory = os.path.join(constants['paths']['tasks'], dir_name)
+		is_current_symlink   = dir_name == 'current'
+		is_current_directory = candidate_task_directory == current_task_folder
 
-		if task_directory == current_task_folder:
-			next
+		if not (is_current_directory or is_current_symlink):
 
-		arguments_file = os.path.join(task_directory, 'arguments.py')
+			arguments_file = os.path.join(candidate_task_directory, 'arguments.py')
 
-		if os.path.exists(arguments_file):
+			if os.path.exists(arguments_file):
 
-			yield {
-				'directory': task_directory,
-				'arguments': read_arguments(arguments_file)
-			}
+				yield {
+					'directory': candidate_task_directory,
+					'arguments': read_arguments(arguments_file)
+				}
 
 def find_existing_result_symlinks (current_arguments, current_task_folder):
 
-	old_task_paths  = { }
+	old_task_paths  = {
+		'solutions': None,
+		'pixels':    None
+	}
+
 	other_arguments = list(list_task_arguments(current_task_folder))
 
 	for other_argument_sets in other_arguments:
@@ -90,39 +93,65 @@ def find_existing_result_symlinks (current_arguments, current_task_folder):
 		other_directory = other_argument_sets['directory']
 		other_arguments = other_argument_sets['arguments']
 
+		argument_data = [
+			{
+				'name': 'solutions',
+				'key': 'solve_polynomial',
+				'path': os.path.join(other_directory, 'output', 'json', 'solutions.jsonl')
+			},
+			{
+				'name': 'pixels',
+				'key': 'render_pixels',
+				'path': os.path.join(other_directory, 'output', 'json', 'pixels.jsonl')
+			}
+		]
+
 		for other_argument_set in other_arguments:
 
 			for current_argument_set in current_arguments:
 
-				if 'solve_polynomial' in current_argument_set:
+				for argument_handle in argument_data:
 
-					if deep_equal(current_argument_set['solve_polynomial'], current_argument_set['solve_polynomial']):
-						old_task_paths['solutions'] = other_directory
+					if argument_handle['key'] in current_argument_set:
 
-				if 'render_pixels' in current_argument_set:
+						arguments_are_equal = deep_equal(
+							current_argument_set[argument_handle['key']],
+							current_argument_set[argument_handle['key']])
 
-					if deep_equal(current_argument_set['render_pixels'], current_argument_set['render_pixels']):
-						old_task_paths['pixels'] = other_directory
+						file_exists = os.path.isfile(argument_handle['path'])
+
+						if arguments_are_equal and file_exists:
+							old_task_paths[argument_handle['name']] = argument_handle['path']
 
 	return old_task_paths
 
 def copy_task_files (task_folder, current_link):
 
-	if os.path.isfile(task_folder['solutions']):
+	paths = {
+		'old': task_folder,
+		'new': {
+			'solutions': os.path.join(current_link, 'output', 'json', 'solutions.jsonl'),
+			'pixels':    os.path.join(current_link, 'output', 'json', 'pixels.jsonl')
+		}
+	}
 
-		src  = os.path.join(task_folder['solutions'], 'output', 'json', 'solutions.jsonl')
-		dest = os.path.join(current_link,             'output', 'json', 'solutions.jsonl')
+	if paths['old']['solutions'] and os.path.isfile(paths['old']['solutions']):
 
-		os.link(src, dest)
-		print('linking ' + src + ' -> ' + ' ' + dest)
+		src  = paths['old']['solutions']
+		dest = paths['new']['solutions']
 
-	if os.path.isfile(task_folder['pixels']):
+		if not os.path.isfile(dest):
+			os.symlink(src, dest)
+			sys.stderr.write('linking ' + src + ' -> ' + ' ' + dest + '\n')
 
-		src  = os.path.join(task_folder['pixels'], 'output', 'json', 'pixels.jsonl')
-		dest = os.path.join(current_link,          'output', 'json', 'pixels.jsonl')
+	if paths['old']['pixels'] and os.path.isfile(paths['old']['pixels']):
 
-		os.link(src, dest)
-		print('linking ' + src + ' -> ' + ' ' + dest)
+		src  = paths['old']['pixels']
+		dest = paths['new']['pixels']
+
+		if not os.path.isfile(dest):
+			os.symlink(src, dest)
+			sys.stderr.write('linking ' + src + ' -> ' + ' ' + dest + '\n')
 
 
 

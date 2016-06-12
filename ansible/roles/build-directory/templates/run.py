@@ -6,6 +6,7 @@ import json
 import math
 import time
 import numpy
+import numpy
 import functools
 import subprocess
 import itertools
@@ -42,7 +43,6 @@ constants = {
 	'units': {
 		'bytes_per_gibibyte': 2 ** 30
 	},
-	'point_range': 255 * 255 * 255,
 
 	'required_folders': [
 		task_folder,
@@ -56,6 +56,53 @@ constants = {
 		'current_link':  current_link,
 		'solution':      os.path.join(current_link, 'output/json/solutions.jsonl'),
 		'pixels':        os.path.join(current_link, 'output/json/pixels.jsonl')
+	},
+	'colour_functions': { }
+}
+
+
+
+
+
+def colour_tint_function (index):
+
+	colours = [
+		[0,   3,   255],
+		[20,  22,  255],
+		[40,  41,  255],
+		[59,  61,  255],
+		[79,  80,  255],
+		[98,  100, 255],
+		[118, 119, 255],
+		[138, 139, 255],
+		[157, 158, 255],
+		[177, 178, 255],
+		[197, 197, 255],
+		[216, 216, 255],
+		[236, 236, 255]
+	]
+
+	return colours[min(len(colours) - 1, index)]
+
+def get_point_colour (index):
+	"""
+	get the ith sequence in [0, 0, 0] ... [255, 255, 255]
+	"""
+
+	blue  = (index) & 255
+	green = (index >> 8) & 255
+	red   = (index >> 16) & 255
+
+	return [red, green, blue]
+
+constants['colour_functions'] = {
+	'tint': {
+		'function': colour_tint_function,
+		'size':     14
+	},
+	'opposed': {
+		'function': get_point_colour,
+		'size':     255 * 255 * 255
 	}
 }
 
@@ -122,10 +169,12 @@ def create_images (argument_sets):
 
 		if 'render_pixels' in argument_set:
 
+			time_label = datetime.datetime.fromtimestamp( {{start_time}} ).strftime('%Y-%m-%dT%H:%M:%SZ')
+
 			draw_solutions(
 				paths = {
 					'input':  constants['paths']['pixels'],
-					'output': os.path.join(current_link, 'output/images/{{start_time}}-' + str(count) + '.png')
+					'output': os.path.join(current_link, 'output/images/' + time_label + '-' + str(count) + '.png')
 				}
 			)
 
@@ -306,17 +355,6 @@ def solve_polynomials (order, num_range, assume_yes, out_path):
 # render equations
 # ++ ++ ++ ++ ++ ++ ++
 
-def get_point_colour (index):
-	"""
-	get the ith sequence in [0, 0, 0] ... [255, 255, 255]
-	"""
-
-	blue  = (index) & 255
-	green = (index >> 8) & 255
-	red   = (index >> 16) & 255
-
-	return [red, green, blue]
-
 def convert_root_to_pixel (coefficients, point, extrema, width):
 	"""
 
@@ -340,9 +378,7 @@ def convert_root_to_pixel (coefficients, point, extrema, width):
 		normalised[2] / (extrema['coefficient_product']['max'] - extrema['coefficient_product']['min'])
 	]
 
-	index = min(
-		math.floor(percentage[2] * constants['point_range']),
-		constants['point_range'] - 1)
+	colour_index = math.floor(percentage[2] * constants['colour_functions']['opposed']['size'])
 
 	x_diff = extrema['x']['max'] - extrema['x']['min']
 	y_diff = extrema['y']['max'] - extrema['y']['min']
@@ -361,10 +397,12 @@ def convert_root_to_pixel (coefficients, point, extrema, width):
 				}
 			}) + '\n')
 
+	colour_fn = constants['colour_functions']['opposed']['function']
+
 	return [
 		math.floor(percentage[0] * width),
 		math.floor(percentage[1] * height),
-		get_point_colour(index)
+		colour_fn(colour_index)
 	]
 
 def find_pixel_extrema (fconn, ranges):

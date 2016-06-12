@@ -22,7 +22,7 @@ const fileData = {
 const vm = {
 	"name":      "polynomial-runner-" + Date.now( ),
 	"region":    "lon1",
-	"size":      "2gb",
+	"size":      "4gb",
 	"image":     "ubuntu-14-04-x64",
 	"ssh_keys":  [fileData.sshId]
 }
