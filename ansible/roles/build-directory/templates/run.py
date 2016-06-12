@@ -6,11 +6,11 @@ import json
 import math
 import time
 import numpy
-import numpy
 import functools
 import subprocess
 import itertools
 import operator
+import datetime
 import errno
 
 from PIL import Image
@@ -170,11 +170,12 @@ def create_images (argument_sets):
 		if 'render_pixels' in argument_set:
 
 			time_label = datetime.datetime.fromtimestamp( {{start_time}} ).strftime('%Y-%m-%dT%H:%M:%SZ')
+			out_path   = os.path.join(current_link, 'output/images/' + time_label + '-' + str(count) + '.png')
 
 			draw_solutions(
 				paths = {
 					'input':  constants['paths']['pixels'],
-					'output': os.path.join(current_link, 'output/images/' + time_label + '-' + str(count) + '.png')
+					'output': out_path
 				}
 			)
 
