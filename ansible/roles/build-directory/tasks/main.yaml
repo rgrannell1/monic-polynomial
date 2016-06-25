@@ -1,17 +1,9 @@
 ---
-- name: download polynomial from github package.
-  become: no
-  git: >
-    repo="https://github.com/rgrannell1/polynomial.git"
-    dest="tasks/{{start_time}}/repo"
-
-- name: copy python files to /bin.
-  command: >
-    cp tasks/{{start_time}}/repo/src/python/{{ item }}.py /bin/{{item}}
-  with_items:
-    - render-pixels
-    - draw-solutions
-    - solve-polynomials
+#- name: download polynomial from github package.
+#  become: no
+#  git: >
+#    repo="https://github.com/rgrannell1/polynomial.git"
+#    dest="tasks/{{start_time}}/repo"
 
 - name: create build directories.
   file: >
@@ -19,30 +11,37 @@
     state=directory
     mode=0755
   with_items:
-    - '{{ repo_path }}/output'
+    - 'root/archives'
+    - '{{ task_path }}/output'
     - '{{ task_path }}'
-    - '{{ repo_path }}/output/json'
-    - '{{ repo_path }}/output/images'
+    - '{{ task_path }}/output/json'
+    - '{{ task_path }}/output/images'
+    - '{{ task_path }}/python'
+    - '{{ task_path }}/python/commons'
 
-- name: copy argument specifying which roots to generate / draw.
+- name: copy argument file specifying which roots to generate / draw.
   template: >
     src=arguments.py
     dest='{{ task_path }}/arguments.py'
+
+- name: copy python template files
+  template: >
+    src={{ item }}
+    dest={{ task_path }}/{{ item }}
+  with_items:
+    - python/commons/colours.py
+    - python/commons/constants.py
+    - python/commons/utils.py
+    - python/__init__.py
+
+    - python/copy_images.py
+    - python/draw_solutions.py
+    - python/render_pixels.py
+    - python/solve_polynomials.py
+    - python/run_foo.py
 
 - name: symlink the task to the alias 'current'
   file: >
     src={{task_path}}
     dest=/root/tasks/current
     state=link
-
-- name: copy role files
-  template: >
-    src={{item}}
-    dest={{task_path}}/{{item}}
-  with_items:
-    - run.py
-    - copy-images.py
-    - symlink-matching-data.py
-
-#- name: symlink data files, when allowed.
-#  shell: "python3 {{task_path}}/symlink-matching-data.py"

@@ -12,6 +12,7 @@
     - python3-pil
     - screen
     - htop
+    - jq
 
 - name: download pip packages.
   become:        yes
@@ -24,3 +25,6 @@
     - sh
     - docopt
     - prompter
+
+- name: set the timezone
+  shell: timedatectl set-timezone Europe/Dublin

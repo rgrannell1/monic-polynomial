@@ -10,24 +10,22 @@ import json
 
 
 
-arguments = [
+# +- 1.5
 
-	{
-		'solve_polynomial': {
-			'order':  5,
-			'range':  10
+arguments = {
+	'solve_polynomial': {
+		'order':  5,
+		'range':  35
+	},
+	'render_pixels': {
+		'ranges': {
+			'x': [-1, +1],
+			'y': [-0.5, -1.5]
+
 		},
-		'render_pixels': {
-			'ranges': {
-				'x': [-1, +1],
-				'y': [-1, -2]
-			},
-			'width':  10 * 1000
-		},
-		'draw_solutions': { }
+		'width':  15 * 1000
 	}
-
-]
+}
 
 
 

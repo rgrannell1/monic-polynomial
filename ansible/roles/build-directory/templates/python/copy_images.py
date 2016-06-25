@@ -8,16 +8,7 @@ import os
 import sys
 import shutil
 
-
-
-
-
-constants = {
-	'paths': {
-		'tasks':    '/root/tasks',
-		'archives': '/root/archives',
-	}
-}
+from commons.constants import constants
 
 
 
