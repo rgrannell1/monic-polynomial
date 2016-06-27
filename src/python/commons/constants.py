@@ -1,4 +1,5 @@
 
+
 import os
 
 
@@ -31,10 +32,10 @@ constants = {
 
 
 
-def any_predicate (coefficents):
-	return true
+def is_polynomial (coefficents):
+	return True
 
-def palindrome_predicate (coefficents):
+def is_palindromic_polynomial (coefficents):
 
 	for elem0, elem1 in zip(coefficents, reversed(coefficents)):
 		if elem0 != elem1:
@@ -42,12 +43,25 @@ def palindrome_predicate (coefficents):
 
 	return True
 
+def is_monic_polynomial (coefficents):
+	return coefficents[0] == 1
+
+def is_littlewood_polynomial (coefficents):
+
+	for coefficent in coefficents:
+		if coefficent !== 1 and coefficent !== -1:
+			return False
+	return True
+
+
 
 
 
 
 
 constants['polynomial_predicates'] = {
-	'any':        any_predicate,
-	'palindrome': palindrome_predicate
+	'any':        is_polynomial,
+	'palindrome': is_palindromic_polynomial,
+	'monic':      is_monic_polynomial,
+	'littlewood': is_littlewood_polynomial
 }
