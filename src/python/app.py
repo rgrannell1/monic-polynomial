@@ -8,6 +8,7 @@ import datetime
 import subprocess
 
 from commons           import colours
+from commons.constants import constants
 from solve_polynomials import solve_polynomials
 from render_pixels     import render_pixels
 from draw_solutions    import draw_solutions
