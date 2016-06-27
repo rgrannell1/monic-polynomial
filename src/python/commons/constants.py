@@ -36,7 +36,7 @@ def any_predicate (coefficents):
 
 def palindrome_predicate (coefficents):
 
-	for elem0, elem1 in zip(coefficents, coefficents.reverse( )):
+	for elem0, elem1 in zip(coefficents, reversed(coefficents)):
 		if elem0 != elem1:
 			return False
 
