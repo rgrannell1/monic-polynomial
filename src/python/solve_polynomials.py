@@ -63,6 +63,8 @@ def solve_polynomials (order, num_range, predicate, out_path):
 	with open(out_path, "a") as fconn:
 		for point in space:
 
+			root_count += 1
+
 			if predicate(point):
 
 				solution =	{
@@ -70,7 +72,6 @@ def solve_polynomials (order, num_range, predicate, out_path):
 					'roots':        [ [root.real, root.imag] for root in numpy.roots(point) ]
 				}
 
-				root_count += 1
 
 				fconn.write(json.dumps(solution) + '\n')
 

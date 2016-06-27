@@ -14,18 +14,14 @@ import json
 
 arguments = {
 	'solve_polynomial': {
-		'order':  5,
-		'range':  10,
-		'predicate': 'palindrome'
+		'order':     5,
+		'range':     10,
+		'predicate': 'any'
 	},
 	'render_pixels': {
 		'ranges': {
-#			'x': [-1, +1],
-#			'y': [-0.5, -1.5]
-
-			'x': [-3, +3],
-			'y': [-3, +3]
-
+			'x': [-0.3, +0.3],
+			'y': [-0.7, -1.3]
 		},
 		'width':  5 * 1000
 	}
