@@ -1,3 +1,4 @@
 ---
-task_path: "/root/tasks/{{ start_time }}"
-repo_path: "{{ task_path }}/repo"
+start_time: "{{ ansible_date_time.date }}"
+task_path:  "/root/tasks/{{ start_time }}"
+repo_path:  "{{ task_path }}/repo"

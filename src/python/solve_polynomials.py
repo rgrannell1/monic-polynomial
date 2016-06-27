@@ -47,7 +47,7 @@ def display_progress (iteration, total_count, start):
 
 
 
-def solve_polynomials (order, num_range, out_path):
+def solve_polynomials (order, num_range, predicate, out_path):
 	"""
 
 	"""
@@ -62,6 +62,9 @@ def solve_polynomials (order, num_range, out_path):
 
 	with open(out_path, "a") as fconn:
 		for point in space:
+
+			if not predicate(point):
+				next
 
 			solution =	{
 				'coefficients': point,
