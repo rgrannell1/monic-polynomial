@@ -5,8 +5,6 @@ import os
 
 
 
-here          = os.path.dirname(os.path.abspath(__file__))
-current_link  = '/root/tasks/current'
 
 constants = {
 	'print_frequency': 10000,

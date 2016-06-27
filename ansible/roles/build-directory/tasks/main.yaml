@@ -24,22 +24,6 @@
     src=arguments.py
     dest='{{ task_path }}/arguments.py'
 
-- name: copy python template files
-  template: >
-    src={{ item }}
-    dest={{ task_path }}/{{ item }}
-  with_items:
-    - python/commons/colours.py
-    - python/commons/constants.py
-    - python/commons/utils.py
-    - python/__init__.py
-
-    - python/copy_images.py
-    - python/draw_solutions.py
-    - python/render_pixels.py
-    - python/solve_polynomials.py
-    - python/run_foo.py
-
 - name: symlink the task to the alias 'current'
   file: >
     src={{task_path}}

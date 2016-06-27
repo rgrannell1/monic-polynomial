@@ -25,7 +25,7 @@ def app (arguments):
 	paths['tasks']    = os.path.dirname(arguments['--task-path'])
 	paths['archives'] = os.path.join(os.path.dirname(paths['tasks']), 'archives')
 	paths['current_link'] = os.path.join(paths['tasks'], 'current')
-	paths['solution']     = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
+	paths['solutions']     = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
 	paths['pixels']       = os.path.join(paths['current_link'], 'output/json/pixels.jsonl')
 
 	required_folders = [
@@ -95,7 +95,7 @@ def generate_polynomial_image (arguments, paths):
 	image_path = os.path.join(paths['current_link'], 'output', 'images', str(datetime.datetime.now( )) + '.png')
 
 	pixel_path    = paths['pixels']
-	solution_path = paths['solution']
+	solution_path = paths['solutions']
 
 	if not os.path.isfile(solution_path):
 
