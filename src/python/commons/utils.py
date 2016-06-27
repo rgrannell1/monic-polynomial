@@ -47,8 +47,8 @@ def erase_lines (count):
 	"""
 
 	for _ in range(count):
-		sys.stderr.write(constants['escapes']['line_up'])
-		sys.stderr.write(constants['escapes']['line_delete'])
+		sys.stdout.write(constants['escapes']['line_up'])
+		sys.stdout.write(constants['escapes']['line_delete'])
 
 def mkdir_p (path):
 	try:

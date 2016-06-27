@@ -93,7 +93,7 @@ def convert_root_to_pixel (coefficients, point, extrema, width, coefficient_metr
 
 		if percent < 0 or percent > 1:
 
-			sys.stderr.write( json.dumps({
+			sys.stdout.write( json.dumps({
 				'level':  'error',
 				'message': 'invalid percentage value',
 				'data': {

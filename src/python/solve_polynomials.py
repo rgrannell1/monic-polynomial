@@ -26,7 +26,7 @@ def display_progress (iteration, total_count, start):
 		seconds_remaining  = round((total_count - iteration) / per_second)
 		minutes_remaining  = round(seconds_remaining / 60)
 
-		sys.stderr.write(json.dumps({
+		sys.stdout.write(json.dumps({
 			'level': 'info',
 			'data': {
 				'solved':     '{:,}'.format(iteration),
@@ -63,16 +63,15 @@ def solve_polynomials (order, num_range, predicate, out_path):
 	with open(out_path, "a") as fconn:
 		for point in space:
 
-			if not predicate(point):
-				next
+			if predicate(point):
 
-			solution =	{
-				'coefficients': point,
-				'roots':        [ [root.real, root.imag] for root in numpy.roots(point) ]
-			}
+				solution =	{
+					'coefficients': point,
+					'roots':        [ [root.real, root.imag] for root in numpy.roots(point) ]
+				}
 
-			root_count += 1
+				root_count += 1
 
-			fconn.write(json.dumps(solution) + '\n')
+				fconn.write(json.dumps(solution) + '\n')
 
-			display_progress(root_count, total_count, start)
+				display_progress(root_count, total_count, start)

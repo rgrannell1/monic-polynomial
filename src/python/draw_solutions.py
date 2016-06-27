@@ -87,7 +87,7 @@ def draw_solutions (paths):
 
 			except Exception as err:
 
-				sys.stderr.write( json.dumps({
+				sys.stdout.write( json.dumps({
 					'level':  'error',
 					'message': 'failed to write pixel to image',
 					'data': {
