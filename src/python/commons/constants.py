@@ -49,7 +49,7 @@ def is_monic_polynomial (coefficents):
 def is_littlewood_polynomial (coefficents):
 
 	for coefficent in coefficents:
-		if coefficent !== 1 and coefficent !== -1:
+		if coefficent != 1 and coefficent != -1:
 			return False
 	return True
 

@@ -9,10 +9,15 @@ from prompter import prompt
 
 
 
-with open('security/ip_address','r') as fconn:
-    ip_address = fconn.read( ).strip( )
 
+connect_path = 'security/local_ip_address'
 
+with open(connect_path,'r') as fconn:
+
+	content = fconn.read( ).strip( )
+
+	ansible_user = content.split('@')[0]
+	ip_address   = content.split('@')[1]
 
 inventory = {
 	'all': {
@@ -22,7 +27,10 @@ inventory = {
 		'hosts': ['target_vm'],
 		'vars': {
 			'start_time':      int(time.time( )),
+
 			'ansible_host':    ip_address,
+			'ansible_user':    ansible_user,
+
 			'argument_script': 'arguments.py'
 		}
 	}

@@ -3,17 +3,14 @@
   become: no
   git: >
     repo="https://github.com/rgrannell1/polynomial.git"
-    dest="tasks/{{start_time}}/repo"
+    dest="{{repo_path}}"
 
 - name: create build directories.
-  file: >
-    path={{ item }}
-    state=directory
-    mode=0755
+  shell: mkdir -p {{ item }}
   with_items:
-    - 'root/archives'
-    - '{{ task_path }}/output'
+    - 'archives'
     - '{{ task_path }}'
+    - '{{ task_path }}/output'
     - '{{ task_path }}/output/json'
     - '{{ task_path }}/output/images'
     - '{{ task_path }}/python'
@@ -27,5 +24,5 @@
 - name: symlink the task to the alias 'current'
   file: >
     src={{task_path}}
-    dest=/root/tasks/current
+    dest={{local_home}}/tasks/current
     state=link
