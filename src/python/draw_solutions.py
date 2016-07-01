@@ -8,29 +8,32 @@ from PIL import Image
 
 
 
-def find_image_size (coords, image_size):
+def find_coord_extrema (coords, extrema):
 
-	if coords[0] > image_size['x']:
-		image_size['x'] = coords[0]
+	if coords[0] > extrema['x']:
+		extrema['x'] = coords[0]
 
-	if coords[1] > image_size['y']:
-		image_size['y'] = coords[1]
+	if coords[1] > extrema['y']:
+		extrema['y'] = coords[1]
 
-	return image_size
-
-
+	return extrema
 
 
 
-def create_image ( ):
 
-	image_dimensions = (image_size['x'], image_size['y'])
+
+def create_image (image_size, tile_counts):
+
+	image_dimensions = (
+		math.round(image_size['x'] / tile_counts['x']),
+		math.round(image_size['y'] / tile_counts['y'])
+	)
 
 	img        = Image.new('RGB', image_dimensions, constants['colours']['background'])
 	img_pixels = img.load( )
 
 	return {
-		'img':    img,
+		'image':  img,
 		'pixels': img_pixels
 	}
 
@@ -38,11 +41,34 @@ def create_image ( ):
 
 
 
-def draw_solutions (paths):
-	"""
-	read pixels from an input file, and write the image out
-	to another file.
-	"""
+
+def calculate_ranges (image_size, tile_counts):
+
+	for ith in range(tile_counts['x']):
+		for jth in range(tile_counts['y']):
+
+			left_x  = (ith + 0) * ( math.floor(image_size['x'] / tile_counts['x']) )
+			right_x = (ith + 1) * ( math.floor(image_size['x'] / tile_counts['x']) )
+
+			top_y    = (jth + 0) * ( math.floor(image_size['y'] / tile_counts['y']) )
+			bottom_x = (jth + 1) * ( math.floor(image_size['y'] / tile_counts['y']) )
+
+			yield {
+				'x': {
+					min: left_x,
+					max: right_x
+				},
+				'y': {
+					min: top_y,
+					max: bottom_y
+				}
+			}
+
+
+
+
+
+def find_image_size ( ):
 
 	image_size = {'x': 0, 'y': 0}
 
@@ -55,7 +81,7 @@ def draw_solutions (paths):
 			x, y, _ = json.loads(line)
 
 			line_count += 1
-			image_size = find_image_size((x, y), image_size)
+			image_size = find_coord_extrema((x, y), image_size)
 
 		if line_count == 0:
 			raise Exception('no pixels loaded.')
@@ -63,12 +89,21 @@ def draw_solutions (paths):
 		if image_size['x'] == 0 or image_size['y'] == 0:
 			raise Exception('determined image size was zero.')
 
-	with open(paths['input']) as fconn:
+	return image_size
 
-		image_dimensions = (image_size['x'], image_size['y'])
 
-		img        = Image.new('RGB', image_dimensions, constants['colours']['background'])
-		img_pixels = img.load( )
+
+
+def find_pixels (xrange, yrange):
+
+	print( json.dumps({
+		'level':  'info',
+		'message': 'finding matching pixels',
+		'data': {
+			'xrange': xrange,
+			'yrange': yrange
+		}
+	}))
 
 	with open(paths['input']) as fconn:
 
@@ -76,18 +111,48 @@ def draw_solutions (paths):
 
 			x, y, colour = json.loads(line)
 
-			x_in_range = x > 0 and x < image_size['x']
-			y_in_range = x > 0 and y < image_size['y']
+			if x > xrange['min']:
+				if x < xrange['max']:
+					if y > yrange['min']:
+						if y < yrange['max']
+							yield (x, y, colour)
+
+def draw_solutions (paths, tile_counts):
+	"""
+	read pixels from an input file, and write the image out
+	to another file.
+	"""
+
+	image_size   = find_image_size( )
+	pixel_ranges = calculate_ranges(image_size, tile_counts)
+
+	for pixel_range in pixel_ranges:
+
+		print( json.dumps({
+			'level':  'info',
+			'message': 'drawing pixels in range',
+			'data': {
+				'xrange': xrange,
+				'yrange': yrange
+			}
+		}))
+
+		image, pixels = create_image(image_size, tile_counts)
+
+		for x, y, colour in find_pixels(pixel_range['x'], pixel_range['y']):
 
 			try:
 
-				if x_in_range and y_in_range:
+				normal = {
+					'x': x - pixel_range['x']['min'],
+					'y': y - pixel_range['y']['min']
+				}
 
-					img_pixels[x, y] = (colour[0], colour[1], colour[2])
+				img_pixels[normal['x'], normal['y']] = (colour[0], colour[1], colour[2])
 
 			except Exception as err:
 
-				sys.stdout.write( json.dumps({
+				print( json.dumps({
 					'level':  'error',
 					'message': 'failed to write pixel to image',
 					'data': {
@@ -95,11 +160,11 @@ def draw_solutions (paths):
 						'y':      y,
 						'colour': colour
 					}
-				}) + '\n')
+				}))
 
 				exit(1)
 
 		try:
-			img.save(paths['output'])
+			image.save(paths['output_dir'])
 		except Exception as err:
 			raise err

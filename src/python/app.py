@@ -92,8 +92,7 @@ def copy_images (paths):
 
 def generate_polynomial_image (arguments, paths):
 
-
-	image_path = os.path.join(paths['current_link'], 'output', 'images', str(datetime.datetime.now( )) + '.png')
+	image_path = os.path.join(paths['current_link'], 'output', 'images')
 
 	pixel_path    = paths['pixels']
 	solution_path = paths['solutions']
@@ -125,8 +124,12 @@ def generate_polynomial_image (arguments, paths):
 
 	draw_solutions(
 		paths = {
-			'input':  pixel_path,
-			'output': image_path
+			'input':      pixel_path,
+			'output_dir': image_path
+		},
+		tile_counts = {
+			'x': 4,
+			'y': 4
 		}
 	)
 

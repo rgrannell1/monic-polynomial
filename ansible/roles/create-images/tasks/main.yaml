@@ -1,3 +1,7 @@
 ---
+- template: >
+    src=screen-task.sh
+    dest="{{local_home}}/tasks/current/screen-task.sh"
+
 - name: create the images
-  shell: "screen -S 'create-images-{{start_time}}' -d -m 'python3 {{task_path}}/run.py"
+  shell: "screen -S 'create-images-{{start_time}}' -d -m 'bash {{local_home}}/tasks/current/screen-task.sh'"
