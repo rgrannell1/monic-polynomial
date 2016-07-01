@@ -31,13 +31,9 @@ def create_image (image_size, tile_counts):
 		math.floor(image_size['y'] / tile_counts['y'])
 	)
 
-	img        = Image.new('RGB', image_dimensions, constants['colours']['background'])
-	img_pixels = img.load( )
+	img = Image.new('RGB', image_dimensions, constants['colours']['background'])
 
-	return {
-		'image':  img,
-		'image_pixels': img_pixels
-	}
+	return img, img.load( )
 
 
 
@@ -102,8 +98,8 @@ def find_pixels (input_path, xrange, yrange):
 		'level':  'info',
 		'message': 'finding matching pixels',
 		'data': {
-#			'xrange': xrange,
-#			'yrange': yrange
+			'xrange': xrange,
+			'yrange': yrange
 		}
 	}))
 
@@ -127,6 +123,7 @@ def draw_solutions (paths, tile_counts):
 
 	image_size   = find_image_size(paths['input'])
 	pixel_ranges = calculate_ranges(image_size, tile_counts)
+	image_count  = 0
 
 	for pixel_range in pixel_ranges:
 
@@ -134,8 +131,8 @@ def draw_solutions (paths, tile_counts):
 			'level':  'info',
 			'message': 'drawing pixels in range',
 			'data': {
-				#'xrange': pixel_range['x'],
-				#'yrange': pixel_range['y']
+				'xrange': pixel_range['x'],
+				'yrange': pixel_range['y']
 			}
 		}))
 
@@ -145,12 +142,10 @@ def draw_solutions (paths, tile_counts):
 
 			try:
 
-				normal = {
-					'x': x - pixel_range['x']['min'],
-					'y': y - pixel_range['y']['min']
-				}
+				normal_x = x - pixel_range['x']['min']
+				normal_y = y - pixel_range['y']['min']
 
-				image_pixels[normal['x'], normal['y']] = (colour[0], colour[1], colour[2])
+				image_pixels[normal_x, normal_y] = (colour[0], colour[1], colour[2])
 
 			except Exception as err:
 
@@ -169,6 +164,7 @@ def draw_solutions (paths, tile_counts):
 				exit(1)
 
 		try:
-			image.save(os.path.join(paths['output_dir'], str(count) + '.png'))
+			image.save(os.path.join(paths['output_dir'], str(image_count) + '.png'))
+			image_count += 1
 		except Exception as err:
 			raise err
