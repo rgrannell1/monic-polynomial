@@ -1,8 +1,8 @@
 ---
-- include: build-directory.yaml
+#- include: build-directory.yaml
 - name:         draw solutions
   gather_facts: yes
-  hosts:        target_vm
+  hosts:        localhost
   remote_user:  root
   roles:
     - create-images

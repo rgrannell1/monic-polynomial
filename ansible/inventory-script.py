@@ -4,7 +4,6 @@ import os
 import sys
 import json
 import time
-from prompter import prompt
 
 
 

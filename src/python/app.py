@@ -45,10 +45,10 @@ def app (arguments):
 		'current_link': paths['current_link']
 	})
 
-	copy_images({
-		'tasks':    paths['tasks'],
-		'archives': paths['archives']
-	})
+#	copy_images({
+#		'tasks':    paths['tasks'],
+#		'archives': paths['archives']
+#	})
 
 
 
