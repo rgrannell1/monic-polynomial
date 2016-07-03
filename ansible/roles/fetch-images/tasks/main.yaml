@@ -8,7 +8,7 @@
 - name: copy images back to the local machine.
   fetch: >
     src="~/tasks/current/output/final_image.png"
-    dest="~/polynomial-images/{{start_time}}.png1"
+    dest="~/polynomial-images/{{start_time}}.png"
     flat=yes
 
 - name: set up git large-file storage.

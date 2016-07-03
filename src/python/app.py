@@ -28,7 +28,6 @@ def app (arguments):
 	paths = { }
 
 	paths['tasks']    = os.path.dirname(arguments['--task-path'])
-	paths['archives'] = os.path.join(os.path.dirname(paths['tasks']), 'archives')
 	paths['current_link'] = os.path.join(paths['tasks'], 'current')
 	paths['solutions']    = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
 	paths['pixels']       = os.path.join(paths['current_link'], 'output/json/pixels.jsonl')
@@ -37,11 +36,14 @@ def app (arguments):
 
 	required_folders = [
 		os.path.join(arguments['--task-path']),
-		os.path.join(arguments['--task-path'], '/logs'),
+		os.path.join(arguments['--task-path'], '/output'),
 		os.path.join(arguments['--task-path'], '/output/json'),
-		os.path.join(arguments['--task-path'], '/output/images'),
-		paths['archives']
+		os.path.join(arguments['--task-path'], '/output/images')
 	]
+
+	for path in required_folders:
+		if not os.path.exists(path):
+			os.makedirs(path)
 
 	arguments = read_arguments(os.path.join(paths['current_link'], 'arguments.py'))
 

@@ -16,11 +16,7 @@
 - name: create build directories.
   shell: mkdir -p {{ item }}
   with_items:
-    - 'archives'
     - '{{ task_path }}'
-    - '{{ task_path }}/output'
-    - '{{ task_path }}/output/json'
-    - '{{ task_path }}/output/images'
 
 - name: copy argument file specifying which roots to generate / draw.
   template: >
