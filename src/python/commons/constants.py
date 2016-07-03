@@ -11,6 +11,8 @@ constants = {
 	'print_frequency': 10000,
 	'flush_threshold': 10000,
 
+	'tile_size': 5000,
+
 	'project_root': os.path.realpath(os.path.join(os.path.dirname(__file__), '../../../')),
 
 	'colours': {

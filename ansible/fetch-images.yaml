@@ -1,7 +1,7 @@
 ---
-- name:         setup environment
+- name:         fetch images
   gather_facts: yes
   hosts:        localhost
   remote_user:  root
   roles:
-    - environment
+    - fetch-images

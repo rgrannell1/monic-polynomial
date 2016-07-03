@@ -122,15 +122,17 @@ def draw_solutions (paths, tile_counts):
 	"""
 
 	image_size   = find_image_size(paths['input'])
-	pixel_ranges = calculate_ranges(image_size, tile_counts)
+	pixel_ranges = list(calculate_ranges(image_size, tile_counts))
 	image_count  = 0
 
-	for pixel_range in pixel_ranges:
+	for count, pixel_range in enumerate(pixel_ranges):
 
 		print( json.dumps({
 			'level':  'info',
 			'message': 'drawing pixels in range',
 			'data': {
+				'count':  count,
+				'total':  len(pixel_ranges),
 				'xrange': pixel_range['x'],
 				'yrange': pixel_range['y']
 			}
@@ -153,6 +155,8 @@ def draw_solutions (paths, tile_counts):
 					'level':  'error',
 					'message': 'failed to write pixel to image: ' + str(err) ,
 					'data': {
+						'count':  count,
+						'total':  len(pixel_ranges),
 						'x':      x,
 						'y':      y,
 						'normalised': normal,

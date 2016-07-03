@@ -12,9 +12,17 @@ def is_in_range (value, num_range):
 def extrema_interval (extrema):
 	return abs(extrema['max'] - extrema['min'])
 
+def display_extrema_progress (iteration):
 
+	if iteration % 100000 == 0:
 
-
+		print(json.dumps({
+			'level': 'info',
+			'message': 'finding coordinate extrema',
+			'data': {
+				'examined': iteration
+			}
+		}))
 
 def find_solution_extrema (fconn, coefficient_metric, ranges):
 	"""
@@ -36,9 +44,15 @@ def find_solution_extrema (fconn, coefficient_metric, ranges):
 		}
 	}
 
+	solution_count = 0
+
 	for line in fconn:
 
 		solution = json.loads(line)
+
+		solution_count += 1
+
+		display_extrema_progress(solution_count)
 
 		for x, y in solution['roots']:
 
@@ -146,4 +160,3 @@ def render_pixels (width, ranges, paths, colour_fn):
 
 			if written_count == 0:
 				raise Exception('no pixels written to file.')
-

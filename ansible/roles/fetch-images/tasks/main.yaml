@@ -1,0 +1,18 @@
+---
+- name: set up polynomial-images repo.
+  git:
+    repo:   'https://github.com/rgrannell1/polynomial-images.git'
+    dest:   ~/polynomial-images
+    update: yes
+
+- name: copy images back to the local machine.
+  fetch: >
+    src="~/tasks/current/output/final_image.png"
+    dest="~/polynomial-images/{{start_time}}"
+    flat=yes
+
+- name: set up large-file storage.
+  shell: "git lfs track *.png"
+
+- name: set up large-file storage.
+  shell: "git add -A . && git commit -am 'committing fetched image'"

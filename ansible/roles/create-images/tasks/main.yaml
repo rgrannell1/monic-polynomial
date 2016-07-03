@@ -1,7 +1,13 @@
 ---
-- template: >
+- name: copy bash template
+  template: >
     src=screen-task.sh
     dest="{{local_home}}/tasks/current/screen-task.sh"
 
+- file: >
+    path="{{local_home}}/tasks/current/screen-task.sh"
+    state=file
+    mode=a+x
+
 - name: create the images
-  shell: "screen -S 'create-images-{{start_time}}' -d -m 'bash {{local_home}}/tasks/current/screen-task.sh'"
+  shell: "screen -S 'create-images-{{start_time}}' -d -m '{{local_home}}/tasks/current/screen-task.sh'"

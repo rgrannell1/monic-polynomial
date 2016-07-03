@@ -20,7 +20,10 @@ with open(connect_path,'r') as fconn:
 
 inventory = {
 	'all': {
-		'hosts': [ip_address]
+		'hosts': [ip_address],
+		'vars': {
+			'current_host': 'localhost'
+		}
 	},
 	'target_vm': {
 		'hosts': ['target_vm'],

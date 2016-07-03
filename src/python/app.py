@@ -1,11 +1,15 @@
 
 
 import os
+import re
 import sys
 import json
-import shutil
+import math
 import datetime
 import subprocess
+
+from docopt import docopt
+from sh import montage
 
 from commons           import colours
 from commons.constants import constants
@@ -26,8 +30,10 @@ def app (arguments):
 	paths['tasks']    = os.path.dirname(arguments['--task-path'])
 	paths['archives'] = os.path.join(os.path.dirname(paths['tasks']), 'archives')
 	paths['current_link'] = os.path.join(paths['tasks'], 'current')
-	paths['solutions']     = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
+	paths['solutions']    = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
 	paths['pixels']       = os.path.join(paths['current_link'], 'output/json/pixels.jsonl')
+	paths['images']       = os.path.join(paths['current_link'], 'output/images/')
+	paths['final_image']  = os.path.join(paths['current_link'], 'output/final_image.png')
 
 	required_folders = [
 		os.path.join(arguments['--task-path']),
@@ -45,10 +51,45 @@ def app (arguments):
 		'current_link': paths['current_link']
 	})
 
-#	copy_images({
-#		'tasks':    paths['tasks'],
-#		'archives': paths['archives']
-#	})
+	assemble_images(list_images(paths['images']), paths['final_image'])
+
+
+
+
+
+
+def list_images(image_path):
+
+	def sort_images (name):
+		return int(re.search('^[0-9]+', name).group(0))
+
+	number_of_images = len(os.listdir(image_path))
+
+	side_length = number_of_images ** 0.5
+
+	image_paths = [os.path.join(image_path, str(ith) + '.png') for ith in range(number_of_images)]
+
+	if round(side_length) != side_length:
+		sys.stderr.write(json.dumps({
+			'message': 'strange number of pngs.'
+		}))
+		exit(1)
+
+	columns = [ [ ] for _ in range(int(side_length)) ]
+
+	for colnum in range(int(side_length)):
+		for rownum in range(int(side_length)):
+			columns[colnum].append(image_paths.pop(0))
+
+	for row in map(list, zip(*columns)):
+		for ith in range(len(row)):
+			yield row[ith]
+
+def assemble_images(images, output_path):
+
+	command = ['montage'] + list(images) + ['-mode concatenate', '-background "#FFFFFF"', '-limit memory 1GB', output_path]
+	os.system(' '.join(command))
+
 
 
 
@@ -68,27 +109,6 @@ def read_arguments (argument_path):
 
 
 
-def copy_images (paths):
-
-
-	for dir_name in os.listdir(paths['tasks']):
-
-		if dir_name == 'current':
-			next
-
-		directory       = os.path.join(paths['tasks'], dir_name)
-		image_directory = os.path.join(directory, 'output', 'images')
-
-		if os.path.exists(image_directory):
-			for image_name in os.listdir(image_directory):
-
-				image_path = os.path.join(image_directory, image_name)
-				image_dest = os.path.join(paths['archives'], image_name)
-				shutil.copy(image_path, image_dest)
-
-
-
-
 
 def generate_polynomial_image (arguments, paths):
 
@@ -99,10 +119,15 @@ def generate_polynomial_image (arguments, paths):
 
 	if not os.path.isfile(solution_path):
 
+		predicate = None
+
+		if 'predicate' in arguments['solve_polynomial']:
+			predicate = constants['polynomial_predicates'][arguments['solve_polynomial']['predicate']]
+
 		solve_polynomials(
 			arguments['solve_polynomial']['order'],
 			arguments['solve_polynomial']['range'],
-			constants['polynomial_predicates'][arguments['solve_polynomial']['predicate']],
+			predicate,
 			solution_path
 		)
 
@@ -122,15 +147,15 @@ def generate_polynomial_image (arguments, paths):
 
 		assert os.path.isfile(pixel_path), pixel_path + " not created."
 
+	tile_count = max(1, math.ceil(arguments['render_pixels']['width'] / constants['tile_size']))
+
 	draw_solutions(
 		paths = {
 			'input':      pixel_path,
 			'output_dir': image_path
 		},
 		tile_counts = {
-			'x': 4,
-			'y': 4
+			'x': tile_count,
+			'y': tile_count
 		}
 	)
-
-	assert os.path.isfile(image_path), image_path + " not created."

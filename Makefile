@@ -40,5 +40,4 @@ create-images:
 
 fetch-images:
 
-	mkdir -p ~/polynomial-output
-	scp -r root@$(ip_address):archives ~/polynomial-output
+	ansible-playbook -i $(inventory_script_path) ansible/fetch-images.yaml

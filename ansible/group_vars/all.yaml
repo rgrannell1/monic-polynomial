@@ -1,5 +1,6 @@
 ---
-local_home: "{{ lookup('env','HOME') }}"
-start_time: "{{ ansible_date_time.iso8601 }}"
-task_path:  "{{ local_home }}/tasks/{{ start_time }}"
-repo_path:  "{{ task_path }}/repo"
+project_root: "{{playbook_dir}}/.."
+local_home:   "{{ lookup('env','HOME') }}"
+start_time:   "{{ ansible_date_time.iso8601 }}"
+task_path:    "{{ local_home }}/tasks/{{ start_time }}"
+repo_path:    "{{ task_path }}/repo"
