@@ -15,4 +15,7 @@
   shell: "git lfs track *.png"
 
 - name: set up large-file storage.
-  shell: "git add -A . && git commit -am 'committing fetched image'"
+  shell: "git add -A ."
+
+- name: commit
+  shell: "git commit -am 'committing fetched image'"
