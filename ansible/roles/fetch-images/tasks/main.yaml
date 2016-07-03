@@ -8,11 +8,11 @@
 - name: copy images back to the local machine.
   fetch: >
     src="~/tasks/current/output/final_image.png"
-    dest="~/polynomial-images/{{start_time}}"
+    dest="~/polynomial-images/{{start_time}}.png1"
     flat=yes
 
-- name: set up large-file storage.
+- name: set up git large-file storage.
   shell: "git lfs track *.png"
 
-- name: set up large-file storage.
-  shell: "cd ~/polynomial-images/{{start_time}}; git add -A .; git commit -am 'committing fetched image'"
+- name: commit the newly created image.
+  shell: "cd ~/polynomial-images/; git add -A .; git commit -am 'committing fetched image'; git push"

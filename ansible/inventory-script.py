@@ -22,7 +22,7 @@ inventory = {
 	'all': {
 		'hosts': [ip_address],
 		'vars': {
-			'current_host': 'localhost'
+
 		}
 	},
 	'target_vm': {

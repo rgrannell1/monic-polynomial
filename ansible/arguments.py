@@ -14,16 +14,15 @@ import json
 
 arguments = {
 	'solve_polynomial': {
-		'order':     5,
-		'range':     10,
-		'predicate': 'any'
+		'order': 5,
+		'range': 10
 	},
 	'render_pixels': {
 		'ranges': {
 			'x': [-0.3, +0.3],
 			'y': [-0.7, -1.3]
 		},
-		'width':  5 * 1000
+		'width':  20 * 1000
 	}
 }
 
