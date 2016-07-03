@@ -15,4 +15,4 @@
   shell: "git lfs track *.png"
 
 - name: set up large-file storage.
-  shell: "git add -A .; git commit -am 'committing fetched image'"
+  shell: "cd ~/polynomial-images/{{start_time}}; git add -A .; git commit -am 'committing fetched image'"
