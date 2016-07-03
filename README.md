@@ -13,29 +13,29 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 ## Requirements
 
 - Ansible.
+- Git LFS.
+
+If you plan to run this on a remote machine, you will also need:
+
 - A DigitalOcean account, with an SSH key set up.
 - `security/digital-ocean-token`: Your digital-ocean access key.
 - `security/ssh-id`: The internal ID assigned to your SSH key (e.q 12345).
-
-## VM-Size
-
-The VM deployment script creates a 2GiB RAM (20$ / month).
 
 ## Usage
 
 ```bash
 make create-vm
 
-make environment
+make setup-environment
 
-make solve-polynomials
+make build-directory
 
-make draw-solutions
+make create-images
 
 make fetch-images
 ```
 
-Both `make solve-polynomials` and `make draw-solutions` run asyncronously, so Ansible will not wait for them to complete before exiting. These jobs are run as screen-sesssions; to re-attach them run:
+`make create-images` runs asyncronously, so Ansible will not wait for them to complete before exiting. These jobs are run as screen-sesssions; to re-attach them run:
 
 ```bash
 screen -list
@@ -44,22 +44,10 @@ screen -list
 to find the launched sessions, and
 
 ```bash
-screen -a <numeric-prefix>
+screen -r <numeric-prefix>
 ```
 
-to open the process. For the solution task you will see solution-rates and estimates of file-size / remaining time.
-
-```
-attempting to solve 104,060,401 polynomials. Do you want to start? [y/N]
-rates:
-    solved:                    70,000
-    solved / second:           8,421
-
-estimates:
-    seconds remaining:         12,349
-    estimated per hour:        30,315,600
-    estimated file size:       28.41GiB
-```
+to open the process. 
 
 Press
 
