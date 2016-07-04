@@ -44,5 +44,5 @@ else
 	echo "VM ip address: $target_ip_address"
 fi
 
-printf $target_ip_address > security/ip_address
-printf $droplet_id        > security/droplet_id
+printf root@$target_ip_address > security/ip_address
+printf $droplet_id             > security/droplet_id

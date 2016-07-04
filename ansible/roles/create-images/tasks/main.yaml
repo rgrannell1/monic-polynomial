@@ -4,10 +4,14 @@
     src=screen-task.sh
     dest="{{local_home}}/tasks/current/screen-task.sh"
 
-- file: >
+- name: make the screen job executable
+  file: >
     path="{{local_home}}/tasks/current/screen-task.sh"
     state=file
     mode=a+x
 
 - name: create the images
   shell: "screen -S 'create-images-{{start_time}}' -d -m '{{local_home}}/tasks/current/screen-task.sh'"
+
+- name: check that screen ran successfully
+  shell: "screen -ls | grep "create-images" -c || exit 1"

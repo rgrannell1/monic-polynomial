@@ -35,13 +35,14 @@ def app (arguments):
 	paths['final_image']  = os.path.join(paths['current_link'], 'output/final_image.png')
 
 	required_folders = [
-		os.path.join(arguments['--task-path']),
-		os.path.join(arguments['--task-path'], '/output'),
-		os.path.join(arguments['--task-path'], '/output/json'),
-		os.path.join(arguments['--task-path'], '/output/images')
+		paths['current_link'],
+		os.path.join(paths['current_link'], 'output'),
+		os.path.join(paths['current_link'], 'output', 'json'),
+		os.path.join(paths['current_link'], 'output', 'images')
 	]
 
 	for path in required_folders:
+
 		if not os.path.exists(path):
 			os.makedirs(path)
 

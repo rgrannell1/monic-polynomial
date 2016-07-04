@@ -24,6 +24,18 @@ def display_extrema_progress (iteration):
 			}
 		}))
 
+def display_pixel_progress (iteration):
+
+	if iteration % 100000 == 0:
+
+		print(json.dumps({
+			'level': 'info',
+			'message': 'writing pixel data',
+			'data': {
+				'examined': iteration
+			}
+		}))
+
 def find_solution_extrema (fconn, coefficient_metric, ranges):
 	"""
 
@@ -143,11 +155,16 @@ def render_pixels (width, ranges, paths, colour_fn):
 
 		with open(paths['output'], 'a') as out_fconn:
 
+			count         = 0
 			written_count = 0
 
 			for line in fconn:
 
 				solution = json.loads(line)
+
+				display_pixel_progress(count)
+
+				count += 1
 
 				for x, y in solution['roots']:
 

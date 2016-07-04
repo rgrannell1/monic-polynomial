@@ -15,7 +15,7 @@ import json
 arguments = {
 	'solve_polynomial': {
 		'order': 5,
-		'range': 10
+		'range': 30
 	},
 	'render_pixels': {
 		'ranges': {

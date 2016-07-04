@@ -4,14 +4,6 @@
   copy: >
     src="{{project_root}}/src"
     dest="{{repo_path}}"
-  when: inventory_hostname == "localhost"
-
-- name: download polynomial from github package.
-  become: no
-  git: >
-    repo="https://github.com/rgrannell1/polynomial.git"
-    dest="{{repo_path}}"
-  when: inventory_hostname != "localhost"
 
 - name: create build directories.
   shell: mkdir -p {{ item }}

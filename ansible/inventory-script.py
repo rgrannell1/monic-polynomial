@@ -9,7 +9,7 @@ import time
 
 
 
-connect_path = 'security/local_ip_address'
+connect_path = 'security/ip_address'
 
 with open(connect_path,'r') as fconn:
 
