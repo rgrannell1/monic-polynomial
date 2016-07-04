@@ -13,5 +13,7 @@
 - name: create the images
   shell: "screen -S 'create-images-{{start_time}}' -d -m '{{local_home}}/tasks/current/screen-task.sh'"
 
+- pause: seconds=5
+
 - name: check that screen ran successfully
-  shell: "screen -ls | grep "create-images" -c || exit 1"
+  shell: "screen -ls | grep 'create-images' -c || exit 1"

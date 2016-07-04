@@ -8,8 +8,8 @@ Options:
 	-h, --help    Show this documentation.
 """
 
-from docopt import docopt
-from app    import app
+from docopt  import docopt
+from app.app import app
 
 
 
