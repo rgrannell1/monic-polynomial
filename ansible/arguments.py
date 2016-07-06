@@ -15,14 +15,21 @@ import json
 arguments = {
 	'solve_polynomial': {
 		'order': 5,
-		'range': 5
+		'range': 35
 	},
 	'render_pixels': {
 		'ranges': {
-			'x': [-0.3, +0.3],
-			'y': [-0.7, -1.3]
+
+#			'x': [-0.3, +0.3],
+#			'y': [-0.7, -1.3],
+
+			'x': [-3, +3],
+			'y': [-3, -3],
+
+			'colour_mode': 'hue'
+
 		},
-		'width':  1 * 1000
+		'width': 100 * 1000
 	}
 }
 
