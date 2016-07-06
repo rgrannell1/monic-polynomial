@@ -1,7 +1,7 @@
 ---
 - name:         draw solutions
   gather_facts: yes
-  hosts:        target_vm
+  hosts:        localhost
   remote_user:  root
   roles:
     - create-images

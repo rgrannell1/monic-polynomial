@@ -1,7 +1,7 @@
 ---
 - name:         fetch images
   gather_facts: yes
-  hosts:        target_vm
+  hosts:        localhost
   remote_user:  root
   roles:
     - fetch-images

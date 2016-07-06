@@ -8,8 +8,12 @@ import time
 
 
 
+ansible_folder = os.path.dirname(os.path.realpath(__file__))
+connect_path   = os.path.join(ansible_folder, '../security/ip_address')
 
-connect_path = 'security/ip_address'
+
+
+
 
 with open(connect_path,'r') as fconn:
 
