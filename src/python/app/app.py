@@ -96,7 +96,6 @@ def list_images (image_path):
 
 def assemble_images (images, output_path):
 
-	#command = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-background "#FFFFFF"', '-limit memory 1GB', output_path])
 	command = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 1GB', output_path])
 
 	logger.log( json.dumps({
