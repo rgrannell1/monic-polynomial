@@ -34,9 +34,6 @@ constants = {
 
 
 
-def is_polynomial (coefficents):
-	return True
-
 def is_palindromic_polynomial (coefficents):
 
 	for elem0, elem1 in zip(coefficents, reversed(coefficents)):
@@ -59,10 +56,7 @@ def is_littlewood_polynomial (coefficents):
 
 
 
-
-
 constants['polynomial_predicates'] = {
-	'any':        is_polynomial,
 	'palindrome': is_palindromic_polynomial,
 	'monic':      is_monic_polynomial,
 	'littlewood': is_littlewood_polynomial

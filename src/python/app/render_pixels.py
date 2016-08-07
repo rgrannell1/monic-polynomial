@@ -1,6 +1,8 @@
 
 import math
 import json
+from commons import logger
+
 from commons import utils
 
 
@@ -16,7 +18,7 @@ def display_extrema_progress (iteration):
 
 	if iteration % 100000 == 0:
 
-		print(json.dumps({
+		logger.log(json.dumps({
 			'level': 'info',
 			'message': 'finding coordinate extrema',
 			'data': {
@@ -28,7 +30,7 @@ def display_pixel_progress (iteration):
 
 	if iteration % 100000 == 0:
 
-		print(json.dumps({
+		logger.log(json.dumps({
 			'level': 'info',
 			'message': 'writing pixel data',
 			'data': {

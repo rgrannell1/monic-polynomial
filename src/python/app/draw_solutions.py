@@ -2,8 +2,10 @@
 from commons.constants import constants
 
 import os
-import json
 import math
+import json
+from commons import logger
+
 from PIL import Image
 
 
@@ -94,7 +96,7 @@ def find_image_size (input_path):
 
 def find_pixels (input_path, xrange, yrange):
 
-	print( json.dumps({
+	logger.log( json.dumps({
 		'level':  'info',
 		'message': 'finding matching pixels',
 		'data': {
@@ -127,7 +129,7 @@ def draw_solutions (paths, tile_counts):
 
 	for count, pixel_range in enumerate(pixel_ranges):
 
-		print( json.dumps({
+		logger.log( json.dumps({
 			'level':  'info',
 			'message': 'drawing pixels in range',
 			'data': {
@@ -151,7 +153,7 @@ def draw_solutions (paths, tile_counts):
 
 			except Exception as err:
 
-				print( json.dumps({
+				logger.log( json.dumps({
 					'level':  'error',
 					'message': 'failed to write pixel to image: ' + str(err) ,
 					'data': {
@@ -168,7 +170,19 @@ def draw_solutions (paths, tile_counts):
 				exit(1)
 
 		try:
-			image.save(os.path.join(paths['output_dir'], str(image_count) + '.png'))
+
+			image_path = os.path.join(paths['output_dir'], str(image_count) + '.png')
+
+			image.save(image_path)
 			image_count += 1
+
+			logger.log( json.dumps({
+				'level':  'info',
+				'message': 'writing part of image to file.',
+				'data': {
+					'path': image_path
+				}
+			}) )
+
 		except Exception as err:
 			raise err

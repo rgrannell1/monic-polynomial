@@ -1,9 +1,15 @@
 ---
+
+- name: commit the newly created images.
+  shell: "cd {{local_home}}/polynomial-images/ ; git add -A . ; git commit -am 'committing fetched image' ; git push"
+
 - name: 'set up polynomial-images output-repo'
   git:
     repo:   'https://github.com/rgrannell1/polynomial-images.git'
-    dest:   ~/polynomial-images
+    dest:   "{{local_home}}/polynomial-images"
     update: yes
+    clone:  yes
+    force:  no
 
 - name: wait for the file to be created
   wait_for: >
@@ -15,8 +21,11 @@
     dest="{{local_home}}/polynomial-images/{{start_time}}.png"
     flat=yes
 
+- name: copy image to foo
+  shell: "cp {{local_home}}/tasks/current/output/final_image.png {{local_home}}/polynomial-images/{{start_time}}.png"
+
 - name: set up git large-file storage.
-  shell: "git lfs track *.png"
+  shell: "cd {{local_home}}/polynomial-images/; git lfs track *.png"
 
 - name: commit the newly created image.
-  shell: "cd ~/polynomial-images/ ; git add -A . ; git commit -am 'committing fetched image' ; git push"
+  shell: "cd {{local_home}}/polynomial-images/ ; git add -A . ; git commit -am 'committing fetched image' ; git push"

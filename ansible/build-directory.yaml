@@ -1,7 +1,7 @@
 ---
 - name:         create a new build
   gather_facts: yes
-  hosts:        localhost
+  hosts:        target_vm
   remote_user:  root
   roles:
     - build-directory

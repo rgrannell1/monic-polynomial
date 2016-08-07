@@ -7,6 +7,7 @@ import json
 import time
 import numpy
 import itertools
+from commons import logger
 
 
 
@@ -26,7 +27,7 @@ def display_progress (iteration, total_count, start):
 		seconds_remaining  = round((total_count - iteration) / per_second)
 		minutes_remaining  = round(seconds_remaining / 60)
 
-		print(json.dumps({
+		logger.log(json.dumps({
 			'level': 'info',
 			'data': {
 				'solved':     '{:,}'.format(iteration),

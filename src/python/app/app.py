@@ -5,6 +5,7 @@ import re
 import sys
 import json
 import math
+from commons import logger
 import datetime
 import subprocess
 
@@ -26,7 +27,7 @@ def app (arguments):
 
 	paths = { }
 
-	paths['tasks']    = os.path.dirname(arguments['--task-path'])
+	paths['tasks']        = os.path.dirname(arguments['--task-path'])
 	paths['current_link'] = os.path.join(paths['tasks'], 'current')
 	paths['solutions']    = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
 	paths['pixels']       = os.path.join(paths['current_link'], 'output/json/pixels.jsonl')
@@ -47,6 +48,8 @@ def app (arguments):
 
 	arguments = read_arguments(os.path.join(paths['current_link'], 'arguments.py'))
 
+	logger.log(json.dumps(arguments))
+
 	generate_polynomial_image(arguments, {
 		'solutions':    paths['solutions'],
 		'pixels':       paths['pixels'],
@@ -60,7 +63,7 @@ def app (arguments):
 
 
 
-def list_images(image_path):
+def list_images (image_path):
 
 	def sort_images (name):
 		return int(re.search('^[0-9]+', name).group(0))
@@ -87,10 +90,37 @@ def list_images(image_path):
 		for ith in range(len(row)):
 			yield row[ith]
 
-def assemble_images(images, output_path):
 
-	command = ['montage'] + list(images) + ['-mode concatenate', '-background "#FFFFFF"', '-limit memory 1GB', output_path]
-	os.system(' '.join(command))
+
+
+
+def assemble_images (images, output_path):
+
+	#command = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-background "#FFFFFF"', '-limit memory 1GB', output_path])
+	command = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 1GB', output_path])
+
+	logger.log( json.dumps({
+		'level':   'info',
+		'message': 'assembling images',
+		'data': {
+			'command': command,
+			'count':   str( len(list(images)) ),
+			'path':    output_path
+		}
+	}) )
+
+	os.system(command)
+
+	if not os.path.isfile(output_path):
+
+		logger.log( json.dumps({
+			'level':   'error',
+			'message': 'failed to create image',
+			'data': {
+				'path':    output_path
+			}
+		}) )
+
 
 
 
@@ -114,6 +144,14 @@ def read_arguments (argument_path):
 
 def generate_polynomial_image (arguments, paths):
 
+	ranges = arguments['render_pixels']['ranges']
+
+	if ranges['x'][0] - ranges['x'][1] == 0:
+		raise Exception('zero x range')
+
+	if ranges['y'][0] - ranges['y'][1] == 0:
+		raise Exception('zero y range')
+
 	image_path = os.path.join(paths['current_link'], 'output', 'images')
 
 	pixel_path    = paths['pixels']
@@ -126,9 +164,11 @@ def generate_polynomial_image (arguments, paths):
 		if 'predicate' in arguments['solve_polynomial']:
 			predicate = constants['polynomial_predicates'][arguments['solve_polynomial']['predicate']]
 
+		solve_args = arguments['solve_polynomial']
+
 		solve_polynomials(
-			arguments['solve_polynomial']['order'],
-			arguments['solve_polynomial']['range'],
+			solve_args['order'],
+			solve_args['range'],
 			predicate,
 			solution_path
 		)
@@ -141,6 +181,14 @@ def generate_polynomial_image (arguments, paths):
 
 		if 'colour_mode' in arguments['render_pixels']:
 			colour_fn = colours[arguments['render_pixels']['colour_mode']]
+
+		logger.log( json.dumps({
+			'level':   'info',
+			'message': 'rendering images',
+			'data': {
+
+			}
+		}) )
 
 		render_pixels(
 			paths = {

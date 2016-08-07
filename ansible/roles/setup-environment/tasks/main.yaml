@@ -13,6 +13,7 @@
     - screen
     - htop
     - jq
+    - python3-systemd
 
 - name: download pip packages.
   become:        yes
@@ -28,3 +29,16 @@
 
 - name: set the timezone
   shell: timedatectl set-timezone Europe/Dublin
+
+- name:  install large file storage
+  shell: "curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash"
+
+- name: install git-lfs
+  become:        yes
+  become_method: sudo
+  apt: >
+    name={{ item }}
+    state=present
+    update_cache=yes
+  with_items:
+    - git-lfs

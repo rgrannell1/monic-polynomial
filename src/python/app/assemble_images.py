@@ -20,7 +20,7 @@ from sh import montage
 
 
 
-def list_images(task_path):
+def list_images (task_path):
 
 	def sort_images (name):
 		return int(re.search('^[0-9]+', name).group(0))
@@ -49,7 +49,11 @@ def list_images(task_path):
 		for ith in range(len(row)):
 			yield row[ith]
 
-def assemble_images(images):
+
+
+
+
+def assemble_images (images):
 
 	command = ['montage'] + list(images) + ['-mode concatenate', '-background "#FFFFFF"', '-limit memory 1GB', '~/assembled.png']
 	os.system(' '.join(command))
