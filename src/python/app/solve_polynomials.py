@@ -8,6 +8,7 @@ import time
 import numpy
 import logging
 import itertools
+import sqlite3
 
 def display_progress (iteration, total_count, start):
 	"""
@@ -38,6 +39,34 @@ def solve_polynomials (order, num_range, predicate, out_path):
 	start = time.time( )
 	root_count = 0
 
+	conn = sqlite3.connect('./db.sqlite')
+	curse = conn.cursor()
+
+	curse.execute("CREATE TABLE IF NOT EXISTS polynomials (polynomial BLOB);")
+	conn.commit()
+
+	solutions = []
+
+	for point in space:
+			root_count += 1
+
+			data = json.dumps({
+				'coefficients': point,
+				'roots': [[root.real, root.imag] for root in numpy.roots(point)]
+			})
+
+			solutions.append(tuple([data]))
+
+			if len(solutions) > constants['batch_size']:
+				curse.executemany("INSERT INTO polynomials (polynomial) VALUES (?)", solutions)
+
+				conn.commit()
+				solutions = []
+
+			display_progress(root_count, total_count, start)
+
+	conn.close()
+
 	with open(out_path, "a") as fconn:
 		for point in space:
 			root_count += 1
@@ -46,7 +75,5 @@ def solve_polynomials (order, num_range, predicate, out_path):
 				'coefficients': point,
 				'roots': [ [root.real, root.imag] for root in numpy.roots(point) ]
 			}
-
-			fconn.write(json.dumps(solution) + '\n')
 
 			display_progress(root_count, total_count, start)
