@@ -26,6 +26,13 @@ def display_progress (iteration, total_count, start):
 		logging.info('iteration {:,}, {:,} remaining'.format(iteration, total_count - iteration))
 		logging.info('{:,}m / {:,}s remaining'.format(minutes_remaining, seconds_remaining))
 
+def insert_solutions (curse, solutions):
+	curse.executemany(
+		"INSERT OR REPLACE INTO polynomials (id, polynomial) VALUES (?, ?)", solutions)
+
+	conn.commit()
+	solutions = []
+
 def solve_polynomials (order, num_range, predicate, out_path):
 	"""
 
@@ -42,7 +49,7 @@ def solve_polynomials (order, num_range, predicate, out_path):
 	conn = sqlite3.connect('./db.sqlite')
 	curse = conn.cursor()
 
-	curse.execute("CREATE TABLE IF NOT EXISTS polynomials (polynomial BLOB);")
+	curse.execute("CREATE TABLE IF NOT EXISTS polynomials (id text primary key, polynomial BLOB);")
 	conn.commit()
 
 	solutions = []
@@ -50,30 +57,18 @@ def solve_polynomials (order, num_range, predicate, out_path):
 	for point in space:
 			root_count += 1
 
+			id = ','.join(map(str, point))
+
 			data = json.dumps({
-				'coefficients': point,
 				'roots': [[root.real, root.imag] for root in numpy.roots(point)]
 			})
 
-			solutions.append(tuple([data]))
+			solutions.append(tuple([id, data]))
 
 			if len(solutions) > constants['batch_size']:
-				curse.executemany("INSERT INTO polynomials (polynomial) VALUES (?)", solutions)
-
-				conn.commit()
-				solutions = []
+				insert_solutions(curse, solutions)
 
 			display_progress(root_count, total_count, start)
 
+	insert_solutions(curse, solutions)
 	conn.close()
-
-	with open(out_path, "a") as fconn:
-		for point in space:
-			root_count += 1
-
-			solution =	{
-				'coefficients': point,
-				'roots': [ [root.real, root.imag] for root in numpy.roots(point) ]
-			}
-
-			display_progress(root_count, total_count, start)
