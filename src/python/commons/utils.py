@@ -4,10 +4,6 @@ import os
 import functools
 import operator
 
-
-
-
-
 def sequence (lower, upper):
 	"""
 	generate an integer sequence between two numbers.

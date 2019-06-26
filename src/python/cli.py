@@ -12,19 +12,22 @@ from docopt  import docopt
 from app.app import app
 
 import traceback
-from commons import logger
 import json
 
-
-
-
-
-
 if __name__ == '__main__':
-
 	arguments = docopt(__doc__)
-
-	logger.log(json.dumps(arguments))
+	arguments['solve_polynomial'] = {
+		'order': 5,
+		'range': 15
+	}
+	arguments['render_pixels'] = {
+		'ranges': {
+			'x': [-0.3, +0.3],
+			'y': [-0.7, -1.3],
+			'colour_mode': 'hue'
+		},
+		'width': 1 * 1000
+	}
 
 	try:
 		app(arguments)
@@ -32,5 +35,3 @@ if __name__ == '__main__':
 
 		traceback.print_exc( )
 		print(str(err))
-
-		logger.log(str(err))

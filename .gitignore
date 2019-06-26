@@ -4,3 +4,4 @@ security/
 polynomial-output/
 !id_rsa.polynomial-test
 !id_rsa.polynomial-test.pub
+*.pyc

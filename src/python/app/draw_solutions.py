@@ -4,16 +4,11 @@ from commons.constants import constants
 import os
 import math
 import json
-from commons import logger
+import logging
 
 from PIL import Image
 
-
-
-
-
 def find_coord_extrema (coords, extrema):
-
 	if coords[0] > extrema['x']:
 		extrema['x'] = coords[0]
 
@@ -22,12 +17,7 @@ def find_coord_extrema (coords, extrema):
 
 	return extrema
 
-
-
-
-
 def create_image (image_size, tile_counts):
-
 	image_dimensions = (
 		math.floor(image_size['x'] / tile_counts['x']),
 		math.floor(image_size['y'] / tile_counts['y'])
@@ -37,16 +27,9 @@ def create_image (image_size, tile_counts):
 
 	return img, img.load( )
 
-
-
-
-
-
 def calculate_ranges (image_size, tile_counts):
-
 	for ith in range(tile_counts['x']):
 		for jth in range(tile_counts['y']):
-
 			left_x  = (ith + 0) * ( math.floor(image_size['x'] / tile_counts['x']) )
 			right_x = (ith + 1) * ( math.floor(image_size['x'] / tile_counts['x']) )
 
@@ -64,20 +47,13 @@ def calculate_ranges (image_size, tile_counts):
 				}
 			}
 
-
-
-
-
 def find_image_size (input_path):
-
 	image_size = {'x': 0, 'y': 0}
 
 	with open(input_path) as fconn:
-
 		line_count = 0
 
 		for line in fconn:
-
 			x, y, _ = json.loads(line)
 
 			line_count += 1
@@ -91,12 +67,8 @@ def find_image_size (input_path):
 
 	return image_size
 
-
-
-
 def find_pixels (input_path, xrange, yrange):
-
-	logger.log( json.dumps({
+	logging.info( json.dumps({
 		'level':  'info',
 		'message': 'finding matching pixels',
 		'data': {
@@ -106,9 +78,7 @@ def find_pixels (input_path, xrange, yrange):
 	}))
 
 	with open(input_path) as fconn:
-
 		for line in fconn:
-
 			x, y, colour = json.loads(line)
 
 			if x > xrange['min']:
@@ -128,8 +98,7 @@ def draw_solutions (paths, tile_counts):
 	image_count  = 0
 
 	for count, pixel_range in enumerate(pixel_ranges):
-
-		logger.log( json.dumps({
+		logging.info( json.dumps({
 			'level':  'info',
 			'message': 'drawing pixels in range',
 			'data': {
@@ -143,17 +112,14 @@ def draw_solutions (paths, tile_counts):
 		image, image_pixels = create_image(image_size, tile_counts)
 
 		for x, y, colour in find_pixels(paths['input'], pixel_range['x'], pixel_range['y']):
-
 			try:
-
 				normal_x = x - pixel_range['x']['min']
 				normal_y = y - pixel_range['y']['min']
 
 				image_pixels[normal_x, normal_y] = (colour[0], colour[1], colour[2])
 
 			except Exception as err:
-
-				logger.log( json.dumps({
+				logging.info( json.dumps({
 					'level':  'error',
 					'message': 'failed to write pixel to image: ' + str(err) ,
 					'data': {
@@ -170,13 +136,12 @@ def draw_solutions (paths, tile_counts):
 				exit(1)
 
 		try:
-
 			image_path = os.path.join(paths['output_dir'], str(image_count) + '.png')
 
 			image.save(image_path)
 			image_count += 1
 
-			logger.log( json.dumps({
+			logging.info( json.dumps({
 				'level':  'info',
 				'message': 'writing part of image to file.',
 				'data': {

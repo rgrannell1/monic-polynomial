@@ -1,7 +1,0 @@
----
-- name:         setup environment
-  gather_facts: yes
-  hosts:        target_vm
-  remote_user:  root
-  roles:
-    - setup-environment

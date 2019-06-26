@@ -1,38 +1,35 @@
 
-
 import os
 import re
 import sys
 import json
 import math
-from commons import logger
 import datetime
 import subprocess
+import logging
+
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 from docopt import docopt
-from sh     import montage
+from sh import montage
 
-from commons               import colours
-from commons.constants     import constants
+from commons import colours
+from commons.constants  import constants
 
 from app.solve_polynomials import solve_polynomials
-from app.render_pixels     import render_pixels
-from app.draw_solutions    import draw_solutions
-
-
-
-
+from app.render_pixels import render_pixels
+from app.draw_solutions import draw_solutions
 
 def app (arguments):
-
 	paths = { }
 
-	paths['tasks']        = os.path.dirname(arguments['--task-path'])
-	paths['current_link'] = os.path.join(paths['tasks'], 'current')
-	paths['solutions']    = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
-	paths['pixels']       = os.path.join(paths['current_link'], 'output/json/pixels.jsonl')
-	paths['images']       = os.path.join(paths['current_link'], 'output/images/')
-	paths['final_image']  = os.path.join(paths['current_link'], 'output/final_image.png')
+	root = os.path.dirname(arguments['--task-path'])
+	paths['tasks'] = root
+	paths['current_link'] = os.path.join(root, 'current')
+	paths['solutions'] = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
+	paths['pixels'] = os.path.join(paths['current_link'], 'output/json/pixels.jsonl')
+	paths['images'] = os.path.join(paths['current_link'], 'output/images/')
+	paths['final_image'] = os.path.join(paths['current_link'], 'output/final_image.png')
 
 	required_folders = [
 		paths['current_link'],
@@ -42,29 +39,18 @@ def app (arguments):
 	]
 
 	for path in required_folders:
-
 		if not os.path.exists(path):
 			os.makedirs(path)
 
-	arguments = read_arguments(os.path.join(paths['current_link'], 'arguments.py'))
-
-	logger.log(json.dumps(arguments))
-
 	generate_polynomial_image(arguments, {
-		'solutions':    paths['solutions'],
-		'pixels':       paths['pixels'],
+		'solutions': paths['solutions'],
+		'pixels': paths['pixels'],
 		'current_link': paths['current_link']
 	})
 
 	assemble_images(list_images(paths['images']), paths['final_image'])
 
-
-
-
-
-
 def list_images (image_path):
-
 	def sort_images (name):
 		return int(re.search('^[0-9]+', name).group(0))
 
@@ -90,15 +76,10 @@ def list_images (image_path):
 		for ith in range(len(row)):
 			yield row[ith]
 
-
-
-
-
 def assemble_images (images, output_path):
+	command = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 3GB', output_path])
 
-	command = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 1GB', output_path])
-
-	logger.log( json.dumps({
+	logging.info( json.dumps({
 		'level':   'info',
 		'message': 'assembling images',
 		'data': {
@@ -111,8 +92,7 @@ def assemble_images (images, output_path):
 	os.system(command)
 
 	if not os.path.isfile(output_path):
-
-		logger.log( json.dumps({
+		logging.info( json.dumps({
 			'level':   'error',
 			'message': 'failed to create image',
 			'data': {
@@ -120,14 +100,7 @@ def assemble_images (images, output_path):
 			}
 		}) )
 
-
-
-
-
-
-
 def read_arguments (argument_path):
-
 	argument_output = subprocess.check_output(['python3', argument_path])
 
 	try:
@@ -136,10 +109,6 @@ def read_arguments (argument_path):
 		print(err)
 
 	return argument_output
-
-
-
-
 
 def generate_polynomial_image (arguments, paths):
 
@@ -157,12 +126,7 @@ def generate_polynomial_image (arguments, paths):
 	solution_path = paths['solutions']
 
 	if not os.path.isfile(solution_path):
-
 		predicate = None
-
-		if 'predicate' in arguments['solve_polynomial']:
-			predicate = constants['polynomial_predicates'][arguments['solve_polynomial']['predicate']]
-
 		solve_args = arguments['solve_polynomial']
 
 		solve_polynomials(
@@ -181,7 +145,7 @@ def generate_polynomial_image (arguments, paths):
 		if 'colour_mode' in arguments['render_pixels']:
 			colour_fn = colours[arguments['render_pixels']['colour_mode']]
 
-		logger.log( json.dumps({
+		logging.info( json.dumps({
 			'level':   'info',
 			'message': 'rendering images',
 			'data': {
@@ -194,9 +158,9 @@ def generate_polynomial_image (arguments, paths):
 				'input':  solution_path,
 				'output': pixel_path
 			},
-			ranges      = arguments['render_pixels']['ranges'],
-			width       = arguments['render_pixels']['width'],
-			colour_fn   = colour_fn
+			ranges = arguments['render_pixels']['ranges'],
+			width = arguments['render_pixels']['width'],
+			colour_fn = colour_fn
 		)
 
 		assert os.path.isfile(pixel_path), pixel_path + " not created."

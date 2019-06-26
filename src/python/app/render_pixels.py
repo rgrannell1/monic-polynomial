@@ -1,12 +1,8 @@
 
 import math
 import json
-from commons import logger
-
+import logging
 from commons import utils
-
-
-
 
 def is_in_range (value, num_range):
 	return value >= min(num_range) and value <= max(num_range)
@@ -15,10 +11,8 @@ def extrema_interval (extrema):
 	return abs(extrema['max'] - extrema['min'])
 
 def display_extrema_progress (iteration):
-
 	if iteration % 100000 == 0:
-
-		logger.log(json.dumps({
+		logging.info(json.dumps({
 			'level': 'info',
 			'message': 'finding coordinate extrema',
 			'data': {
@@ -27,10 +21,8 @@ def display_extrema_progress (iteration):
 		}))
 
 def display_pixel_progress (iteration):
-
 	if iteration % 100000 == 0:
-
-		logger.log(json.dumps({
+		logging.info(json.dumps({
 			'level': 'info',
 			'message': 'writing pixel data',
 			'data': {
@@ -61,7 +53,6 @@ def find_solution_extrema (fconn, coefficient_metric, ranges):
 	solution_count = 0
 
 	for line in fconn:
-
 		solution = json.loads(line)
 
 		solution_count += 1
@@ -69,7 +60,6 @@ def find_solution_extrema (fconn, coefficient_metric, ranges):
 		display_extrema_progress(solution_count)
 
 		for x, y in solution['roots']:
-
 			if is_in_range(x, ranges['x']) and is_in_range(y, ranges['y']):
 
 				measure = coefficient_metric(solution['coefficients'])
@@ -118,9 +108,7 @@ def convert_root_to_pixel (coefficients, point, extrema, width, coefficient_metr
 	]
 
 	for percent in percentage:
-
 		if percent < 0 or percent > 1:
-
 			sys.stdout.write( json.dumps({
 				'level':  'error',
 				'message': 'invalid percentage value',
@@ -137,11 +125,6 @@ def convert_root_to_pixel (coefficients, point, extrema, width, coefficient_metr
 		colour_fn(coefficient_measure, extrema['coefficient_metric']['max'])
 	]
 
-
-
-
-
-
 def metric (coefficients):
 	return utils.product(coefficients)
 
@@ -154,14 +137,11 @@ def render_pixels (width, ranges, paths, colour_fn):
 		extrema = find_solution_extrema(fconn, metric, ranges)
 
 	with open(paths['input']) as fconn:
-
 		with open(paths['output'], 'a') as out_fconn:
-
 			count         = 0
 			written_count = 0
 
 			for line in fconn:
-
 				solution = json.loads(line)
 
 				display_pixel_progress(count)
@@ -169,9 +149,7 @@ def render_pixels (width, ranges, paths, colour_fn):
 				count += 1
 
 				for x, y in solution['roots']:
-
 					if is_in_range(x, ranges['x']) and is_in_range(y, ranges['y']):
-
 						written_count += 1
 
 						pixel = convert_root_to_pixel(solution['coefficients'], (x, y), extrema, width, metric, colour_fn)

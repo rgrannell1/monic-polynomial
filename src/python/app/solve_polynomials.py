@@ -6,17 +6,15 @@ import sys
 import json
 import time
 import numpy
+import logging
 import itertools
-from commons import logger
-
-
-
-
 
 def display_progress (iteration, total_count, start):
 	"""
 	estimate the current solution rate.
 	"""
+
+
 
 	if iteration % constants["print_frequency"] == 0:
 
@@ -27,7 +25,7 @@ def display_progress (iteration, total_count, start):
 		seconds_remaining  = round((total_count - iteration) / per_second)
 		minutes_remaining  = round(seconds_remaining / 60)
 
-		logger.log(json.dumps({
+		logging.info(json.dumps({
 			'level': 'info',
 			'data': {
 				'solved':     '{:,}'.format(iteration),

@@ -1,10 +1,6 @@
 
 import math
 
-
-
-
-
 def tint (size, maximum):
 	"""
 	display the colour as a tint of a specific colour
@@ -30,10 +26,6 @@ def tint (size, maximum):
 
 	return tint_colours[min(len(tint_colours) - 1, index)]
 
-
-
-
-
 def hue (size, maximum):
 	"""
 	get the ith sequence in [0, 0, 0] ... [255, 255, 255]
@@ -46,10 +38,6 @@ def hue (size, maximum):
 	red   = (index >> 16) & 255
 
 	return [red, green, blue]
-
-
-
-
 
 def grayscale (size, maximum):
 
