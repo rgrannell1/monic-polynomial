@@ -25,23 +25,23 @@ def display_progress (iteration, total_count, start):
 
 		logging.info('iteration {:,}, {:,} remaining'.format(iteration, total_count - iteration))
 		logging.info('{:,}m / {:,}s remaining'.format(minutes_remaining, seconds_remaining))
-
-def insert_solutions (curse, solutions):
-	curse.executemany(
-		"INSERT OR REPLACE INTO polynomials (id, polynomial) VALUES (?, ?)", solutions)
-
-	conn.commit()
-	solutions = []
+		logging.info('solving {:,} per second 🔥'.format(per_second))
 
 def solve_polynomials (order, num_range, predicate, out_path):
-	"""
-
-	"""
-
 	dimensions = utils.repeat_val(order, utils.sequence(-num_range, num_range))
 	space = itertools.product(*dimensions)
 
 	total_count = utils.product(len(val) for val in dimensions)
+
+	splash_test = """
+
+	             x³ + ax² + bx + c = 0
+
+	🔥 Computing Solutions to {:,} Order-{} Polynomials 🔥
+
+	""".format(total_count, len(dimensions) + 1)
+
+	print(splash_test)
 
 	start = time.time( )
 	root_count = 0
@@ -66,9 +66,18 @@ def solve_polynomials (order, num_range, predicate, out_path):
 			solutions.append(tuple([id, data]))
 
 			if len(solutions) > constants['batch_size']:
-				insert_solutions(curse, solutions)
+				curse.executemany(
+					"INSERT OR REPLACE INTO polynomials (id, polynomial) VALUES (?, ?)", solutions)
+
+				conn.commit()
+				solutions = []
 
 			display_progress(root_count, total_count, start)
 
-	insert_solutions(curse, solutions)
+	curse.executemany(
+		"INSERT OR REPLACE INTO polynomials (id, polynomial) VALUES (?, ?)", solutions)
+
+	conn.commit()
+	solutions = []
+
 	conn.close()
