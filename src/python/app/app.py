@@ -23,7 +23,7 @@ from app.draw_solutions import draw_solutions
 def app (arguments):
 	paths = { }
 
-	root = os.path.dirname(arguments['--task-path'])
+	root = os.path.dirname('./')
 	paths['tasks'] = root
 	paths['current_link'] = os.path.join(root, 'current')
 	paths['solutions'] = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
@@ -61,9 +61,7 @@ def list_images (image_path):
 	image_paths = [os.path.join(image_path, str(ith) + '.png') for ith in range(number_of_images)]
 
 	if round(side_length) != side_length:
-		sys.stderr.write(json.dumps({
-			'message': 'strange number of pngs.'
-		}))
+		logging.error('strange number of PNGs')
 		exit(1)
 
 	columns = [ [ ] for _ in range(int(side_length)) ]
@@ -79,26 +77,12 @@ def list_images (image_path):
 def assemble_images (images, output_path):
 	command = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 3GB', output_path])
 
-	logging.info( json.dumps({
-		'level':   'info',
-		'message': 'assembling images',
-		'data': {
-			'command': command,
-			'count':   str( len(list(images)) ),
-			'path':    output_path
-		}
-	}) )
+	logging.info('assembing image "{}" ({})'.format(output_path, len(list(images))))
 
 	os.system(command)
 
 	if not os.path.isfile(output_path):
-		logging.info( json.dumps({
-			'level':   'error',
-			'message': 'failed to create image',
-			'data': {
-				'path':    output_path
-			}
-		}) )
+		logging.error('failed to create image {}'.format(output_path))
 
 def read_arguments (argument_path):
 	argument_output = subprocess.check_output(['python3', argument_path])
@@ -145,13 +129,7 @@ def generate_polynomial_image (arguments, paths):
 		if 'colour_mode' in arguments['render_pixels']:
 			colour_fn = colours[arguments['render_pixels']['colour_mode']]
 
-		logging.info( json.dumps({
-			'level':   'info',
-			'message': 'rendering images',
-			'data': {
-
-			}
-		}) )
+		logging.info('rendering images')
 
 		render_pixels(
 			paths = {

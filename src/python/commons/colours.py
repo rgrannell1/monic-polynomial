@@ -40,7 +40,6 @@ def hue (size, maximum):
 	return [red, green, blue]
 
 def grayscale (size, maximum):
-
 	gray_colours = [[ith, ith, ith] for ith in range(256)]
 
 	index = math.floor((size / maximum) * len(gray_colours))

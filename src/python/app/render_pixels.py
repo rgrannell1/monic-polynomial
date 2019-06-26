@@ -12,23 +12,11 @@ def extrema_interval (extrema):
 
 def display_extrema_progress (iteration):
 	if iteration % 100000 == 0:
-		logging.info(json.dumps({
-			'level': 'info',
-			'message': 'finding coordinate extrema',
-			'data': {
-				'examined': iteration
-			}
-		}))
+		logging.info('finding coordinate extrema {}'.format(iteration))
 
 def display_pixel_progress (iteration):
 	if iteration % 100000 == 0:
-		logging.info(json.dumps({
-			'level': 'info',
-			'message': 'writing pixel data',
-			'data': {
-				'examined': iteration
-			}
-		}))
+		logging.info('writing pixel data {}'.format(iteration))
 
 def find_solution_extrema (fconn, coefficient_metric, ranges):
 	"""

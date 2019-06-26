@@ -68,14 +68,8 @@ def find_image_size (input_path):
 	return image_size
 
 def find_pixels (input_path, xrange, yrange):
-	logging.info( json.dumps({
-		'level':  'info',
-		'message': 'finding matching pixels',
-		'data': {
-			'xrange': xrange,
-			'yrange': yrange
-		}
-	}))
+	logging.info('finding pixels in ranges {} → {}, {} → {}'.format(
+		xrange['min'], xrange['max'], yrange['min'], yrange['max']))
 
 	with open(input_path) as fconn:
 		for line in fconn:
@@ -98,16 +92,7 @@ def draw_solutions (paths, tile_counts):
 	image_count  = 0
 
 	for count, pixel_range in enumerate(pixel_ranges):
-		logging.info( json.dumps({
-			'level':  'info',
-			'message': 'drawing pixels in range',
-			'data': {
-				'count':  count,
-				'total':  len(pixel_ranges),
-				'xrange': pixel_range['x'],
-				'yrange': pixel_range['y']
-			}
-		}))
+		logging.info('drawing pixels {} / {}'.format(count, len(pixel_ranges)))
 
 		image, image_pixels = create_image(image_size, tile_counts)
 
@@ -119,20 +104,7 @@ def draw_solutions (paths, tile_counts):
 				image_pixels[normal_x, normal_y] = (colour[0], colour[1], colour[2])
 
 			except Exception as err:
-				logging.info( json.dumps({
-					'level':  'error',
-					'message': 'failed to write pixel to image: ' + str(err) ,
-					'data': {
-						'count':  count,
-						'total':  len(pixel_ranges),
-						'x':      x,
-						'y':      y,
-						'normalised': normal,
-						'image_size': image_size,
-						'colour': colour
-					}
-				}))
-
+				logging.error('failed to write pixel to image {}'.format(err))
 				exit(1)
 
 		try:
@@ -141,13 +113,7 @@ def draw_solutions (paths, tile_counts):
 			image.save(image_path)
 			image_count += 1
 
-			logging.info( json.dumps({
-				'level':  'info',
-				'message': 'writing part of image to file.',
-				'data': {
-					'path': image_path
-				}
-			}) )
+			logging.info('Writing image-tile to ' + image_path)
 
 		except Exception as err:
 			raise err
