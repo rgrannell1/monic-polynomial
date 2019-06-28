@@ -40,15 +40,24 @@ def insert_row(order):
 	query = "INSERT OR REPLACE INTO polynomials (id, {}) VALUES (?, {})".format(params, inserts)
 	return query
 
+def flatten (lists):
+	result = []
+
+	for sublist in lists:
+		result += sublist
+
+	return result
+
 def solve_polynomials (order, num_range, predicate, out_path):
 	dimensions = utils.repeat_val(order, utils.sequence(-num_range, num_range))
 	space = itertools.product(*dimensions)
 	total_count = utils.product(len(val) for val in dimensions)
 
-	splash_test = """
+	splash_text = """
+		🔥 Computing Solutions to {:,} Order-{} Polynomials 🔥
 	""".format(total_count, len(dimensions) + 1)
 
-	print(splash_test)
+	print(splash_text)
 
 	start = time.time( )
 	root_count = 0
@@ -56,31 +65,28 @@ def solve_polynomials (order, num_range, predicate, out_path):
 	conn = sqlite3.connect('./db.sqlite')
 	curse = conn.cursor()
 
-	print(create_table(len(dimensions)))
-	curse.execute(create_table(len(dimensions)))
+	curse.execute(create_table(len(dimensions) - 1))
 	conn.commit()
 
 	solutions = []
 
 	for point in space:
-			root_count += 1
+		root_count += 1
 
-			id = ','.join(map(str, point))
-			roots = list(itertools.chain.from_iterable([[root.real, root.imag] for root in numpy.roots(point)]))
+		id = ','.join(map(str, point))
+		roots = [[root.real, root.imag] for root in numpy.roots(point)]
 
-			solutions.append(tuple([id] + roots))
+		solutions.append(tuple([id] + flatten(roots)))
 
-			if len(solutions) > constants['batch_size']:
-				curse.executemany(insert_row(len(dimensions) - 1), solutions)
+		if len(solutions) > constants['batch_size']:
+			curse.executemany(insert_row(len(dimensions) - 1), solutions)
 
-				conn.commit()
-				solutions = []
+			conn.commit()
+			solutions = []
 
-			display_progress(root_count, total_count, start)
+		display_progress(root_count, total_count, start)
 
 	curse.executemany(insert_row(len(dimensions) - 1), solutions)
 
 	conn.commit()
-	solutions = []
-
 	conn.close()
