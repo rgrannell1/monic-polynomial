@@ -66,10 +66,6 @@ def find_solution_extrema (fconn, coefficient_metric, ranges):
 
 	return extrema
 
-
-
-
-
 def convert_root_to_pixel (coefficients, point, extrema, width, coefficient_metric, colour_fn):
 	"""
 
