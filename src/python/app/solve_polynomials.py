@@ -64,6 +64,7 @@ def solve_polynomials (order, num_range):
 
 	conn = sqlite3.connect('./db.sqlite')
 	curse = conn.cursor()
+	curse.execute('PRAGMA synchronous = OFF')
 
 	curse.execute(create_table(len(dimensions) - 1))
 	conn.commit()
@@ -74,6 +75,7 @@ def solve_polynomials (order, num_range):
 		root_count += 1
 
 		id = ','.join(map(str, point))
+
 		roots = [[root.real, root.imag] for root in numpy.roots(point)]
 
 		solutions.append(tuple([id] + flatten(roots)))
@@ -85,7 +87,7 @@ def solve_polynomials (order, num_range):
 				print(err)
 
 			conn.commit()
-			solutions = []
+		solutions = []
 
 		display_progress(root_count, total_count, start)
 

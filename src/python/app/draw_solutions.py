@@ -7,8 +7,9 @@ import json
 import logging
 
 from PIL import Image
+from typing import Generator, Dict, Callable
 
-def find_coord_extrema (coords, extrema):
+def find_coord_extrema (coords:tuple, extrema:Dict) -> Dict:
 	if coords[0] > extrema['x']:
 		extrema['x'] = coords[0]
 
@@ -17,7 +18,7 @@ def find_coord_extrema (coords, extrema):
 
 	return extrema
 
-def create_image (image_size, tile_counts):
+def create_image (image_size:Dict, tile_counts:Dict):
 	image_dimensions = (
 		math.floor(image_size['x'] / tile_counts['x']),
 		math.floor(image_size['y'] / tile_counts['y'])
@@ -27,7 +28,7 @@ def create_image (image_size, tile_counts):
 
 	return img, img.load( )
 
-def calculate_ranges (image_size, tile_counts):
+def calculate_ranges (image_size:Dict, tile_counts:Dict):
 	for ith in range(tile_counts['x']):
 		for jth in range(tile_counts['y']):
 			left_x  = (ith + 0) * ( math.floor(image_size['x'] / tile_counts['x']) )
@@ -47,7 +48,7 @@ def calculate_ranges (image_size, tile_counts):
 				}
 			}
 
-def find_image_size (input_path):
+def find_image_size (input_path:str) -> Dict:
 	image_size = {'x': 0, 'y': 0}
 
 	with open(input_path) as fconn:
@@ -60,14 +61,16 @@ def find_image_size (input_path):
 			image_size = find_coord_extrema((x, y), image_size)
 
 		if line_count == 0:
-			raise Exception('no pixels loaded.')
+			logging.error("no pixels loaded")
+			exit(1)
 
 		if image_size['x'] == 0 or image_size['y'] == 0:
-			raise Exception('determined image size was zero.')
+			logging.error("n x 0 image dimension supplied")
+			exit(1)
 
 	return image_size
 
-def find_pixels (input_path, xrange, yrange):
+def find_pixels(input_path: str, xrange:Dict, yrange: Dict) -> Generator([int, tuple, str]):
 	logging.info('finding pixels in ranges {} → {}, {} → {}'.format(
 		xrange['min'], xrange['max'], yrange['min'], yrange['max']))
 
@@ -81,15 +84,15 @@ def find_pixels (input_path, xrange, yrange):
 						if y < yrange['max']:
 							yield (x, y, colour)
 
-def draw_solutions (paths, tile_counts):
+def draw_solutions (paths:str, tile_counts:int) -> None:
 	"""
 	read pixels from an input file, and write the image out
 	to another file.
 	"""
 
-	image_size   = find_image_size(paths['input'])
+	image_size = find_image_size(paths['input'])
 	pixel_ranges = list(calculate_ranges(image_size, tile_counts))
-	image_count  = 0
+	image_count = 0
 
 	for count, pixel_range in enumerate(pixel_ranges):
 		logging.info('drawing pixels {} / {}'.format(count, len(pixel_ranges)))

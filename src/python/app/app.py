@@ -7,7 +7,9 @@ import math
 import datetime
 import subprocess
 import logging
+import coloredlogs
 
+coloredlogs.install()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 from typing import Generator, Dict, Callable
@@ -37,15 +39,16 @@ def create_required_folder(paths:Dict) -> None:
 def app (arguments:Dict) -> None:
 	"""top-level of the polynomial solving app.
 	"""
-	paths = { }
 
 	root = os.path.dirname('./')
-	paths['tasks'] = root
-	paths['current_link'] = os.path.join(root, 'current')
-	paths['solutions'] = os.path.join(paths['current_link'], 'output/json/solutions.jsonl')
-	paths['pixels'] = os.path.join(paths['current_link'], 'output/json/pixels.jsonl')
-	paths['images'] = os.path.join(paths['current_link'], 'output/images/')
-	paths['final_image'] = os.path.join(paths['current_link'], 'output/final_image.png')
+	paths = {
+		'tasks': root,
+		'current_link': os.path.join(root, 'current'),
+		'solutions': os.path.join(root, 'current/output/json/solutions.jsonl'),
+		'pixels': os.path.join('current/output/json/pixels.jsonl'),
+		'images': os.path.join('current/output/images/'),
+		'final_image': os.path.join('current/output/final_image.png')
+	}
 
 	create_required_folder(paths)
 
@@ -93,8 +96,8 @@ def assemble_images (images:str, output_path:str) -> None:
 		logging.error('failed to create image {}'.format(output_path))
 
 
-def choose_colour_fn(arguments: Dict) -> Callable([float], float):
-	colour_fn = colours.tint
+def choose_colour_fn(arguments: Dict):
+	colour_fn = colours.hue
 
 	if 'colour_mode' in arguments['render_pixels']:
 		colour_fn = colours[arguments['render_pixels']['colour_mode']]
@@ -102,7 +105,7 @@ def choose_colour_fn(arguments: Dict) -> Callable([float], float):
 	return colour_fn
 
 def generate_polynomial_image (arguments:Dict, paths:Dict) -> None:
-	"""
+	"""solve equations, then draw the solutions
 	"""
 
 	solve_args = arguments['solve_polynomial']

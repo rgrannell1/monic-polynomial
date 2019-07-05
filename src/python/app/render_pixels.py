@@ -29,7 +29,6 @@ def polynomials():
 	for row in curse:
 		yield row
 
-
 def parse_solutions(row):
 	[id, *solutions] = row
 
@@ -41,16 +40,12 @@ def parse_solutions(row):
 	for ith in range(0, len(solutions) - 1, 2):
 		data['solutions'].append({
 			'real': float(solutions[ith]),
-			'imag': float(solutions[ith]) + 1
+			'imag': float(solutions[ith + 1])
 		})
 
 	return data
 
 def find_solution_extrema (coefficient_metric, ranges):
-	"""
-
-	"""
-
 	extrema = {
 		'x': {
 			'min': +float('inf'),
@@ -93,8 +88,15 @@ def find_solution_extrema (coefficient_metric, ranges):
 				extrema['coefficient_metric']['min'] = min(
 					measure, extrema['coefficient_metric']['min'])
 
-		if extrema['x']['max'] == extrema['x']['min'] or extrema['y']['max'] == extrema['y']['min']:
-			raise Exception( 'pixel min value was equal to pixel max value: ' + str(extrema) )
+	for axis in ["x", "y"]:
+		minimum = extrema[axis]["min"]
+		maximum = extrema[axis]["max"]
+
+		if minimum == maximum:
+			logging.error(
+				f"after inspecting {solution_count:,} solutions, {axis} axis min {minimum} was equal to {maximum}")
+
+			exit(1)
 
 	return extrema
 
@@ -124,13 +126,7 @@ def convert_root_to_pixel (coefficients, point, extrema, width, coefficient_metr
 
 	for percent in percentage:
 		if percent < 0 or percent > 1:
-			sys.stdout.write( json.dumps({
-				'level':  'error',
-				'message': 'invalid percentage value',
-				'data': {
-					'percentage': percentage
-				}
-			}) + '\n')
+			logging.info('invalid percentage value {}'.format(percentage))
 
 	height = (y_diff / x_diff) * width
 
@@ -151,7 +147,7 @@ def render_pixels (width, ranges, paths, colour_fn):
 	extrema = find_solution_extrema(metric, ranges)
 
 	with open(paths['output'], 'a') as out_fconn:
-		count         = 0
+		count = 0
 		written_count = 0
 
 		for polynomial in polynomials():
@@ -174,4 +170,5 @@ def render_pixels (width, ranges, paths, colour_fn):
 					out_fconn.write(json.dumps(pixel) + '\n')
 
 			if written_count == 0:
-				raise Exception('no pixels written to file.')
+				logging.error("no pixels written to file")
+				exit(1)
