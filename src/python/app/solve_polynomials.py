@@ -48,7 +48,7 @@ def flatten (lists):
 
 	return result
 
-def solve_polynomials (order, num_range, predicate, out_path):
+def solve_polynomials (order, num_range):
 	dimensions = utils.repeat_val(order, utils.sequence(-num_range, num_range))
 	space = itertools.product(*dimensions)
 	total_count = utils.product(len(val) for val in dimensions)
@@ -79,14 +79,20 @@ def solve_polynomials (order, num_range, predicate, out_path):
 		solutions.append(tuple([id] + flatten(roots)))
 
 		if len(solutions) > constants['batch_size']:
-			curse.executemany(insert_row(len(dimensions) - 1), solutions)
+			try:
+				curse.executemany(insert_row(len(dimensions) - 1), solutions)
+			except Exception as err:
+				print(err)
 
 			conn.commit()
 			solutions = []
 
 		display_progress(root_count, total_count, start)
 
-	curse.executemany(insert_row(len(dimensions) - 1), solutions)
+	try:
+		curse.executemany(insert_row(len(dimensions) - 1), solutions)
+	except Exception as err:
+		print(err)
 
 	conn.commit()
 	conn.close()

@@ -16,7 +16,7 @@ constants = {
 	'units': {
 		'bytes_per_gibibyte': 2 ** 30
 	},
-	'batch_size': 10000,
+	'batch_size': 100000,
 	'paths': {
 		'db': './db.sqlite'
 	}
