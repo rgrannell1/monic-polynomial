@@ -1,9 +1,10 @@
 
-def config():
+def config() -> dict:
   return {
       'solve_polynomial': {
         'order': 5,
-        'range': 35
+        #'range': 35
+        'range': 9
       },
       'render_pixels': {
         'ranges': {
@@ -11,6 +12,6 @@ def config():
           'y': [-0.7, -1.3],
           'colour_mode': 'hue'
         },
-        'width': 4 * 1000
+        'width': 6 * 1000
       }
   }

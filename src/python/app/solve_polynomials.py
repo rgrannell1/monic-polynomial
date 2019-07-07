@@ -23,7 +23,9 @@ def display_progress (iteration, total_count, start):
 		seconds_remaining = round((total_count - iteration) / per_second)
 		minutes_remaining = round(seconds_remaining / 60)
 
-		logging.info('iteration {:,}, {:,} remaining'.format(iteration, total_count - iteration))
+		percentage_solved = round((iteration / total_count) * 100) / 100
+
+		logging.info('solved {:,} equations ({}), {:,} remaining'.format(iteration, percentage_solved, total_count - iteration))
 		logging.info('{:,}m / {:,}s remaining'.format(minutes_remaining, seconds_remaining))
 		logging.info('solving {:,} per second 🔥'.format(per_second))
 
@@ -75,7 +77,6 @@ def solve_polynomials (order, num_range):
 		root_count += 1
 
 		id = ','.join(map(str, point))
-
 		roots = [[root.real, root.imag] for root in numpy.roots(point)]
 
 		solutions.append(tuple([id] + flatten(roots)))

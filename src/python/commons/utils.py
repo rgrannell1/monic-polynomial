@@ -18,13 +18,6 @@ def sequence (lower, upper):
 
 	return seq
 
-def get_file_size (filename):
-	"""
-	get the bytes in a file.
-	"""
-
-	return os.stat(filename).st_size
-
 def repeat_val (num, val):
 	"""
 	repeat a value several ktimes.
@@ -36,23 +29,3 @@ def product (nums):
 	get the product of numbers in an array.
 	"""
 	return functools.reduce(operator.mul, nums, 1)
-
-def erase_lines (count):
-	"""
-	erase a certain number of lines from stderr.
-	"""
-
-	for _ in range(count):
-		sys.stdout.write(constants['escapes']['line_up'])
-		sys.stdout.write(constants['escapes']['line_delete'])
-
-def mkdir_p (path):
-	try:
-
-		os.makedirs(path)
-
-	except OSError as exc:
-		if exc.errno == errno.EEXIST and os.path.isdir(path):
-			pass
-		else:
-			raise

@@ -12,7 +12,7 @@ import coloredlogs
 coloredlogs.install()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
-from typing import Generator, Dict, Callable
+from typing import Dict, Callable
 
 from docopt import docopt
 from sh import montage
@@ -60,7 +60,7 @@ def app (arguments:Dict) -> None:
 
 	assemble_images(list_images(paths['images']), paths['final_image'])
 
-def list_images (image_path:str) -> Generator[str, float, str]:
+def list_images (image_path:str) -> [str, float, str]:
 	"""list images in a directory.
 	"""
 	number_of_images = len(os.listdir(image_path))
@@ -94,7 +94,6 @@ def assemble_images (images:str, output_path:str) -> None:
 
 	if not os.path.isfile(output_path):
 		logging.error('failed to create image {}'.format(output_path))
-
 
 def choose_colour_fn(arguments: Dict):
 	colour_fn = colours.hue

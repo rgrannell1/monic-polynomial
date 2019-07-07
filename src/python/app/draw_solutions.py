@@ -7,6 +7,8 @@ import json
 import logging
 
 from PIL import Image
+#import Image
+
 from typing import Generator, Dict, Callable
 
 def find_coord_extrema (coords:tuple, extrema:Dict) -> Dict:
@@ -70,7 +72,7 @@ def find_image_size (input_path:str) -> Dict:
 
 	return image_size
 
-def find_pixels(input_path: str, xrange:Dict, yrange: Dict) -> Generator([int, tuple, str]):
+def find_pixels(input_path: str, xrange:Dict, yrange: Dict):
 	logging.info('finding pixels in ranges {} → {}, {} → {}'.format(
 		xrange['min'], xrange['max'], yrange['min'], yrange['max']))
 
