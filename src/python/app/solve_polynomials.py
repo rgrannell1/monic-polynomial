@@ -30,12 +30,20 @@ def display_progress (iteration, total_count, start):
 		logging.info('solving {:,} per second 🔥'.format(per_second))
 
 def create_table(order):
+	"""
+	create a table to store polynomial root information
+	"""
+
 	query = "CREATE TABLE IF NOT EXISTS polynomials (id text primary key, "
 	params = ["root{} int, iroot{} int".format(root, root) for root in range(order)]
 
 	return query + ', '.join(params) + ");"
 
 def insert_row(order):
+	"""
+	insert polynomial root data into an SQL database
+	"""
+
 	params = ', '.join(["root{}, iroot{}".format(root, root) for root in range(order)])
 	inserts = ', '.join(["?, ?" for root in range(order)])
 
@@ -43,6 +51,9 @@ def insert_row(order):
 	return query
 
 def flatten (lists):
+	"""
+	flatten a list of lists
+	"""
 	result = []
 
 	for sublist in lists:
@@ -50,16 +61,26 @@ def flatten (lists):
 
 	return result
 
-def solve_polynomials (order, num_range):
-	dimensions = utils.repeat_val(order, utils.sequence(-num_range, num_range))
-	space = itertools.product(*dimensions)
-	total_count = utils.product(len(val) for val in dimensions)
+def show_spash (total_count, dimensions):
+	"""
+	show summary information when the program starts.
+	"""
 
 	splash_text = """
 		🔥 Computing Solutions to {:,} Order-{} Polynomials 🔥
 	""".format(total_count, len(dimensions) + 1)
 
 	print(splash_text)
+
+def solve_polynomials (order, num_range):
+	"""
+	solve a large number of polynomials and save the data to a database
+	"""
+	dimensions = utils.repeat_val(order, utils.sequence(-num_range, num_range))
+	space = itertools.product(*dimensions)
+	total_count = utils.product(len(val) for val in dimensions)
+
+	show_spash(total_count, dimensions)
 
 	start = time.time( )
 	root_count = 0
@@ -82,6 +103,7 @@ def solve_polynomials (order, num_range):
 		solution = [id] + flatten(roots)
 		solutions.append(solution)
 
+		# -- write the solutions to a database occasionally
 		if len(solutions) > constants['batch_size']:
 			try:
 				curse.executemany(insert_row(len(dimensions) - 1), solutions)
@@ -93,6 +115,7 @@ def solve_polynomials (order, num_range):
 
 		display_progress(root_count, total_count, start)
 
+	# -- flush the remaining records
 	try:
 		curse.executemany(insert_row(len(dimensions) - 1), solutions)
 	except Exception as err:

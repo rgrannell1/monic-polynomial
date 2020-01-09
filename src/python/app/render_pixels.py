@@ -137,6 +137,9 @@ def convert_root_to_pixel (coefficients, point, extrema, width, coefficient_metr
 	]
 
 def metric (coefficients):
+	"""
+	a metric used to colour the graph
+	"""
 	return utils.product(coefficients)
 
 def render_pixels (width, ranges, paths, colour_fn):

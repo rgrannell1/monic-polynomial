@@ -25,6 +25,9 @@ from app.render_pixels import render_pixels
 from app.draw_solutions import draw_solutions
 
 def create_required_folder(paths:Dict) -> None:
+	"""
+	create any folders that are needed by the program.
+	"""
 	required_folders = [
 		paths['current_link'],
 		os.path.join(paths['current_link'] ),
@@ -52,6 +55,7 @@ def app (arguments:Dict) -> None:
 
 	create_required_folder(paths)
 
+	# -- TODO wire in optional solving and drawing.
 	if True:
 		solve_all_polynomials(arguments, paths)
 
@@ -60,7 +64,8 @@ def app (arguments:Dict) -> None:
 		assemble_images(list_images(paths['images']), paths['final_image'])
 
 def list_images (image_path:str) -> [str, float, str]:
-	"""list images in a directory.
+	"""
+	list images in a directory.
 	"""
 	number_of_images = len(os.listdir(image_path))
 
@@ -83,7 +88,8 @@ def list_images (image_path:str) -> [str, float, str]:
 			yield row[ith]
 
 def assemble_images (images:str, output_path:str) -> None:
-	"""use 'montage' to assemble each image
+	"""
+	use 'montage' to assemble each image
 	"""
 	montage_cmd = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 4GB', output_path])
 
@@ -94,7 +100,10 @@ def assemble_images (images:str, output_path:str) -> None:
 	if not os.path.isfile(output_path):
 		logging.error('failed to create image {}'.format(output_path))
 
-def choose_colour_fn(arguments: Dict):
+def choose_colour_fn (arguments: Dict):
+	"""
+	choose which colours will be used for the graph
+	"""
 	colour_fn = colours.hue
 
 	if 'colour_mode' in arguments['render_pixels']:
@@ -103,7 +112,8 @@ def choose_colour_fn(arguments: Dict):
 	return colour_fn
 
 def solve_all_polynomials(arguments: Dict, paths: Dict) -> None:
-	"""solve equations
+	"""
+	solve equations
 	"""
 	solve_args = arguments['solve_polynomial']
 	solve_polynomials(solve_args['order'], solve_args['range'])
