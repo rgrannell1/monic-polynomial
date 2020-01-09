@@ -169,6 +169,8 @@ def render_pixels (width, ranges, paths, colour_fn):
 					pixel = convert_root_to_pixel(coefficients, (x, y), extrema, width, metric, colour_fn)
 					out_fconn.write(json.dumps(pixel) + '\n')
 
-			if written_count == 0:
-				logging.error("no pixels written to file")
-				exit(1)
+		if written_count == 0:
+			logging.error("no pixels written to file; was the database empty?")
+			exit(1)
+		else:
+			logging.info("wrote {} pixels to file {}".format(written_count, paths['output']))

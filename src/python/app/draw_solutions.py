@@ -63,7 +63,8 @@ def find_image_size (input_path:str) -> Dict:
 			image_size = find_coord_extrema((x, y), image_size)
 
 		if line_count == 0:
-			logging.error("no pixels loaded from file " + input_path)
+			size = os.stat(input_path).st_size
+			logging.error("no pixels loaded from file {} ({} bytes)".format(input_path, size))
 			exit(1)
 
 		if image_size['x'] == 0 or image_size['y'] == 0:
