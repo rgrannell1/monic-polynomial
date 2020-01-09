@@ -28,7 +28,9 @@ the folder `current` contains the output images from the program. On my Dell XPS
 
 | Solutions     | Time          |
 | ------------- |:-------------:|
-| 10,000        | 1 second      |
+| ten thousand  | 1 second      |
+| ten million   | 16 minutes    |
+| one billion   | 1.15 days     |
 
 ## License
 
