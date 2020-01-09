@@ -79,7 +79,8 @@ def solve_polynomials (order, num_range):
 		id = ','.join(map(str, point))
 		roots = [[root.real, root.imag] for root in numpy.roots(point)]
 
-		solutions.append(tuple([id] + flatten(roots)))
+		solution = [id] + flatten(roots)
+		solutions.append(solution)
 
 		if len(solutions) > constants['batch_size']:
 			try:
@@ -88,7 +89,7 @@ def solve_polynomials (order, num_range):
 				print(err)
 
 			conn.commit()
-		solutions = []
+			solutions = []
 
 		display_progress(root_count, total_count, start)
 
