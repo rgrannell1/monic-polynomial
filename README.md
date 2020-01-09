@@ -11,7 +11,6 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 ## Example Images
 
 ![alt text](examples/example-6.png "Monic Polynomial Graph")
-![alt text](examples/example-2.png "Monic Polynomial Graph")
 ![alt text](examples/example-3.png "Monic Polynomial Graph")
 ![alt text](examples/example-4.png "Monic Polynomial Graph")
 ![alt text](examples/example-5.png "Monic Polynomial Graph")
