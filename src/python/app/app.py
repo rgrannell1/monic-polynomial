@@ -17,8 +17,8 @@ from typing import Dict, Callable
 from docopt import docopt
 from sh import montage
 
-from commons import colours
-from commons.constants  import constants
+from shared import colours
+from shared.constants  import constants
 
 from app.solve_polynomials import solve_polynomials
 from app.render_pixels import render_pixels
@@ -27,9 +27,9 @@ from app.draw_solutions import draw_solutions
 def create_required_folder(paths:Dict) -> None:
 	required_folders = [
 		paths['current_link'],
-		os.path.join(paths['current_link'], 'output'),
-		os.path.join(paths['current_link'], 'output', 'json'),
-		os.path.join(paths['current_link'], 'output', 'images')
+		os.path.join(paths['current_link'] ),
+		os.path.join(paths['current_link'], 'json'),
+		os.path.join(paths['current_link'], 'images')
 	]
 
 	for path in required_folders:
@@ -44,21 +44,20 @@ def app (arguments:Dict) -> None:
 	paths = {
 		'tasks': root,
 		'current_link': os.path.join(root, 'current'),
-		'solutions': os.path.join(root, 'current/output/json/solutions.jsonl'),
-		'pixels': os.path.join('current/output/json/pixels.jsonl'),
-		'images': os.path.join('current/output/images/'),
-		'final_image': os.path.join('current/output/final_image.png')
+		'solutions': os.path.join(root, 'current/json/solutions.jsonl'),
+		'pixels': os.path.join('current/json/pixels.jsonl'),
+		'images': os.path.join('current/images/'),
+		'final_image': os.path.join('current/final_image.png')
 	}
 
 	create_required_folder(paths)
 
-	generate_polynomial_image(arguments, {
-		'solutions': paths['solutions'],
-		'pixels': paths['pixels'],
-		'current_link': paths['current_link']
-	})
+	if True:
+		solve_all_polynomials(arguments, paths)
 
-	assemble_images(list_images(paths['images']), paths['final_image'])
+	if True:
+		generate_polynomial_image(arguments, paths)
+		assemble_images(list_images(paths['images']), paths['final_image'])
 
 def list_images (image_path:str) -> [str, float, str]:
 	"""list images in a directory.
@@ -84,13 +83,13 @@ def list_images (image_path:str) -> [str, float, str]:
 			yield row[ith]
 
 def assemble_images (images:str, output_path:str) -> None:
-	"""use montage to assemble each image
+	"""use 'montage' to assemble each image
 	"""
-	command = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 3GB', output_path])
+	montage_cmd = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 4GB', output_path])
 
 	logging.info('assembing image "{}" ({})'.format(output_path, len(list(images))))
 
-	os.system(command)
+	os.system(montage_cmd)
 
 	if not os.path.isfile(output_path):
 		logging.error('failed to create image {}'.format(output_path))
@@ -103,12 +102,17 @@ def choose_colour_fn(arguments: Dict):
 
 	return colour_fn
 
+
+def solve_all_polynomials(arguments: Dict, paths: Dict) -> None:
+	"""solve equations
+	"""
+	solve_args = arguments['solve_polynomial']
+	solve_polynomials(solve_args['order'], solve_args['range'])
+
 def generate_polynomial_image (arguments:Dict, paths:Dict) -> None:
 	"""solve equations, then draw the solutions
 	"""
 
-	solve_args = arguments['solve_polynomial']
-	solve_polynomials(solve_args['order'], solve_args['range'])
 
 	logging.info('🎨 rendering images')
 
@@ -126,7 +130,7 @@ def generate_polynomial_image (arguments:Dict, paths:Dict) -> None:
 	draw_solutions(
 		paths={
 			'input': paths['pixels'],
-			'output_dir': os.path.join(paths['current_link'], 'output', 'images')
+			'output_dir': os.path.join(paths['current_link'], 'images')
 		},
 		tile_counts={
 			'x': tile_count,

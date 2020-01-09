@@ -1,5 +1,5 @@
 
-from commons.constants import constants
+from shared.constants import constants
 
 import os
 import math
@@ -63,7 +63,7 @@ def find_image_size (input_path:str) -> Dict:
 			image_size = find_coord_extrema((x, y), image_size)
 
 		if line_count == 0:
-			logging.error("no pixels loaded")
+			logging.error("no pixels loaded from file " + input_path)
 			exit(1)
 
 		if image_size['x'] == 0 or image_size['y'] == 0:
@@ -86,7 +86,7 @@ def find_pixels(input_path: str, xrange:Dict, yrange: Dict):
 						if y < yrange['max']:
 							yield (x, y, colour)
 
-def draw_solutions (paths:str, tile_counts:int) -> None:
+def draw_solutions (paths:Dict, tile_counts:Dict) -> None:
 	"""
 	read pixels from an input file, and write the image out
 	to another file.

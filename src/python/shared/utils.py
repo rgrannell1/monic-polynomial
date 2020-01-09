@@ -20,7 +20,7 @@ def sequence (lower, upper):
 
 def repeat_val (num, val):
 	"""
-	repeat a value several ktimes.
+	repeat a value several k times.
 	"""
 	return [val for _ in range(num - 1)]
 

@@ -1,6 +1,6 @@
 
-from commons import utils
-from commons.constants import constants
+from shared import utils
+from shared.constants import constants
 
 import sys
 import json
