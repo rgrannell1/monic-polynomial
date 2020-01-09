@@ -9,14 +9,14 @@ from shared import utils
 def is_in_range (value:int, num_range) -> bool:
 	return value >= min(num_range) and value <= max(num_range)
 
-def extrema_interval (extrema:dict):
+def extrema_interval (extrema:dict) -> int:
 	return abs(extrema['max'] - extrema['min'])
 
-def display_extrema_progress (iteration):
+def display_extrema_progress (iteration:int) -> None:
 	if iteration % 100000 == 0:
 		logging.info('🔎 finding coordinate extrema {:,}'.format(iteration))
 
-def display_pixel_progress (iteration):
+def display_pixel_progress (iteration:int) -> None:
 	if iteration % 100000 == 0:
 		logging.info('⌗ writing pixel data {:,}'.format(iteration))
 
@@ -29,7 +29,7 @@ def polynomials():
 	for row in curse:
 		yield row
 
-def parse_solutions(row):
+def parse_solutions(row) -> dict:
 	[id, *solutions] = row
 
 	data = {
@@ -45,7 +45,7 @@ def parse_solutions(row):
 
 	return data
 
-def find_solution_extrema (coefficient_metric, ranges):
+def find_solution_extrema (coefficient_metric, ranges:dict) -> dict:
 	extrema = {
 		'x': {
 			'min': +float('inf'),
