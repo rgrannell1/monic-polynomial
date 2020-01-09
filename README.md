@@ -23,7 +23,7 @@ To run the program, use `docker-compose`
 docker-compose up
 ```
 
-the folder `current` contains the output images from the program. On my Dell XPS 13 MLK (9360), I get the following approximate solution-rates:
+the folder `current` contains the output images from the program. On my Dell XPS 13 MLK (9360), I get the following approximate solution-rates ±10%:
 
 | Solutions     | Time          |
 | ------------- |:-------------:|
