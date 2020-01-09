@@ -10,7 +10,7 @@ import logging
 import itertools
 import sqlite3
 
-def display_progress (iteration, total_count, start):
+def display_progress(iteration: int, total_count: int, start) -> None:
 	"""
 	estimate the current solution rate.
 	"""
@@ -30,7 +30,7 @@ def display_progress (iteration, total_count, start):
 		logging.info('{:,}m / {:,}s remaining'.format(minutes_remaining, seconds_remaining))
 		logging.info('solving {:,} per second 🔥'.format(per_second))
 
-def create_table(order):
+def create_table(order:int) -> str:
 	"""
 	create a table to store polynomial root information
 	"""
@@ -40,7 +40,7 @@ def create_table(order):
 
 	return query + ', '.join(params) + ");"
 
-def insert_row(order):
+def insert_row(order:int) -> str:
 	"""
 	insert polynomial root data into an SQL database
 	"""
@@ -51,7 +51,7 @@ def insert_row(order):
 	query = "INSERT OR REPLACE INTO polynomials (id, {}) VALUES (?, {})".format(params, inserts)
 	return query
 
-def show_spash (total_count, dimensions):
+def show_spash (total_count:int, dimensions) -> None:
 	"""
 	show summary information when the program starts.
 	"""
@@ -62,7 +62,7 @@ def show_spash (total_count, dimensions):
 
 	print(splash_text)
 
-def solve_polynomials (order, num_range):
+def solve_polynomials (order:int, num_range:int) -> None:
 	"""
 	solve a large number of polynomials and save the data to a database
 	"""

@@ -9,6 +9,11 @@ ranges = [
     'x': [-0.15, +0.15],
     'y': [-0.35, -0.65],
     'colour_mode': 'hue'
+  },
+  {
+      'x': [-0.075, +0.075],
+      'y': [-0.175, -0.325],
+      'colour_mode': 'hue'
   }
 ]
 
@@ -22,7 +27,7 @@ def config() -> dict:
       'range': 22
     },
     'render_pixels': {
-      'ranges': ranges[1],
+      'ranges': ranges[2],
       'width': 5_000
     }
   }

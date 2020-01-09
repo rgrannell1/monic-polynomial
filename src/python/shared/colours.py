@@ -1,5 +1,6 @@
 
 import math
+from typing import List
 
 def tint (size:int, maximum):
 	"""
@@ -26,7 +27,7 @@ def tint (size:int, maximum):
 
 	return tint_colours[min(len(tint_colours) - 1, index)]
 
-def hue (size:int, maximum):
+def hue (size:int, maximum) -> List[int]:
 	"""
 	get the ith sequence in [0, 0, 0] ... [255, 255, 255]
 	"""

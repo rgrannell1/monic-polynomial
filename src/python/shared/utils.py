@@ -3,8 +3,9 @@
 import os
 import functools
 import operator
+from typing import List
 
-def sequence (lower, upper):
+def sequence (lower:int, upper:int) -> List[int]:
 	"""
 	generate an integer sequence between two numbers.
 	"""
@@ -18,7 +19,7 @@ def sequence (lower, upper):
 
 	return seq
 
-def repeat_val (num, val):
+def repeat_val (num:int, val):
 	"""
 	repeat a value several k times.
 	"""
