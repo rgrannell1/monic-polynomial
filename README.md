@@ -1,4 +1,4 @@
-# polynomial
+# polynomial 📈
 
 This repository includes code to solve and graph large numbers of polynomial roots.
 
