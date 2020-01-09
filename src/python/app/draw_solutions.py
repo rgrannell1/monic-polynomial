@@ -7,11 +7,13 @@ import json
 import logging
 
 from PIL import Image
-#import Image
 
 from typing import Generator, Dict, Callable
 
 def find_coord_extrema (coords:tuple, extrema:Dict) -> Dict:
+	"""
+	find the minimum and maximum values from the solution coordinates.
+	"""
 	if coords[0] > extrema['x']:
 		extrema['x'] = coords[0]
 
@@ -21,6 +23,9 @@ def find_coord_extrema (coords:tuple, extrema:Dict) -> Dict:
 	return extrema
 
 def create_image (image_size:Dict, tile_counts:Dict):
+	"""
+	create an image
+	"""
 	image_dimensions = (
 		math.floor(image_size['x'] / tile_counts['x']),
 		math.floor(image_size['y'] / tile_counts['y'])
@@ -51,6 +56,9 @@ def calculate_ranges (image_size:Dict, tile_counts:Dict):
 			}
 
 def find_image_size (input_path:str) -> Dict:
+	"""
+
+	"""
 	image_size = {'x': 0, 'y': 0}
 
 	with open(input_path) as fconn:
@@ -74,6 +82,9 @@ def find_image_size (input_path:str) -> Dict:
 	return image_size
 
 def find_pixels(input_path: str, xrange:Dict, yrange: Dict):
+	"""
+	find pixels within given x and y bounds.
+	"""
 	logging.info('finding pixels in ranges {} → {}, {} → {}'.format(
 		xrange['min'], xrange['max'], yrange['min'], yrange['max']))
 

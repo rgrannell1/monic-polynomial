@@ -102,7 +102,6 @@ def choose_colour_fn(arguments: Dict):
 
 	return colour_fn
 
-
 def solve_all_polynomials(arguments: Dict, paths: Dict) -> None:
 	"""solve equations
 	"""
@@ -112,7 +111,6 @@ def solve_all_polynomials(arguments: Dict, paths: Dict) -> None:
 def generate_polynomial_image (arguments:Dict, paths:Dict) -> None:
 	"""solve equations, then draw the solutions
 	"""
-
 
 	logging.info('🎨 rendering images')
 

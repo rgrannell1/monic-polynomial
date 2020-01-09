@@ -11,7 +11,7 @@ def config() -> dict:
   return {
     'solve_polynomial': {
       'order': 5,
-      'range': 10
+      'range': 35
     },
     'render_pixels': {
       'ranges': ranges[0],
