@@ -24,9 +24,9 @@ def display_progress(iteration: int, total_count: int, start) -> None:
 		seconds_remaining = round((total_count - iteration) / per_second)
 		minutes_remaining = round(seconds_remaining / 60)
 
-		percentage_solved = round((iteration / total_count) * 100) / 100
+		percentage_solved = round((iteration / total_count) * 100, 2)
 
-		logging.info('solved {:,} equations ({}), {:,} remaining'.format(iteration, percentage_solved, total_count - iteration))
+		logging.info('solved {:,} equations ({}%), {:,} remaining'.format(iteration, percentage_solved, total_count - iteration))
 		logging.info('{:,}m / {:,}s remaining'.format(minutes_remaining, seconds_remaining))
 		logging.info('solving {:,} per second 🔥'.format(per_second))
 

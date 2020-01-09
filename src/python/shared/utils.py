@@ -31,7 +31,6 @@ def product (nums):
 	"""
 	return functools.reduce(operator.mul, nums, 1)
 
-
 def flatten(lists):
 	"""
 	flatten a list of lists
@@ -42,3 +41,17 @@ def flatten(lists):
 		result += sublist
 
 	return result
+
+def zoom(pair: List[float], factor: int) -> List[float]:
+  """
+  zoom a base set of coordinates in.
+  """
+  x0, x1 = pair
+  x0_prime = x0 * 1 / factor
+  x1_prime = x1 * 1 / factor
+
+  if not x0_prime < x1_prime:
+    raise Exception(
+    	"invalid coordinate bounds: x0_prime:({}) -> x1_prime:({})".format(x0_prime, x1_prime))
+
+  return [x0_prime, x1_prime]

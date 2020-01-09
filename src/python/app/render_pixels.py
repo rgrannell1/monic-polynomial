@@ -26,8 +26,16 @@ def polynomials():
 
 	curse.execute('SELECT * from polynomials')
 
+	polynomials_loaded = False
 	for row in curse:
+		polynomials_loaded = True
 		yield row
+
+	if not polynomials_loaded:
+		logging.error("no polynomials loaded from database.")
+		exit(1)
+	else:
+		logging.info("loaded polynomials from database.")
 
 def parse_solutions(row) -> dict:
 	[id, *solutions] = row
@@ -136,9 +144,9 @@ def convert_root_to_pixel (coefficients, point, extrema, width, coefficient_metr
 		colour_fn(coefficient_measure, extrema['coefficient_metric']['max'])
 	]
 
-def metric (coefficients):
+def product_metric (coefficients):
 	"""
-	a metric used to colour the graph
+	a product_metric used to colour the graph
 	"""
 	return utils.product(coefficients)
 
@@ -147,13 +155,15 @@ def render_pixels (width, ranges, paths, colour_fn):
 	input solutions from a jsonl file, and write to an output file.
 	"""
 
-	extrema = find_solution_extrema(metric, ranges)
+	extrema = find_solution_extrema(product_metric, ranges)
 
 	with open(paths['output'], 'a') as out_fconn:
 		count = 0
 		written_count = 0
+		polynomials_found = False
 
 		for polynomial in polynomials():
+			polynomials_found = True
 			data = parse_solutions(polynomial)
 
 			for solution in data['solutions']:
@@ -169,11 +179,16 @@ def render_pixels (width, ranges, paths, colour_fn):
 
 					coefficients = [float(coeff) for coeff in data['id'].split(',')]
 
-					pixel = convert_root_to_pixel(coefficients, (x, y), extrema, width, metric, colour_fn)
+					pixel = convert_root_to_pixel(coefficients, (x, y), extrema, width, product_metric, colour_fn)
 					out_fconn.write(json.dumps(pixel) + '\n')
 
 		if written_count == 0:
-			logging.error("no pixels written to file; was the database empty?")
-			exit(1)
+			if polynomials_found:
+				logging.error("polynomials were loaded but none were in range & written; too few polynomials were searched or the range was restrictive.")
+				exit(1)
+			else:
+				logging.error("no pixels written to file and no polynomials loaded; was the database empty?")
+				exit(1)
 		else:
-			logging.info("wrote {} pixels to file {}".format(written_count, paths['output']))
+			written_fraction = round(100 * (written_count / count), 2)
+			logging.info("wrote {} pixels to file {} ({}%)".format(written_count, paths['output'], written_fraction))
