@@ -1,4 +1,4 @@
-# polynomial
+# polynomial 📈
 
 This repository includes code to solve and graph large numbers of polynomial roots.
 
@@ -11,7 +11,6 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 ## Example Images
 
 ![alt text](examples/example-6.png "Monic Polynomial Graph")
-![alt text](examples/example-2.png "Monic Polynomial Graph")
 ![alt text](examples/example-3.png "Monic Polynomial Graph")
 ![alt text](examples/example-4.png "Monic Polynomial Graph")
 ![alt text](examples/example-5.png "Monic Polynomial Graph")
@@ -24,7 +23,13 @@ To run the program, use `docker-compose`
 docker-compose up
 ```
 
-the folder `current` contains the output images from the program.
+the folder `current` contains the output images from the program. On my Dell XPS 13 MLK (9360), I get the following approximate solution-rates:
+
+| Solutions     | Time          |
+| ------------- |:-------------:|
+| ten thousand  | 1 second      |
+| ten million   | 16 minutes    |
+| one billion   | 1.15 days     |
 
 ## License
 
