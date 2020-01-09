@@ -2,7 +2,7 @@
 import math
 from typing import List
 
-def tint (size:int, maximum):
+def tint (size:int, maximum) -> List[int]:
 	"""
 	display the colour as a tint of a specific colour
 	"""
@@ -40,7 +40,7 @@ def hue (size:int, maximum) -> List[int]:
 
 	return [red, green, blue]
 
-def grayscale (size:int, maximum):
+def grayscale (size:int, maximum) -> List[int]:
 	"""
 	create a grey colour scale.
 	"""
