@@ -1,7 +1,7 @@
 
 import math
 
-def tint (size, maximum):
+def tint (size:int, maximum):
 	"""
 	display the colour as a tint of a specific colour
 	"""
@@ -26,7 +26,7 @@ def tint (size, maximum):
 
 	return tint_colours[min(len(tint_colours) - 1, index)]
 
-def hue (size, maximum):
+def hue (size:int, maximum):
 	"""
 	get the ith sequence in [0, 0, 0] ... [255, 255, 255]
 	"""
@@ -39,7 +39,7 @@ def hue (size, maximum):
 
 	return [red, green, blue]
 
-def grayscale (size, maximum):
+def grayscale (size:int, maximum):
 	"""
 	create a grey colour scale.
 	"""

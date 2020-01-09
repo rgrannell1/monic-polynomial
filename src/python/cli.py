@@ -4,6 +4,8 @@
 Usage:
 	polynomial
 	polynomial (-h | --help)
+Description:
+	Plot an argand diagram of monic polynomial solutions.
 Options:
 	-h, --help    Show this documentation.
 """

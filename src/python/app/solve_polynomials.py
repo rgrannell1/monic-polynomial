@@ -15,6 +15,7 @@ def display_progress (iteration, total_count, start):
 	estimate the current solution rate.
 	"""
 
+	# -- only print for a subset of iterations.
 	if iteration % constants["print_frequency"] == 0:
 		end = time.time( )
 		elapsed = end - start
@@ -49,17 +50,6 @@ def insert_row(order):
 
 	query = "INSERT OR REPLACE INTO polynomials (id, {}) VALUES (?, {})".format(params, inserts)
 	return query
-
-def flatten (lists):
-	"""
-	flatten a list of lists
-	"""
-	result = []
-
-	for sublist in lists:
-		result += sublist
-
-	return result
 
 def show_spash (total_count, dimensions):
 	"""
@@ -100,7 +90,7 @@ def solve_polynomials (order, num_range):
 		id = ','.join(map(str, point))
 		roots = [[root.real, root.imag] for root in numpy.roots(point)]
 
-		solution = [id] + flatten(roots)
+		solution = [id] + utils.flatten(roots)
 		solutions.append(solution)
 
 		# -- write the solutions to a database occasionally
@@ -121,5 +111,6 @@ def solve_polynomials (order, num_range):
 	except Exception as err:
 		print(err)
 
+	# -- close the DB connection.
 	conn.commit()
 	conn.close()

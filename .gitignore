@@ -7,3 +7,6 @@ polynomial-output/
 !id_rsa.polynomial-test.pub
 *.pyc
 *.sqlite
+FlameGraph
+perf.log
+perf.svg

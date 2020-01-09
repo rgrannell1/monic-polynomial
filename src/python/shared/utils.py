@@ -29,3 +29,15 @@ def product (nums):
 	get the product of numbers in an array.
 	"""
 	return functools.reduce(operator.mul, nums, 1)
+
+
+def flatten(lists):
+	"""
+	flatten a list of lists
+	"""
+	result = []
+
+	for sublist in lists:
+		result += sublist
+
+	return result
