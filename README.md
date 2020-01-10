@@ -23,13 +23,16 @@ To run the program, use `docker-compose`
 docker-compose up --force-recreate --build
 ```
 
-the folder `current` contains the output images from the program. On my Dell XPS 13 MLK (9360), I get the following approximate solution-rates ±10%:
+the folder `current` contains the output images from the program. On my Dell XPS 13 MLK (9360), I get the following approximate solution-rates.
 
 | Solutions     | Time          |
 | ------------- |:-------------:|
 | ten thousand  | 1 second      |
 | ten million   | 16 minutes    |
 | one billion   | 1.15 days     |
+| one trillion  | new laptop 🙁 |
+
+The exact range of solutions drawn can be configured by modifying `config.py`.
 
 ## License
 
