@@ -1,32 +1,23 @@
 
 from typing import List
 
-def zoom(pair: List[float], factor: int) -> List[float]:
-  """
-  zoom a base set of coordinates in.
-  """
-  x0, x1 = pair
-  x0_prime = x0 * (1 / factor)
-  x1_prime = x1 * (1 / factor)
-
-  if not x0_prime < x1_prime:
-    raise Exception(
-    	"invalid coordinate bounds: x0_prime:({}) -> x1_prime:({})".format(x0_prime, x1_prime))
-
-  return [x0_prime, x1_prime]
+x0 = -1.2
+x1 = +1.2
+y0 = -5.2
+y1 = +2.8
 
 ranges = [
   {
-    'x': zoom([-0.3, +0.3], 1),
-    'y': zoom([-1.3, -0.7], 1),
+    'x': [x0 / 1.0, x1 / 1.0],
+    'y': [y0 / 1.0, y1 / 1.0],
     'colour_mode': 'hue',
     'metric_mode': 'product'
   },
   {
-    'x': zoom([-0.3, +0.3], 2),
-    'y': zoom([-1.3, -0.7], 2),
+    'x': [x0 / 4.0, x1 / 4.0],
+    'y': [y0 / 4.0, y1 / 4.0],
     'colour_mode': 'hue',
-    'metric_mode': 'min'
+    'metric_mode': 'product'
   }
 ]
 
@@ -37,10 +28,10 @@ def config() -> dict:
   return {
     'solve_polynomial': {
       'order': 5,
-      'range': 10
+      'range': 15
     },
     'render_pixels': {
-      'ranges': ranges[0],
+      'ranges': ranges[1],
       'width': 5_000
     }
   }

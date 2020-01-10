@@ -16,6 +16,7 @@ from typing import Dict, Callable
 
 from docopt import docopt
 from sh import montage
+from typing import List
 
 from shared import utils
 from shared import colours
