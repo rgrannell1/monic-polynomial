@@ -1,10 +1,13 @@
 
 from typing import List
 
-x0 = -1.2
-x1 = +1.2
-y0 = -5.2
-y1 = +2.8
+#x0 = -1.2
+#x0 = -1.2
+
+x0 = -5
+x1 = +5
+y0 = -6.2
+y1 = +3.8
 
 ranges = [
   {
@@ -28,10 +31,10 @@ def config() -> dict:
   return {
     'solve_polynomial': {
       'order': 5,
-      'range': 8
+      'range': 12
     },
     'render_pixels': {
       'ranges': ranges[1],
-      'width': 2_000
+      'width': 5_000
     }
   }

@@ -2,9 +2,9 @@
 import os
 
 constants = {
-	'print_frequency': 10000,
-	'flush_threshold': 10000,
-	'tile_size': 5000,
+	'print_frequency': 10_000,
+	'flush_threshold': 10_000,
+	'tile_size': 5_000,
 	'project_root': os.path.realpath(os.path.join(os.path.dirname(__file__), '../../../')),
 	'colours': {
 		'background': 'black'
@@ -16,7 +16,7 @@ constants = {
 	'units': {
 		'bytes_per_gibibyte': 2 ** 30
 	},
-	'batch_size': 200000,
+	'batch_size': 200_000,
 	'paths': {
 		'db': './db.sqlite'
 	}

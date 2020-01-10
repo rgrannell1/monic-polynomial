@@ -14,5 +14,6 @@ RUN pip3 install docopt \
   Pillow
 
 COPY src /src
+RUN rm -rf /src/python/current/images /src/python/current/json /src/python/current/final_image.png
 
 CMD python3 /src/python/cli.py
