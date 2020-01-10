@@ -28,10 +28,10 @@ def config() -> dict:
   return {
     'solve_polynomial': {
       'order': 5,
-      'range': 15
+      'range': 8
     },
     'render_pixels': {
       'ranges': ranges[1],
-      'width': 5_000
+      'width': 2_000
     }
   }

@@ -20,7 +20,7 @@ This tool generates solutions to all polynomials of a fixed order, with coeffici
 To run the program, use `docker-compose`
 
 ```sh
-docker-compose up
+docker-compose up --force-recreate --build
 ```
 
 the folder `current` contains the output images from the program. On my Dell XPS 13 MLK (9360), I get the following approximate solution-rates ±10%:

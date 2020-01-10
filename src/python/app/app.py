@@ -26,7 +26,7 @@ from app.solve_polynomials import solve_polynomials
 from app.render_pixels import render_pixels
 from app.draw_solutions import draw_solutions
 
-def create_required_folder(paths:Dict) -> None:
+def create_required_folder(paths:Dict[str, str]) -> None:
 	"""
 	create any folders that are needed by the program.
 	"""
@@ -45,14 +45,14 @@ def app (arguments:Dict) -> None:
 	"""top-level of the polynomial solving app.
 	"""
 
-	root = os.path.dirname('./')
+	root = os.path.dirname('/')
 	paths = {
 		'tasks': root,
 		'current_link': os.path.join(root, 'current'),
 		'solutions': os.path.join(root, 'current/json/solutions.jsonl'),
-		'pixels': os.path.join('current/json/pixels.jsonl'),
-		'images': os.path.join('current/images/'),
-		'final_image': os.path.join('current/final_image.png')
+		'pixels': os.path.join(root, 'current/json/pixels.jsonl'),
+		'images': os.path.join(root, 'current/images/'),
+		'final_image': os.path.join(root, 'current/final_image.png')
 	}
 
 	create_required_folder(paths)
@@ -65,37 +65,72 @@ def app (arguments:Dict) -> None:
 		generate_polynomial_image(arguments, paths)
 		assemble_images(list_images(paths['images']), paths['final_image'])
 
-def list_images (image_path:str) -> [str, float, str]:
+def list_images (image_path:str):
 	"""
 	list images in a directory.
 	"""
 	number_of_images = len(os.listdir(image_path))
 
+	if number_of_images == 0:
+		logging.error('no images to assemble in directory {}'.format(image_path))
+		exit(1)
+
+	# -- get the square root ot get the side length
 	side_length = number_of_images ** 0.5
 
 	image_paths = [os.path.join(image_path, str(ith) + '.png') for ith in range(number_of_images)]
 
 	if round(side_length) != side_length:
-		logging.error('strange number of PNGs')
+		logging.error('non-square array of images to assemble')
 		exit(1)
 
-	columns = [ [ ] for _ in range(int(side_length)) ]
+	side = int(side_length)
 
-	for colnum in range(int(side_length)):
-		for _ in range(int(side_length)):
+	columns = [ [ ] for _ in range(side) ]
+
+	for colnum in range(side):
+		for _ in range(side):
 			columns[colnum].append(image_paths.pop(0))
 
 	for row in map(list, zip(*columns)):
 		for ith in range(len(row)):
 			yield row[ith]
 
-def assemble_images (images:str, output_path:str) -> None:
+def show_assemble_splash (command):
+	splash_text = """
+
+		📸 Assembling Sub-Images 📸
+
+		cmd:
+		{}
+
+	""".format(command)
+
+	print(splash_text)
+
+def assemble_images (images, output_path:str) -> None:
 	"""
 	use 'montage' to assemble each image
 	"""
-	montage_cmd = ' '.join(['montage'] + list(images) + ['-mode concatenate', '-limit memory 4GB', output_path])
 
-	logging.info('assembing image "{}" ({})'.format(output_path, len(list(images))))
+	image_list = list(images)
+
+	if len(image_list) == 0:
+		logging.error('no images to assemble')
+		exit(1)
+
+	for image in images:
+		if not os.path.isfile(image):
+			logging.error('subimage {} was not found'.format(image))
+			exit(1)
+
+	logging.info('all subimages appear to be exist.')
+
+	montage_cmd = ' '.join(['montage'] + image_list + ['-mode concatenate', '-limit memory 4GB', output_path])
+
+	show_assemble_splash(montage_cmd)
+
+	logging.info('assembing image "{}" ({})'.format(output_path, len(image_list)))
 
 	os.system(montage_cmd)
 
@@ -126,6 +161,9 @@ def min_metric(coefficients):
 	return min(coefficients)
 
 def choose_metric_fn (arguments: Dict):
+	"""
+	choose the metric function used to determine the polynomial solution colour.
+	"""
 	mode = arguments['render_pixels']['ranges']['metric_mode']
 
 	if mode == 'min':
@@ -141,7 +179,8 @@ def solve_all_polynomials(arguments: Dict, paths: Dict) -> None:
 	solve_polynomials(solve_args['order'], solve_args['range'])
 
 def generate_polynomial_image (arguments:Dict, paths:Dict) -> None:
-	"""solve equations, then draw the solutions
+	"""
+	solve equations, then draw the solutions
 	"""
 
 	logging.info('🎨 rendering images')

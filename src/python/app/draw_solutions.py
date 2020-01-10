@@ -22,7 +22,7 @@ def find_coord_extrema (coords:tuple, extrema:Dict) -> Dict:
 
 	return extrema
 
-def create_image (image_size:Dict, tile_counts:Dict):
+def create_image (image_size:Dict, tile_counts:Dict[str, int]):
 	"""
 	create an image
 	"""
@@ -55,7 +55,7 @@ def calculate_ranges (image_size:Dict, tile_counts:Dict):
 				}
 			}
 
-def find_image_size (input_path:str) -> Dict:
+def find_image_size (input_path:str) -> Dict[str, int]:
 	"""
 
 	"""
@@ -76,7 +76,7 @@ def find_image_size (input_path:str) -> Dict:
 			exit(1)
 
 		if image_size['x'] == 0 or image_size['y'] == 0:
-			logging.error("n x 0 image dimension supplied")
+			logging.error("An n x 0 image dimension was supplied and cannot be created.")
 			exit(1)
 
 	return image_size
@@ -85,7 +85,7 @@ def find_pixels(input_path: str, xrange:Dict, yrange: Dict):
 	"""
 	find pixels within given x and y bounds.
 	"""
-	logging.info('finding pixels in ranges {} → {}, {} → {}'.format(
+	logging.info('finding pixels in ranges x {} → {}, y {} → {}'.format(
 		xrange['min'], xrange['max'], yrange['min'], yrange['max']))
 
 	with open(input_path) as fconn:
@@ -109,12 +109,13 @@ def draw_solutions (paths:Dict, tile_counts:Dict) -> None:
 	image_count = 0
 
 	for count, pixel_range in enumerate(pixel_ranges):
-		logging.info('drawing pixels {} / {}'.format(count, len(pixel_ranges)))
+		logging.info('drawing subimage {} of {}'.format(count, len(pixel_ranges)))
 
 		image, image_pixels = create_image(image_size, tile_counts)
 
 		for x, y, colour in find_pixels(paths['input'], pixel_range['x'], pixel_range['y']):
 			try:
+				# -- normalise pixels and set in subimage
 				normal_x = x - pixel_range['x']['min']
 				normal_y = y - pixel_range['y']['min']
 
@@ -130,7 +131,7 @@ def draw_solutions (paths:Dict, tile_counts:Dict) -> None:
 			image.save(image_path)
 			image_count += 1
 
-			logging.info('Writing image-tile to ' + image_path)
+			logging.info('Drew subimage to path {}'.format(image_path))
 
 		except Exception as err:
 			raise err
