@@ -19,12 +19,14 @@ ranges = [
   {
     'x': zoom([-0.3, +0.3], 1),
     'y': zoom([-1.3, -0.7], 1),
-    'colour_mode': 'hue'
+    'colour_mode': 'hue',
+    'metric_mode': 'product'
   },
   {
     'x': zoom([-0.3, +0.3], 2),
     'y': zoom([-1.3, -0.7], 2),
-    'colour_mode': 'hue'
+    'colour_mode': 'hue',
+    'metric_mode': 'min'
   }
 ]
 
@@ -35,10 +37,10 @@ def config() -> dict:
   return {
     'solve_polynomial': {
       'order': 5,
-      'range': 15
+      'range': 10
     },
     'render_pixels': {
-      'ranges': ranges[1],
+      'ranges': ranges[0],
       'width': 5_000
     }
   }

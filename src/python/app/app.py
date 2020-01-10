@@ -17,6 +17,7 @@ from typing import Dict, Callable
 from docopt import docopt
 from sh import montage
 
+from shared import utils
 from shared import colours
 from shared.constants  import constants
 
@@ -111,6 +112,26 @@ def choose_colour_fn (arguments: Dict):
 
 	return colour_fn
 
+def product_metric(coefficients):
+	"""
+	a product_metric used to colour the graph
+	"""
+	return utils.product(coefficients)
+
+def min_metric(coefficients):
+	"""
+	colour by minimum coefficient
+	"""
+	return min(coefficients)
+
+def choose_metric_fn (arguments: Dict):
+	mode = arguments['render_pixels']['ranges']['metric_mode']
+
+	if mode == 'min':
+		return min_metric
+	elif mode == 'product':
+		return product_metric
+
 def solve_all_polynomials(arguments: Dict, paths: Dict) -> None:
 	"""
 	solve equations
@@ -130,7 +151,8 @@ def generate_polynomial_image (arguments:Dict, paths:Dict) -> None:
 		},
 		ranges=arguments['render_pixels']['ranges'],
 		width=arguments['render_pixels']['width'],
-		colour_fn=choose_colour_fn(arguments)
+		colour_fn=choose_colour_fn(arguments),
+		metric_fn=choose_metric_fn(arguments)
 	)
 
 	tile_count = max(1, math.ceil(arguments['render_pixels']['width'] / constants['tile_size']))

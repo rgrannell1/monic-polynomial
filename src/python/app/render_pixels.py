@@ -144,18 +144,12 @@ def convert_root_to_pixel (coefficients, point, extrema, width, coefficient_metr
 		colour_fn(coefficient_measure, extrema['coefficient_metric']['max'])
 	]
 
-def product_metric (coefficients):
-	"""
-	a product_metric used to colour the graph
-	"""
-	return utils.product(coefficients)
-
-def render_pixels (width, ranges, paths, colour_fn):
+def render_pixels(width, ranges, paths, colour_fn, metric_fn):
 	"""
 	input solutions from a jsonl file, and write to an output file.
 	"""
 
-	extrema = find_solution_extrema(product_metric, ranges)
+	extrema = find_solution_extrema(metric_fn, ranges)
 
 	with open(paths['output'], 'a') as out_fconn:
 		count = 0
@@ -179,7 +173,7 @@ def render_pixels (width, ranges, paths, colour_fn):
 
 					coefficients = [float(coeff) for coeff in data['id'].split(',')]
 
-					pixel = convert_root_to_pixel(coefficients, (x, y), extrema, width, product_metric, colour_fn)
+					pixel = convert_root_to_pixel(coefficients, (x, y), extrema, width, metric_fn, colour_fn)
 					out_fconn.write(json.dumps(pixel) + '\n')
 
 		if written_count == 0:
