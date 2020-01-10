@@ -30,6 +30,7 @@ the folder `current` contains the output images from the program. On my Dell XPS
 | ten thousand  | 1 second      |
 | ten million   | 16 minutes    |
 | one billion   | 1.15 days     |
+| one trillion  | new laptop 🙁 |
 
 ## License
 
