@@ -10,3 +10,6 @@ polynomial-output/
 FlameGraph
 perf.log
 perf.svg
+*egg-info
+dist
+build

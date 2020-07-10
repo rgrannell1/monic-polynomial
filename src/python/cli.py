@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 
 """
+Name:
+	polynomial - plot polynomial solutions
 Usage:
 	polynomial
 	polynomial (-h | --help)
 Description:
-	Plot an argand diagram of monic polynomial solutions.
+	Polynomial is a CLI tool that plots the solution to large numbers of monic polynomials, to creaet
+	beautiful fractal images.
+
+Authors:
+	Róisín Grannell
 Options:
 	-h, --help    Show this documentation.
 """

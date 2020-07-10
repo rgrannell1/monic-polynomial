@@ -41,4 +41,3 @@ def flatten(lists):
 		result += sublist
 
 	return result
-
